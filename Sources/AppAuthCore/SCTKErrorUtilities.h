@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     @see https://tools.ietf.org/html/rfc6749#section-4.1.2.1
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
-+ (OIDErrorCodeOAuth)OAuthErrorCodeFromString:(NSString *)errorCode;
++ (SCTKErrorCodeOAuth)OAuthErrorCodeFromString:(NSString *)errorCode;
 
 /*! @brief Returns true if the given error domain is an OAuth error domain.
     @param errorDomain The error domain to test.

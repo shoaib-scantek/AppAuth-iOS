@@ -19,12 +19,12 @@
 #import "OIDTVAuthorizationService.h"
 
 #import "SCTKAuthorizationService.h"
-#import "OIDAuthState.h"
+#import "SCTKAuthState.h"
 #import "SCTKDefines.h"
-#import "OIDErrorUtilities.h"
-#import "OIDServiceDiscovery.h"
+#import "SCTKErrorUtilities.h"
+#import "SCTKServiceDiscovery.h"
 #import "SCTKURLQueryComponent.h"
-#import "OIDURLSessionProvider.h"
+#import "SCTKURLSessionProvider.h"
 
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVAuthorizationResponse.h"
@@ -119,7 +119,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (error) {
       // A network error or server error occurred.
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeNetworkError
                            underlyingError:error
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -145,9 +145,9 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
         // if the HTTP 400 response parses as JSON and has an 'error' key, it's an OAuth error
         // these errors are special as they indicate a problem with the authorization grant
-        if (json[OIDOAuthErrorFieldError]) {
+        if (json[SCTKOAuthErrorFieldError]) {
           NSError *oauthError =
-            [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+            [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthTokenErrorDomain
                                       OAuthResponse:json
                                     underlyingError:serverError];
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -159,7 +159,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
       // not an OAuth error, just a generic server error
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeServerError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeServerError
                            underlyingError:serverError
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -191,7 +191,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (!TVAuthorizationResponse) {
       // A problem occurred constructing the token response from the JSON.
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeTokenResponseConstructionError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeTokenResponseConstructionError
                            underlyingError:jsonDeserializationError
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{

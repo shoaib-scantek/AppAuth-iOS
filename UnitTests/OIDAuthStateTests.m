@@ -77,7 +77,7 @@
  */
 + (NSError *)OAuthAuthorizationError {
   NSError *oauthError =
-      [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
+      [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthAuthorizationErrorDomain
                                 OAuthResponse:@{@"error": @"invalid_request"}
                               underlyingError:nil];
   return oauthError;
@@ -88,7 +88,7 @@
  */
 + (NSError *)OAuthTokenInvalidGrantErrorWithUnderlyingError:(NSError *)underlyingError {
   NSError *oauthError =
-      [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+      [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthTokenErrorDomain
                                 OAuthResponse:@{@"error": @"invalid_grant"}
                               underlyingError:underlyingError];
   return oauthError;
@@ -98,7 +98,7 @@
  */
 + (NSError *)OAuthTokenInvalidClientError {
   NSError *oauthError =
-      [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+      [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthTokenErrorDomain
                                 OAuthResponse:@{@"error": @"invalid_client"}
                               underlyingError:nil];
   return oauthError;

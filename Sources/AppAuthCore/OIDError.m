@@ -18,28 +18,28 @@
 
 #import "SCTKError.h"
 
-NSString *const OIDGeneralErrorDomain = @"org.openid.appauth.general";
+NSString *const SCTKGeneralErrorDomain = @"org.openid.appauth.general";
 
-NSString *const OIDOAuthTokenErrorDomain = @"org.openid.appauth.oauth_token";
+NSString *const SCTKOAuthTokenErrorDomain = @"org.openid.appauth.oauth_token";
 
-NSString *const OIDOAuthAuthorizationErrorDomain = @"org.openid.appauth.oauth_authorization";
+NSString *const SCTKOAuthAuthorizationErrorDomain = @"org.openid.appauth.oauth_authorization";
 
-NSString *const OIDOAuthRegistrationErrorDomain = @"org.openid.appauth.oauth_registration";
+NSString *const SCTKOAuthRegistrationErrorDomain = @"org.openid.appauth.oauth_registration";
 
-NSString *const OIDResourceServerAuthorizationErrorDomain = @"org.openid.appauth.resourceserver";
+NSString *const SCTKResourceServerAuthorizationErrorDomain = @"org.openid.appauth.resourceserver";
 
-NSString *const OIDHTTPErrorDomain = @"org.openid.appauth.remote-http";
+NSString *const SCTKHTTPErrorDomain = @"org.openid.appauth.remote-http";
 
-NSString *const OIDOAuthExceptionInvalidAuthorizationFlow = @"An OAuth redirect was sent to a "
+NSString *const SCTKOAuthExceptionInvalidAuthorizationFlow = @"An OAuth redirect was sent to a "
     "SCTKExternalUserAgentSession after it already completed.";
 
 NSString *const SCTKOAuthExceptionInvalidTokenRequestNullRedirectURL = @"A OIDTokenRequest was "
     "created with a grant_type that requires a redirectURL, but a null redirectURL was given";
 
-NSString *const OIDOAuthErrorResponseErrorKey = @"OIDOAuthErrorResponseErrorKey";
+NSString *const SCTKOAuthErrorResponseErrorKey = @"OIDOAuthErrorResponseErrorKey";
 
-NSString *const OIDOAuthErrorFieldError = @"error";
+NSString *const SCTKOAuthErrorFieldError = @"error";
 
-NSString *const OIDOAuthErrorFieldErrorDescription = @"error_description";
+NSString *const SCTKOAuthErrorFieldErrorDescription = @"error_description";
 
-NSString *const OIDOAuthErrorFieldErrorURI = @"error_uri";
+NSString *const SCTKOAuthErrorFieldErrorURI = @"error_uri";

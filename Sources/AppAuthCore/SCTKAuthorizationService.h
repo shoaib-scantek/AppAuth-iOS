@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class OIDAuthorization;
+@class SCTKAuthorization;
 @class SCTKAuthorizationRequest;
 @class SCTKAuthorizationResponse;
 @class SCTKEndSessionRequest;
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param configuration The service configuration, if available.
     @param error The error if an error occurred.
  */
-typedef void (^OIDDiscoveryCallback)(SCTKServiceConfiguration *_Nullable configuration,
+typedef void (^SCTKDiscoveryCallback)(SCTKServiceConfiguration *_Nullable configuration,
                                      NSError *_Nullable error);
 
 /*! @brief Represents the type of block used as a callback for various methods of
@@ -46,14 +46,14 @@ typedef void (^OIDDiscoveryCallback)(SCTKServiceConfiguration *_Nullable configu
     @param authorizationResponse The authorization response, if available.
     @param error The error if an error occurred.
  */
-typedef void (^OIDAuthorizationCallback)(SCTKAuthorizationResponse *_Nullable authorizationResponse,
+typedef void (^SCTKAuthorizationCallback)(SCTKAuthorizationResponse *_Nullable authorizationResponse,
                                          NSError *_Nullable error);
 
 /*! @brief Block used as a callback for the end-session request of @c SCTKAuthorizationService.
     @param endSessionResponse The end-session response, if available.
     @param error The error if an error occurred.
  */
-typedef void (^OIDEndSessionCallback)(SCTKEndSessionResponse *_Nullable endSessionResponse,
+typedef void (^SCTKEndSessionCallback)(SCTKEndSessionResponse *_Nullable endSessionResponse,
                                       NSError *_Nullable error);
 
 /*! @brief Represents the type of block used as a callback for various methods of
@@ -61,20 +61,20 @@ typedef void (^OIDEndSessionCallback)(SCTKEndSessionResponse *_Nullable endSessi
     @param tokenResponse The token response, if available.
     @param error The error if an error occurred.
  */
-typedef void (^OIDTokenCallback)(SCTKTokenResponse *_Nullable tokenResponse,
+typedef void (^SCTKTokenCallback)(SCTKTokenResponse *_Nullable tokenResponse,
                                  NSError *_Nullable error);
 
 /*! @brief Represents the type of dictionary used to specify additional querystring parameters
         when making authorization or token endpoint requests.
  */
-typedef NSDictionary<NSString *, NSString *> *_Nullable OIDTokenEndpointParameters;
+typedef NSDictionary<NSString *, NSString *> *_Nullable SCTKTokenEndpointParameters;
 
 /*! @brief Represents the type of block used as a callback for various methods of
         @c SCTKAuthorizationService.
     @param registrationResponse The registration response, if available.
     @param error The error if an error occurred.
 */
-typedef void (^OIDRegistrationCompletion)(SCTKRegistrationResponse *_Nullable registrationResponse,
+typedef void (^SCTKRegistrationCompletion)(SCTKRegistrationResponse *_Nullable registrationResponse,
                                           NSError *_Nullable error);
 
 /*! @brief Performs various OAuth and OpenID Connect related calls via the user agent or
@@ -103,7 +103,7 @@ typedef void (^OIDRegistrationCompletion)(SCTKRegistrationResponse *_Nullable re
     @see https://openid.net/specs/openid-connect-discovery-1_0.html
  */
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
-                                   completion:(OIDDiscoveryCallback)completion;
+                                   completion:(SCTKDiscoveryCallback)completion;
 
 
 /*! @brief Convenience method for creating an authorization service configuration from an OpenID
@@ -114,7 +114,7 @@ typedef void (^OIDRegistrationCompletion)(SCTKRegistrationResponse *_Nullable re
     @see https://openid.net/specs/openid-connect-discovery-1_0.html
  */
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
-                                         completion:(OIDDiscoveryCallback)completion;
+                                         completion:(SCTKDiscoveryCallback)completion;
 
 /*! @brief Perform an authorization flow using a generic flow shim.
     @param request The authorization request.
@@ -127,7 +127,7 @@ typedef void (^OIDRegistrationCompletion)(SCTKRegistrationResponse *_Nullable re
  */
 + (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
     externalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-             callback:(OIDAuthorizationCallback)callback;
+             callback:(SCTKAuthorizationCallback)callback;
 
 /*! @brief Perform a logout request.
     @param request The end-session logout request.
@@ -141,13 +141,13 @@ typedef void (^OIDRegistrationCompletion)(SCTKRegistrationResponse *_Nullable re
 + (id<SCTKExternalUserAgentSession>)
     presentEndSessionRequest:(SCTKEndSessionRequest *)request
            externalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-                    callback:(OIDEndSessionCallback)callback;
+                    callback:(SCTKEndSessionCallback)callback;
 
 /*! @brief Performs a token request.
     @param request The token request.
     @param callback The method called when the request has completed or failed.
  */
-+ (void)performTokenRequest:(SCTKTokenRequest *)request callback:(OIDTokenCallback)callback;
++ (void)performTokenRequest:(SCTKTokenRequest *)request callback:(SCTKTokenCallback)callback;
 
 /*! @brief Performs a token request.
     @param request The token request.
@@ -156,14 +156,14 @@ typedef void (^OIDRegistrationCompletion)(SCTKRegistrationResponse *_Nullable re
  */
 + (void)performTokenRequest:(SCTKTokenRequest *)request
     originalAuthorizationResponse:(SCTKAuthorizationResponse *_Nullable)authorizationResponse
-                         callback:(OIDTokenCallback)callback;
+                         callback:(SCTKTokenCallback)callback;
 
 /*! @brief Performs a registration request.
     @param request The registration request.
     @param completion The method called when the request has completed or failed.
  */
 + (void)performRegistrationRequest:(SCTKRegistrationRequest *)request
-                        completion:(OIDRegistrationCompletion)completion;
+                        completion:(SCTKRegistrationCompletion)completion;
 
 @end
 

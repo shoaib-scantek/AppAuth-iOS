@@ -25,27 +25,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Parameter name for the client id.
  */
-extern NSString *const OIDClientIDParam;
+extern NSString *const SCTKClientIDParam;
 
 /*! @brief Parameter name for the client id issuance timestamp.
  */
-extern NSString *const OIDClientIDIssuedAtParam;
+extern NSString *const SCTKClientIDIssuedAtParam;
 
 /*! @brief Parameter name for the client secret.
  */
-extern NSString *const OIDClientSecretParam;
+extern NSString *const SCTKClientSecretParam;
 
 /*! @brief Parameter name for the client secret expiration time.
  */
-extern NSString *const OIDClientSecretExpirestAtParam;
+extern NSString *const SCTKClientSecretExpirestAtParam;
 
 /*! @brief Parameter name for the registration access token.
  */
-extern NSString *const OIDRegistrationAccessTokenParam;
+extern NSString *const SCTKRegistrationAccessTokenParam;
 
 /*! @brief Parameter name for the client configuration URI.
  */
-extern NSString *const OIDRegistrationClientURIParam;
+extern NSString *const SCTKRegistrationClientURIParam;
 
 /*! @brief Represents a registration response.
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationResponse

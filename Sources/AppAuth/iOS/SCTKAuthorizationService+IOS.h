@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
     presentingViewController:(UIViewController *)presentingViewController
-                    callback:(OIDAuthorizationCallback)callback;
+                    callback:(SCTKAuthorizationCallback)callback;
 
 /*! @brief Perform an authorization flow using the @c ASWebAuthenticationSession optionally using an
         emphemeral browser session that shares no cookies or data with the normal browser session.
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
     presentingViewController:(UIViewController *)presentingViewController
      prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                    callback:(OIDAuthorizationCallback)callback API_AVAILABLE(ios(13));
+                    callback:(SCTKAuthorizationCallback)callback API_AVAILABLE(ios(13));
 
 @end
 

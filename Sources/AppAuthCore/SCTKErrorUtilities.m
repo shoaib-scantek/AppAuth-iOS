@@ -31,16 +31,16 @@
     userInfo[NSLocalizedDescriptionKey] = description;
   }
   // TODO: Populate localized description based on code.
-  NSError *error = [NSError errorWithDomain:OIDGeneralErrorDomain
+  NSError *error = [NSError errorWithDomain:SCTKGeneralErrorDomain
                                        code:code
                                    userInfo:userInfo];
   return error;
 }
 
 + (BOOL)isOAuthErrorDomain:(NSString *)errorDomain {
-  return errorDomain == OIDOAuthRegistrationErrorDomain
-      || errorDomain == OIDOAuthAuthorizationErrorDomain
-      || errorDomain == OIDOAuthTokenErrorDomain;
+  return errorDomain == SCTKOAuthRegistrationErrorDomain
+      || errorDomain == SCTKOAuthAuthorizationErrorDomain
+      || errorDomain == SCTKOAuthTokenErrorDomain;
 }
 
 + (NSError *)resourceServerAuthorizationErrorWithCode:(NSInteger)code
@@ -49,12 +49,12 @@
   // builds the userInfo dictionary with the full OAuth response and other information
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
   if (errorResponse) {
-    userInfo[OIDOAuthErrorResponseErrorKey] = errorResponse;
+    userInfo[SCTKOAuthErrorResponseErrorKey] = errorResponse;
   }
   if (underlyingError) {
     userInfo[NSUnderlyingErrorKey] = underlyingError;
   }
-  NSError *error = [NSError errorWithDomain:OIDResourceServerAuthorizationErrorDomain
+  NSError *error = [NSError errorWithDomain:SCTKResourceServerAuthorizationErrorDomain
                                        code:code
                                    userInfo:userInfo];
   return error;
@@ -66,32 +66,32 @@
   // not a valid OAuth error
   if (![self isOAuthErrorDomain:oAuthErrorDomain]
       || !errorResponse
-      || !errorResponse[OIDOAuthErrorFieldError]
-      || ![errorResponse[OIDOAuthErrorFieldError] isKindOfClass:[NSString class]]) {
-    return [[self class] errorWithCode:OIDErrorCodeNetworkError
+      || !errorResponse[SCTKOAuthErrorFieldError]
+      || ![errorResponse[SCTKOAuthErrorFieldError] isKindOfClass:[NSString class]]) {
+    return [[self class] errorWithCode:SCTKErrorCodeNetworkError
                        underlyingError:underlyingError
                            description:underlyingError.localizedDescription];
   }
 
   // builds the userInfo dictionary with the full OAuth response and other information
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-  userInfo[OIDOAuthErrorResponseErrorKey] = errorResponse;
+  userInfo[SCTKOAuthErrorResponseErrorKey] = errorResponse;
   if (underlyingError) {
     userInfo[NSUnderlyingErrorKey] = underlyingError;
   }
 
-  NSString *oauthErrorCodeString = errorResponse[OIDOAuthErrorFieldError];
+  NSString *oauthErrorCodeString = errorResponse[SCTKOAuthErrorFieldError];
   NSString *oauthErrorMessage = nil;
-  if ([errorResponse[OIDOAuthErrorFieldErrorDescription] isKindOfClass:[NSString class]]) {
-    oauthErrorMessage = errorResponse[OIDOAuthErrorFieldErrorDescription];
+  if ([errorResponse[SCTKOAuthErrorFieldErrorDescription] isKindOfClass:[NSString class]]) {
+    oauthErrorMessage = errorResponse[SCTKOAuthErrorFieldErrorDescription];
   } else {
-    oauthErrorMessage = [errorResponse[OIDOAuthErrorFieldErrorDescription] description];
+    oauthErrorMessage = [errorResponse[SCTKOAuthErrorFieldErrorDescription] description];
   }
   NSString *oauthErrorURI = nil;
-  if ([errorResponse[OIDOAuthErrorFieldErrorURI] isKindOfClass:[NSString class]]) {
-    oauthErrorURI = errorResponse[OIDOAuthErrorFieldErrorURI];
+  if ([errorResponse[SCTKOAuthErrorFieldErrorURI] isKindOfClass:[NSString class]]) {
+    oauthErrorURI = errorResponse[SCTKOAuthErrorFieldErrorURI];
   } else {
-    oauthErrorURI = [errorResponse[OIDOAuthErrorFieldErrorURI] description];
+    oauthErrorURI = [errorResponse[SCTKOAuthErrorFieldErrorURI] description];
   }
 
   // builds the error description, using the information supplied by the server if possible
@@ -115,7 +115,7 @@
   userInfo[NSLocalizedDescriptionKey] = description;
 
   // looks up the error code based on the "error" response param
-  OIDErrorCodeOAuth code = [[self class] OAuthErrorCodeFromString:oauthErrorCodeString];
+  SCTKErrorCodeOAuth code = [[self class] OAuthErrorCodeFromString:oauthErrorCodeString];
 
   NSError *error = [NSError errorWithDomain:oAuthErrorDomain
                                        code:code
@@ -134,30 +134,30 @@
     }
   }
   NSError *serverError =
-      [NSError errorWithDomain:OIDHTTPErrorDomain
+      [NSError errorWithDomain:SCTKHTTPErrorDomain
                           code:HTTPURLResponse.statusCode
                       userInfo:userInfo];
   return serverError;
 }
 
-+ (OIDErrorCodeOAuth)OAuthErrorCodeFromString:(NSString *)errorCode {
++ (SCTKErrorCodeOAuth)OAuthErrorCodeFromString:(NSString *)errorCode {
   NSDictionary *errorCodes = @{
-      @"invalid_request": @(OIDErrorCodeOAuthInvalidRequest),
-      @"unauthorized_client": @(OIDErrorCodeOAuthUnauthorizedClient),
-      @"access_denied": @(OIDErrorCodeOAuthAccessDenied),
-      @"unsupported_response_type": @(OIDErrorCodeOAuthUnsupportedResponseType),
-      @"invalid_scope": @(OIDErrorCodeOAuthInvalidScope),
-      @"server_error": @(OIDErrorCodeOAuthServerError),
-      @"temporarily_unavailable": @(OIDErrorCodeOAuthTemporarilyUnavailable),
-      @"invalid_client": @(OIDErrorCodeOAuthInvalidClient),
-      @"invalid_grant": @(OIDErrorCodeOAuthInvalidGrant),
-      @"unsupported_grant_type": @(OIDErrorCodeOAuthUnsupportedGrantType),
+      @"invalid_request": @(SCTKErrorCodeOAuthInvalidRequest),
+      @"unauthorized_client": @(SCTKErrorCodeOAuthUnauthorizedClient),
+      @"access_denied": @(SCTKErrorCodeOAuthAccessDenied),
+      @"unsupported_response_type": @(SCTKErrorCodeOAuthUnsupportedResponseType),
+      @"invalid_scope": @(SCTKErrorCodeOAuthInvalidScope),
+      @"server_error": @(SCTKErrorCodeOAuthServerError),
+      @"temporarily_unavailable": @(SCTKErrorCodeOAuthTemporarilyUnavailable),
+      @"invalid_client": @(SCTKErrorCodeOAuthInvalidClient),
+      @"invalid_grant": @(SCTKErrorCodeOAuthInvalidGrant),
+      @"unsupported_grant_type": @(SCTKErrorCodeOAuthUnsupportedGrantType),
       };
   NSNumber *code = errorCodes[errorCode];
   if (code) {
     return [code integerValue];
   } else {
-    return OIDErrorCodeOAuthOther;
+    return SCTKErrorCodeOAuthOther;
   }
 }
 

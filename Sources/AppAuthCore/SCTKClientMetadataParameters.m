@@ -18,16 +18,16 @@
 
 #import "SCTKClientMetadataParameters.h"
 
-NSString *const OIDTokenEndpointAuthenticationMethodParam = @"token_endpoint_auth_method";
+NSString *const SCTKTokenEndpointAuthenticationMethodParam = @"token_endpoint_auth_method";
 
-NSString *const OIDApplicationTypeParam = @"application_type";
+NSString *const SCTKApplicationTypeParam = @"application_type";
 
-NSString *const OIDRedirectURIsParam = @"redirect_uris";
+NSString *const SCTKRedirectURIsParam = @"redirect_uris";
 
-NSString *const OIDResponseTypesParam = @"response_types";
+NSString *const SCTKResponseTypesParam = @"response_types";
 
-NSString *const OIDGrantTypesParam = @"grant_types";
+NSString *const SCTKGrantTypesParam = @"grant_types";
 
-NSString *const OIDSubjectTypeParam = @"subject_type";
+NSString *const SCTKSubjectTypeParam = @"subject_type";
 
 NSString *const SCTKApplicationTypeNative = @"native";

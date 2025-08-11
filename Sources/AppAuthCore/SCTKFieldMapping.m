@@ -32,7 +32,7 @@
 
 - (instancetype)initWithName:(NSString *)name
                                  type:(Class)type
-                           conversion:(nullable OIDFieldMappingConversionFunction)conversion {
+                           conversion:(nullable SCTKFieldMappingConversionFunction)conversion {
   self = [super init];
   if (self) {
     _name = [name copy];
@@ -100,7 +100,7 @@
   ]];
 }
 
-+ (OIDFieldMappingConversionFunction)URLConversion {
++ (SCTKFieldMappingConversionFunction)URLConversion {
   return ^id _Nullable(NSObject *_Nullable value) {
     if ([value isKindOfClass:[NSString class]]) {
       return [NSURL URLWithString:(NSString *)value];
@@ -109,7 +109,7 @@
   };
 }
 
-+ (OIDFieldMappingConversionFunction)dateSinceNowConversion {
++ (SCTKFieldMappingConversionFunction)dateSinceNowConversion {
   return ^id _Nullable(NSObject *_Nullable value) {
     if (![value isKindOfClass:[NSNumber class]]) {
       return value;
@@ -119,7 +119,7 @@
   };
 }
 
-+ (OIDFieldMappingConversionFunction)dateEpochConversion {
++ (SCTKFieldMappingConversionFunction)dateEpochConversion {
   return ^id _Nullable(NSObject *_Nullable value) {
     if (![value isKindOfClass:[NSNumber class]]) {
       return value;

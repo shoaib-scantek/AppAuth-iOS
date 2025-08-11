@@ -277,7 +277,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                           "instance if it is not valid JSON.");
   XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqualObjects(error.domain, SCTKGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, SCTKErrorCodeJSONDeserializationError, @"");
 }
 
@@ -289,7 +289,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                "instance if the root JSON object is not a NSDictionary.");
   XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqualObjects(error.domain, SCTKGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
@@ -302,7 +302,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                           "instance if there are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqualObjects(error.domain, SCTKGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
@@ -315,7 +315,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNil(discovery, @"When initializing a discovery document with JSON, it should not return"
                           " an instance if there are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqualObjects(error.domain, SCTKGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
@@ -352,7 +352,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
                @"When initializing a discovery document, it should not return an  instance if there"
                    " are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqualObjects(error.domain, SCTKGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
@@ -366,7 +366,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                           "instance if there are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
-  XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
+  XCTAssertEqualObjects(error.domain, SCTKGeneralErrorDomain, @"");
   XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 

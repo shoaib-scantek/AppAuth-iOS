@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
     presentingViewController:(UIViewController *)presentingViewController
-                    callback:(OIDAuthorizationCallback)callback {
+                    callback:(SCTKAuthorizationCallback)callback {
   id<SCTKExternalUserAgent> externalUserAgent;
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[SCTKExternalUserAgentCatalyst alloc]
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
     presentingViewController:(UIViewController *)presentingViewController
      prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                    callback:(OIDAuthorizationCallback)callback {
+                    callback:(SCTKAuthorizationCallback)callback {
   id<SCTKExternalUserAgent> externalUserAgent;
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[SCTKExternalUserAgentCatalyst alloc]

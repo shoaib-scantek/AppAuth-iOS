@@ -176,7 +176,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
       [self expectationWithDescription:@"Discovery URL should be correct."];
 
   id successfulResponse =
-      ^(id _self, NSURL *discoveryURL, OIDDiscoveryCallback completion) {
+      ^(id _self, NSURL *discoveryURL, SCTKDiscoveryCallback completion) {
         NSURL *fullDiscoveryURL = [NSURL URLWithString:kIssuerTestExpectedFullDiscoveryURL];
         if ([discoveryURL isEqual:fullDiscoveryURL]) {
           [expectation fulfill];
@@ -234,7 +234,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
       [[SCTKServiceDiscovery alloc] initWithDictionary:expectedDictionary error:NULL];
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
-  OIDServiceConfigurationCreated callback =
+  SCTKServiceConfigurationCreated callback =
     ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
@@ -269,7 +269,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   NSURL *url = [NSURL URLWithString:kInitializerTestDiscoveryEndpoint];
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
-  OIDServiceConfigurationCreated callback =
+  SCTKServiceConfigurationCreated callback =
     ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
@@ -310,7 +310,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   NSURL *url = [NSURL URLWithString:kInitializerTestDiscoveryEndpoint];
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
-  OIDServiceConfigurationCreated callback =
+  SCTKServiceConfigurationCreated callback =
     ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
@@ -346,7 +346,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   NSURL *url = [NSURL URLWithString:kInitializerTestDiscoveryEndpoint];
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
-  OIDServiceConfigurationCreated callback =
+  SCTKServiceConfigurationCreated callback =
     ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];

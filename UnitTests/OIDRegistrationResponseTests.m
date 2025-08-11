@@ -69,13 +69,13 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
   SCTKRegistrationResponse *response = [[OIDRegistrationResponse alloc] initWithRequest:request
       parameters:@{
-          OIDClientIDParam : kClientIDTestValue,
-          OIDClientIDIssuedAtParam : @(kClientIDIssuedAtTestValue),
-          OIDClientSecretParam : kClientSecretTestValue,
-          OIDClientSecretExpirestAtParam : @(kClientSecretExpiresAtTestValue),
-          OIDRegistrationAccessTokenParam : kClientRegistrationAccessTokenTestValue,
-          OIDRegistrationClientURIParam : [NSURL URLWithString:kRegistrationClientURITestValue],
-          OIDTokenEndpointAuthenticationMethodParam : kTokenEndpointAuthMethodTestValue,
+          SCTKClientIDParam : kClientIDTestValue,
+          SCTKClientIDIssuedAtParam : @(kClientIDIssuedAtTestValue),
+          SCTKClientSecretParam : kClientSecretTestValue,
+          SCTKClientSecretExpirestAtParam : @(kClientSecretExpiresAtTestValue),
+          SCTKRegistrationAccessTokenParam : kClientRegistrationAccessTokenTestValue,
+          SCTKRegistrationClientURIParam : [NSURL URLWithString:kRegistrationClientURITestValue],
+          SCTKTokenEndpointAuthenticationMethodParam : kTokenEndpointAuthMethodTestValue,
           kTestAdditionalParameterKey : kTestAdditionalParameterValue
       }];
   return response;
@@ -163,8 +163,8 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
   SCTKRegistrationResponse *response = [[SCTKRegistrationResponse alloc] initWithRequest:request
       parameters:@{
-          OIDClientIDParam : kClientIDTestValue,
-          OIDClientSecretParam : kClientSecretTestValue,
+          SCTKClientIDParam : kClientIDTestValue,
+          SCTKClientSecretParam : kClientSecretTestValue,
       }];
   XCTAssertNil(response, @"");
 }
@@ -177,8 +177,8 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
   SCTKRegistrationResponse *response = [[SCTKRegistrationResponse alloc] initWithRequest:request
       parameters:@{
-          OIDClientIDParam : kClientIDTestValue,
-          OIDRegistrationClientURIParam : [NSURL URLWithString:kRegistrationClientURITestValue]
+          SCTKClientIDParam : kClientIDTestValue,
+          SCTKRegistrationClientURIParam : [NSURL URLWithString:kRegistrationClientURITestValue]
       }];
   XCTAssertNil(response, @"");
 }
@@ -191,8 +191,8 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
   SCTKRegistrationResponse *response = [[SCTKRegistrationResponse alloc] initWithRequest:request
       parameters:@{
-          OIDClientIDParam : kClientIDTestValue,
-          OIDRegistrationAccessTokenParam : kClientRegistrationAccessTokenTestValue
+          SCTKClientIDParam : kClientIDTestValue,
+          SCTKRegistrationAccessTokenParam : kClientRegistrationAccessTokenTestValue
       }];
   XCTAssertNil(response, @"");
 }

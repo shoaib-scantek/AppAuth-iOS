@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents a function which transforms incoming source values into instance variable
         values.
  */
-typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable value);
+typedef _Nullable id(^SCTKFieldMappingConversionFunction)(NSObject *_Nullable value);
 
 /*! @brief Describes the mapping of a key/value pair to an iVar with an optional conversion
         function.
@@ -41,7 +41,7 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
 /*! @brief An optional conversion function which specifies a transform from the incoming data to the
         instance variable value.
  */
-@property(nonatomic, readonly, nullable) OIDFieldMappingConversionFunction conversion;
+@property(nonatomic, readonly, nullable) SCTKFieldMappingConversionFunction conversion;
 
 /*! @internal
     @brief Unavailable. Please use initWithName:type:conversion:.
@@ -59,7 +59,7 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
  */
 - (instancetype)initWithName:(NSString *)name
                         type:(Class)type
-                  conversion:(nullable OIDFieldMappingConversionFunction)conversion
+                  conversion:(nullable SCTKFieldMappingConversionFunction)conversion
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief A convenience initializer.
@@ -109,17 +109,17 @@ typedef _Nullable id(^OIDFieldMappingConversionFunction)(NSObject *_Nullable val
 
 /*! @brief Returns a function for converting an @c NSString to an @c NSURL.
  */
-+ (OIDFieldMappingConversionFunction)URLConversion;
++ (SCTKFieldMappingConversionFunction)URLConversion;
 
 /*! @brief Returns a function for converting an @c NSNumber number of seconds from now to an
         @c NSDate.
  */
-+ (OIDFieldMappingConversionFunction)dateSinceNowConversion;
++ (SCTKFieldMappingConversionFunction)dateSinceNowConversion;
 
 /*! @brief Returns a function for converting an @c NSNumber representing a unix time stamp to an
         @c NSDate.
  */
-+ (OIDFieldMappingConversionFunction)dateEpochConversion;
++ (SCTKFieldMappingConversionFunction)dateEpochConversion;
 
 @end
 

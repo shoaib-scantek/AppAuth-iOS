@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
       [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
     } else {
       NSError *safariError =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeUserCanceledAuthorizationFlow
                            underlyingError:error
                                description:nil];
       [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (!openedUserAgent) {
     [self cleanUp];
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+    NSError *safariError = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeSafariOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open ASWebAuthenticationSession view controller."];
     [session failExternalUserAgentFlowWithError:safariError];

@@ -48,7 +48,7 @@ static int const kOIDAuthorizationSessionIATMaxSkew = 600;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDAuthorizationSession : NSObject<SCTKExternalUserAgentSession>
+@interface SCTKAuthorizationSession : NSObject<SCTKExternalUserAgentSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -57,10 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation OIDAuthorizationSession {
+@implementation SCTKAuthorizationSession {
   SCTKAuthorizationRequest *_request;
   id<SCTKExternalUserAgent> _externalUserAgent;
-  OIDAuthorizationCallback _pendingauthorizationFlowCallback;
+  SCTKAuthorizationCallback _pendingauthorizationFlowCallback;
 }
 
 - (instancetype)initWithRequest:(SCTKAuthorizationRequest *)request {
@@ -72,13 +72,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)presentAuthorizationWithExternalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-                                         callback:(OIDAuthorizationCallback)authorizationFlowCallback {
+                                         callback:(SCTKAuthorizationCallback)authorizationFlowCallback {
   _externalUserAgent = externalUserAgent;
   _pendingauthorizationFlowCallback = authorizationFlowCallback;
   BOOL authorizationFlowStarted =
       [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
   if (!authorizationFlowStarted) {
-    NSError *safariError = [SCTKErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+    NSError *safariError = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeSafariOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open Safari."];
     [self didFinishWithResponse:nil error:safariError];
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)cancelWithCompletion:(nullable void (^)(void))completion {
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
-      NSError *error = [SCTKErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+      NSError *error = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeUserCanceledAuthorizationFlow
                                         underlyingError:nil
                                             description:@"Authorization flow was cancelled."];
       [self didFinishWithResponse:nil error:error];
@@ -130,8 +130,8 @@ NS_ASSUME_NONNULL_BEGIN
   
   // checks for an invalid state
   if (!_pendingauthorizationFlowCallback) {
-    [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
-                format:@"%@", OIDOAuthExceptionInvalidAuthorizationFlow, nil];
+    [NSException raise:SCTKOAuthExceptionInvalidAuthorizationFlow
+                format:@"%@", SCTKOAuthExceptionInvalidAuthorizationFlow, nil];
   }
 
   SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] initWithURL:URL];
@@ -140,8 +140,8 @@ NS_ASSUME_NONNULL_BEGIN
   SCTKAuthorizationResponse *response = nil;
 
   // checks for an OAuth error response as per RFC6749 Section 4.1.2.1
-  if (query.dictionaryValue[OIDOAuthErrorFieldError]) {
-    error = [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
+  if (query.dictionaryValue[SCTKOAuthErrorFieldError]) {
+    error = [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthAuthorizationErrorDomain
                                       OAuthResponse:query.dictionaryValue
                                     underlyingError:nil];
   }
@@ -161,8 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
                                    response.state,
                                    response];
       response = nil;
-      error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
-                                  code:OIDErrorCodeOAuthAuthorizationClientError
+      error = [NSError errorWithDomain:SCTKOAuthAuthorizationErrorDomain
+                                  code:SCTKErrorCodeOAuthAuthorizationClientError
                               userInfo:userInfo];
       }
   }
@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)didFinishWithResponse:(nullable SCTKAuthorizationResponse *)response
                         error:(nullable NSError *)error {
-  OIDAuthorizationCallback callback = _pendingauthorizationFlowCallback;
+  SCTKAuthorizationCallback callback = _pendingauthorizationFlowCallback;
   _pendingauthorizationFlowCallback = nil;
   _externalUserAgent = nil;
   if (callback) {
@@ -194,11 +194,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface OIDEndSessionImplementation : NSObject<SCTKExternalUserAgentSession> {
+@interface SCTKEndSessionImplementation : NSObject<SCTKExternalUserAgentSession> {
   // private variables
   SCTKEndSessionRequest *_request;
   id<SCTKExternalUserAgent> _externalUserAgent;
-  OIDEndSessionCallback _pendingEndSessionCallback;
+  SCTKEndSessionCallback _pendingEndSessionCallback;
 }
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -207,7 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@implementation OIDEndSessionImplementation
+@implementation SCTKEndSessionImplementation
 
 - (instancetype)initWithRequest:(SCTKEndSessionRequest *)request {
   self = [super init];
@@ -218,13 +218,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)presentAuthorizationWithExternalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-                                         callback:(OIDEndSessionCallback)authorizationFlowCallback {
+                                         callback:(SCTKEndSessionCallback)authorizationFlowCallback {
   _externalUserAgent = externalUserAgent;
   _pendingEndSessionCallback = authorizationFlowCallback;
   BOOL authorizationFlowStarted =
       [_externalUserAgent presentExternalUserAgentRequest:_request session:self];
   if (!authorizationFlowStarted) {
-    NSError *safariError = [SCTKErrorUtilities errorWithCode:OIDErrorCodeSafariOpenError
+    NSError *safariError = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeSafariOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open Safari."];
     [self didFinishWithResponse:nil error:safariError];
@@ -238,7 +238,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cancelWithCompletion:(nullable void (^)(void))completion {
   [_externalUserAgent dismissExternalUserAgentAnimated:YES completion:^{
     NSError *error = [SCTKErrorUtilities
-                      errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+                      errorWithCode:SCTKErrorCodeUserCanceledAuthorizationFlow
                       underlyingError:nil
                       description:nil];
     [self didFinishWithResponse:nil error:error];
@@ -249,7 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)shouldHandleURL:(NSURL *)URL {
   // The logic of when to handle the URL is the same as for authorization requests: should match
   // down to the path component.
-  return [[OIDAuthorizationSession class] URL:URL
+  return [[SCTKAuthorizationSession class] URL:URL
                         matchesRedirectionURL:_request.postLogoutRedirectURL];
 }
 
@@ -260,8 +260,8 @@ NS_ASSUME_NONNULL_BEGIN
   }
   // checks for an invalid state
   if (!_pendingEndSessionCallback) {
-    [NSException raise:OIDOAuthExceptionInvalidAuthorizationFlow
-                format:@"%@", OIDOAuthExceptionInvalidAuthorizationFlow, nil];
+    [NSException raise:SCTKOAuthExceptionInvalidAuthorizationFlow
+                format:@"%@", SCTKOAuthExceptionInvalidAuthorizationFlow, nil];
   }
   
   
@@ -282,8 +282,8 @@ NS_ASSUME_NONNULL_BEGIN
      response.state,
      response];
     response = nil;
-    error = [NSError errorWithDomain:OIDOAuthAuthorizationErrorDomain
-                                code:OIDErrorCodeOAuthAuthorizationClientError
+    error = [NSError errorWithDomain:SCTKOAuthAuthorizationErrorDomain
+                                code:SCTKErrorCodeOAuthAuthorizationClientError
                             userInfo:userInfo];
   }
   
@@ -304,7 +304,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)didFinishWithResponse:(nullable SCTKEndSessionResponse *)response
                         error:(nullable NSError *)error {
-  OIDEndSessionCallback callback = _pendingEndSessionCallback;
+  SCTKEndSessionCallback callback = _pendingEndSessionCallback;
   _pendingEndSessionCallback = nil;
   _externalUserAgent = nil;
   if (callback) {
@@ -317,7 +317,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SCTKAuthorizationService
 
 + (void)discoverServiceConfigurationForIssuer:(NSURL *)issuerURL
-                                   completion:(OIDDiscoveryCallback)completion {
+                                   completion:(SCTKDiscoveryCallback)completion {
   NSURL *fullDiscoveryURL =
       [issuerURL URLByAppendingPathComponent:kOpenIDConfigurationWellKnownPath];
 
@@ -326,7 +326,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
-    completion:(OIDDiscoveryCallback)completion {
+    completion:(SCTKDiscoveryCallback)completion {
 
   NSURLSession *session = [SCTKURLSessionProvider session];
   NSURLSessionDataTask *task =
@@ -338,7 +338,7 @@ NS_ASSUME_NONNULL_BEGIN
           [NSString stringWithFormat:@"Connection error fetching discovery document '%@': %@.",
                                      discoveryURL,
                                      error.localizedDescription];
-      error = [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+      error = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeNetworkError
                                underlyingError:error
                                    description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -359,7 +359,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      "'%@'.",
                                      (int)urlResponse.statusCode,
                                      discoveryURL];
-      error = [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+      error = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeNetworkError
                                underlyingError:URLResponseError
                                    description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -376,7 +376,7 @@ NS_ASSUME_NONNULL_BEGIN
           [NSString stringWithFormat:@"JSON error parsing document at '%@': %@",
                                      discoveryURL,
                                      error.localizedDescription];
-      error = [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+      error = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeNetworkError
                                underlyingError:error
                                    description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -399,11 +399,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
     externalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-             callback:(OIDAuthorizationCallback)callback {
+             callback:(SCTKAuthorizationCallback)callback {
   
   AppAuthRequestTrace(@"Authorization Request: %@", request);
   
-  OIDAuthorizationSession *flowSession = [[OIDAuthorizationSession alloc] initWithRequest:request];
+  SCTKAuthorizationSession *flowSession = [[SCTKAuthorizationSession alloc] initWithRequest:request];
   [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
   return flowSession;
 }
@@ -411,16 +411,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<SCTKExternalUserAgentSession>)
     presentEndSessionRequest:(SCTKEndSessionRequest *)request
            externalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-                    callback:(OIDEndSessionCallback)callback {
-  OIDEndSessionImplementation *flowSession =
-      [[OIDEndSessionImplementation alloc] initWithRequest:request];
+                    callback:(SCTKEndSessionCallback)callback {
+  SCTKEndSessionImplementation *flowSession =
+      [[SCTKEndSessionImplementation alloc] initWithRequest:request];
   [flowSession presentAuthorizationWithExternalUserAgent:externalUserAgent callback:callback];
   return flowSession;
 }
 
 #pragma mark - Token Endpoint
 
-+ (void)performTokenRequest:(SCTKTokenRequest *)request callback:(OIDTokenCallback)callback {
++ (void)performTokenRequest:(SCTKTokenRequest *)request callback:(SCTKTokenCallback)callback {
   [[self class] performTokenRequest:request
       originalAuthorizationResponse:nil
                            callback:callback];
@@ -428,7 +428,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)performTokenRequest:(SCTKTokenRequest *)request
     originalAuthorizationResponse:(SCTKAuthorizationResponse *_Nullable)authorizationResponse
-                         callback:(OIDTokenCallback)callback {
+                         callback:(SCTKTokenCallback)callback {
 
   NSURLRequest *URLRequest = [request URLRequest];
   
@@ -450,7 +450,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      URLRequest.URL,
                                      error.localizedDescription];
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeNetworkError
                            underlyingError:error
                                description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -477,9 +477,9 @@ NS_ASSUME_NONNULL_BEGIN
 
         // If the HTTP 4xx response parses as JSON and has an 'error' key, it's an OAuth error.
         // These errors are special as they indicate a problem with the authorization grant.
-        if (json[OIDOAuthErrorFieldError]) {
+        if (json[SCTKOAuthErrorFieldError]) {
           NSError *oauthError =
-            [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+            [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthTokenErrorDomain
                                       OAuthResponse:json
                                     underlyingError:serverError];
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -495,7 +495,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      (int)statusCode,
                                       URLRequest.URL];
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeServerError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeServerError
                            underlyingError:serverError
                                description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -527,7 +527,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!tokenResponse) {
       // A problem occurred constructing the token response from the JSON.
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeTokenResponseConstructionError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeTokenResponseConstructionError
                            underlyingError:jsonDeserializationError
                                description:@"Token response invalid."];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -548,7 +548,7 @@ NS_ASSUME_NONNULL_BEGIN
       SCTKIDToken *idToken = [[SCTKIDToken alloc] initWithIDTokenString:tokenResponse.idToken];
       if (!idToken) {
         NSError *invalidIDToken =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeIDTokenParsingError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeIDTokenParsingError
                            underlyingError:nil
                                description:@"ID Token parsing failed"];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -565,7 +565,7 @@ NS_ASSUME_NONNULL_BEGIN
       NSURL *issuer = tokenResponse.request.configuration.issuer;
       if (issuer && ![idToken.issuer isEqual:issuer]) {
         NSError *invalidIDToken =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
                                description:@"Issuer mismatch"];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -581,7 +581,7 @@ NS_ASSUME_NONNULL_BEGIN
       if (![idToken.audience containsObject:clientID] &&
           ![idToken.claims[@"azp"] isEqualToString:clientID]) {
         NSError *invalidIDToken =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
                                description:@"Audience mismatch"];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -607,7 +607,7 @@ NS_ASSUME_NONNULL_BEGIN
       NSTimeInterval expiresAtDifference = [idToken.expiresAt timeIntervalSinceNow];
       if (expiresAtDifference < 0) {
         NSError *invalidIDToken =
-            [SCTKErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+            [SCTKErrorUtilities errorWithCode:SCTKErrorCodeIDTokenFailedValidationError
                              underlyingError:nil
                                  description:@"ID Token expired"];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -625,7 +625,7 @@ NS_ASSUME_NONNULL_BEGIN
                                         "the current time",
                                        kOIDAuthorizationSessionIATMaxSkew];
         NSError *invalidIDToken =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
                                description:message];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -641,7 +641,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *nonce = authorizationResponse.request.nonce;
         if (nonce && ![idToken.nonce isEqual:nonce]) {
           NSError *invalidIDToken =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeIDTokenFailedValidationError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeIDTokenFailedValidationError
                            underlyingError:nil
                                description:@"Nonce mismatch"];
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -669,7 +669,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Registration Endpoint
 
 + (void)performRegistrationRequest:(SCTKRegistrationRequest *)request
-                          completion:(OIDRegistrationCompletion)completion {
+                          completion:(SCTKRegistrationCompletion)completion {
   NSURLRequest *URLRequest = [request URLRequest];
   if (!URLRequest) {
     // A problem occurred deserializing the response/JSON.
@@ -694,7 +694,7 @@ NS_ASSUME_NONNULL_BEGIN
           [NSString stringWithFormat:@"Connection error making registration request to '%@': %@.",
                                      URLRequest.URL,
                                      error.localizedDescription];
-      NSError *returnedError = [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+      NSError *returnedError = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeNetworkError
                                                 underlyingError:error
                                                     description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -719,9 +719,9 @@ NS_ASSUME_NONNULL_BEGIN
 
         // if the HTTP 400 response parses as JSON and has an 'error' key, it's an OAuth error
         // these errors are special as they indicate a problem with the authorization grant
-        if (json[OIDOAuthErrorFieldError]) {
+        if (json[SCTKOAuthErrorFieldError]) {
           NSError *oauthError =
-              [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthRegistrationErrorDomain
+              [SCTKErrorUtilities OAuthErrorWithDomain:SCTKOAuthRegistrationErrorDomain
                                         OAuthResponse:json
                                       underlyingError:serverError];
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -737,7 +737,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      "to '%@'.",
                                      (int)HTTPURLResponse.statusCode,
                                      URLRequest.URL];
-      NSError *returnedError = [SCTKErrorUtilities errorWithCode:OIDErrorCodeServerError
+      NSError *returnedError = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeServerError
                                                 underlyingError:serverError
                                                     description:errorDescription];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -769,7 +769,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!registrationResponse) {
       // A problem occurred constructing the registration response from the JSON.
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeRegistrationResponseConstructionError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeRegistrationResponseConstructionError
                            underlyingError:nil
                                description:@"Registration response invalid."];
       dispatch_async(dispatch_get_main_queue(), ^{

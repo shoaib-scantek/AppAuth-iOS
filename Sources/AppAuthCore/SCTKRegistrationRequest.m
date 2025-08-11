@@ -143,7 +143,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
                                                  forKey:kSubjectTypeKey];
   NSString *tokenEndpointAuthenticationMethod =
       [aDecoder decodeObjectOfClass:[NSString class]
-                             forKey:OIDTokenEndpointAuthenticationMethodParam];
+                             forKey:SCTKTokenEndpointAuthenticationMethodParam];
   NSSet *additionalParameterCodingClasses = [NSSet setWithArray:@[ [NSDictionary class],
                                                                    [NSString class] ]];
   NSDictionary *additionalParameters =
@@ -168,7 +168,7 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   [aCoder encodeObject:_grantTypes forKey:kGrantTypesKey];
   [aCoder encodeObject:_subjectType forKey:kSubjectTypeKey];
   [aCoder encodeObject:_tokenEndpointAuthenticationMethod
-                forKey:OIDTokenEndpointAuthenticationMethodParam];
+                forKey:SCTKTokenEndpointAuthenticationMethodParam];
   [aCoder encodeObject:_additionalParameters forKey:kAdditionalParametersKey];
 }
 
@@ -218,8 +218,8 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   for (id obj in _redirectURIs) {
     [redirectURIStrings addObject:[obj absoluteString]];
   }
-  dict[OIDRedirectURIsParam] = redirectURIStrings;
-  dict[OIDApplicationTypeParam] = _applicationType;
+  dict[SCTKRedirectURIsParam] = redirectURIStrings;
+  dict[SCTKApplicationTypeParam] = _applicationType;
 
   if (_additionalParameters) {
     // Add any additional parameters first to allow them
@@ -227,16 +227,16 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
     [dict addEntriesFromDictionary:_additionalParameters];
   }
   if (_responseTypes) {
-    dict[OIDResponseTypesParam] = _responseTypes;
+    dict[SCTKResponseTypesParam] = _responseTypes;
   }
   if (_grantTypes) {
-    dict[OIDGrantTypesParam] = _grantTypes;
+    dict[SCTKGrantTypesParam] = _grantTypes;
   }
   if (_subjectType) {
-    dict[OIDSubjectTypeParam] = _subjectType;
+    dict[SCTKSubjectTypeParam] = _subjectType;
   }
   if (_tokenEndpointAuthenticationMethod) {
-    dict[OIDTokenEndpointAuthenticationMethodParam] = _tokenEndpointAuthenticationMethod;
+    dict[SCTKTokenEndpointAuthenticationMethodParam] = _tokenEndpointAuthenticationMethod;
   }
 
   NSError *error;

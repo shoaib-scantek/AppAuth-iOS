@@ -45,7 +45,7 @@ typedef void (^SCTKAuthStateAction)(NSString *_Nullable accessToken,
     @param authState The auth state, if the authorization request succeeded.
     @param error The error if an error occurred.
  */
-typedef void (^OIDAuthStateAuthorizationCallback)(SCTKAuthState *_Nullable authState,
+typedef void (^SCTKAuthStateAuthorizationCallback)(SCTKAuthState *_Nullable authState,
                                                   NSError *_Nullable error);
 
 /*! @brief The exception thrown when a developer tries to create a refresh request from an
@@ -138,7 +138,7 @@ static NSString *const kRefreshTokenRequestException =
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                             externalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback;
 
 /*! @internal
     @brief Unavailable. Please use @c initWithAuthorizationResponse:.

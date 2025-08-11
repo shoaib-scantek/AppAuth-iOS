@@ -24,30 +24,30 @@ FOUNDATION_EXPORT double AppAuthCoreVersionNumber;
 //! Project version string for AppAuthCoreFramework.
 FOUNDATION_EXPORT const unsigned char AppAuthCoreVersionString[];
 
-#import <AppAuthCore/OIDAuthState.h>
+#import <AppAuthCore/SCTKAuthState.h>
 #import <AppAuthCore/SCTKAuthStateChangeDelegate.h>
 #import <AppAuthCore/SCTKAuthStateErrorDelegate.h>
 #import <AppAuthCore/SCTKAuthorizationRequest.h>
-#import <AppAuthCore/OIDAuthorizationResponse.h>
+#import <AppAuthCore/SCTKAuthorizationResponse.h>
 #import <AppAuthCore/SCTKAuthorizationService.h>
 #import <AppAuthCore/SCTKError.h>
-#import <AppAuthCore/OIDErrorUtilities.h>
+#import <AppAuthCore/SCTKErrorUtilities.h>
 #import <AppAuthCore/SCTKExternalUserAgent.h>
 #import <AppAuthCore/SCTKExternalUserAgentRequest.h>
 #import <AppAuthCore/SCTKExternalUserAgentSession.h>
 #import <AppAuthCore/SCTKGrantTypes.h>
-#import <AppAuthCore/OIDIDToken.h>
-#import <AppAuthCore/OIDRegistrationRequest.h>
-#import <AppAuthCore/OIDRegistrationResponse.h>
+#import <AppAuthCore/SCTKIDToken.h>
+#import <AppAuthCore/SCTKRegistrationRequest.h>
+#import <AppAuthCore/SCTKRegistrationResponse.h>
 #import <AppAuthCore/SCTKResponseTypes.h>
 #import <AppAuthCore/SCTKScopes.h>
-#import <AppAuthCore/OIDScopeUtilities.h>
-#import <AppAuthCore/OIDServiceConfiguration.h>
-#import <AppAuthCore/OIDServiceDiscovery.h>
-#import <AppAuthCore/OIDTokenRequest.h>
-#import <AppAuthCore/OIDTokenResponse.h>
-#import <AppAuthCore/OIDTokenUtilities.h>
-#import <AppAuthCore/OIDURLSessionProvider.h>
-#import <AppAuthCore/OIDEndSessionRequest.h>
-#import <AppAuthCore/OIDEndSessionResponse.h>
+#import <AppAuthCore/SCTKScopeUtilities.h>
+#import <AppAuthCore/SCTKServiceConfiguration.h>
+#import <AppAuthCore/SCTKServiceDiscovery.h>
+#import <AppAuthCore/SCTKTokenRequest.h>
+#import <AppAuthCore/SCTKTokenResponse.h>
+#import <AppAuthCore/SCTKTokenUtilities.h>
+#import <AppAuthCore/SCTKURLSessionProvider.h>
+#import <AppAuthCore/SCTKEndSessionRequest.h>
+#import <AppAuthCore/SCTKEndSessionResponse.h>
 

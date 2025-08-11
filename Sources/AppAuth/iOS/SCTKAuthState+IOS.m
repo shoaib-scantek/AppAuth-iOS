@@ -29,7 +29,7 @@
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback {
   id<SCTKExternalUserAgent> externalUserAgent;
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[SCTKExternalUserAgentCatalyst alloc]
@@ -46,7 +46,7 @@
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                      presentingViewController:(UIViewController *)presentingViewController
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback {
   id<SCTKExternalUserAgent> externalUserAgent;
 #if TARGET_OS_MACCATALYST
   externalUserAgent = [[SCTKExternalUserAgentCatalyst alloc]
@@ -65,7 +65,7 @@
 #if !TARGET_OS_MACCATALYST
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
-                                  callback:(OIDAuthStateAuthorizationCallback)callback {
+                                  callback:(SCTKAuthStateAuthorizationCallback)callback {
   SCTKExternalUserAgentIOS *externalUserAgent = [[SCTKExternalUserAgentIOS alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent

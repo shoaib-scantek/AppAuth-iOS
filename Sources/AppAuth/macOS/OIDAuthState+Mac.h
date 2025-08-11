@@ -21,7 +21,7 @@
 #if TARGET_OS_OSX
 
 #import <AppKit/AppKit.h>
-#import "OIDAuthState.h"
+#import "SCTKAuthState.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -84,7 +84,7 @@ static NSString *const kTestURIBase =
 }
 @end
 
-@interface OIDAuthorizationSession : NSObject<SCTKExternalUserAgentSession>
+@interface SCTKAuthorizationSession : NSObject<SCTKExternalUserAgentSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -193,13 +193,13 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
   XCTAssertEqualObjects([httpRequest valueForHTTPHeaderField:@"Authorization"],
                         @"Bearer test");
   XCTAssertEqualObjects(httpRequest.URL, request.configuration.registrationEndpoint);
-  XCTAssertEqualObjects(parsedJSON[OIDApplicationTypeParam], request.applicationType);
-  XCTAssertEqualObjects(parsedJSON[OIDRedirectURIsParam][0],
+  XCTAssertEqualObjects(parsedJSON[SCTKApplicationTypeParam], request.applicationType);
+  XCTAssertEqualObjects(parsedJSON[SCTKRedirectURIsParam][0],
                         [request.redirectURIs[0] absoluteString]);
-  XCTAssertEqualObjects(parsedJSON[OIDResponseTypesParam], request.responseTypes);
-  XCTAssertEqualObjects(parsedJSON[OIDGrantTypesParam], request.grantTypes);
-  XCTAssertEqualObjects(parsedJSON[OIDSubjectTypeParam], request.subjectType);
-  XCTAssertEqualObjects(parsedJSON[OIDTokenEndpointAuthenticationMethodParam],
+  XCTAssertEqualObjects(parsedJSON[SCTKResponseTypesParam], request.responseTypes);
+  XCTAssertEqualObjects(parsedJSON[SCTKGrantTypesParam], request.grantTypes);
+  XCTAssertEqualObjects(parsedJSON[SCTKSubjectTypeParam], request.subjectType);
+  XCTAssertEqualObjects(parsedJSON[SCTKTokenEndpointAuthenticationMethodParam],
                         request.tokenEndpointAuthenticationMethod);
   XCTAssertEqualObjects(parsedJSON[kTestAdditionalParameterKey], kTestAdditionalParameterValue);
 }

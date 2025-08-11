@@ -24,12 +24,12 @@
 #import "SCTKRegistrationRequest.h"
 #import "SCTKTokenUtilities.h"
 
-NSString *const OIDClientIDParam = @"client_id";
-NSString *const OIDClientIDIssuedAtParam = @"client_id_issued_at";
-NSString *const OIDClientSecretParam = @"client_secret";
-NSString *const OIDClientSecretExpirestAtParam = @"client_secret_expires_at";
-NSString *const OIDRegistrationAccessTokenParam = @"registration_access_token";
-NSString *const OIDRegistrationClientURIParam = @"registration_client_uri";
+NSString *const SCTKClientIDParam = @"client_id";
+NSString *const SCTKClientIDIssuedAtParam = @"client_id_issued_at";
+NSString *const SCTKClientSecretParam = @"client_secret";
+NSString *const SCTKClientSecretExpirestAtParam = @"client_secret_expires_at";
+NSString *const SCTKRegistrationAccessTokenParam = @"registration_access_token";
+NSString *const SCTKRegistrationClientURIParam = @"registration_client_uri";
 
 /*! @brief Key used to encode the @c request property for @c NSSecureCoding
  */
@@ -49,27 +49,27 @@ static NSString *const kAdditionalParametersKey = @"additionalParameters";
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     fieldMap = [NSMutableDictionary dictionary];
-    fieldMap[OIDClientIDParam] = [[SCTKFieldMapping alloc] initWithName:@"_clientID"
+    fieldMap[SCTKClientIDParam] = [[SCTKFieldMapping alloc] initWithName:@"_clientID"
                                                                   type:[NSString class]];
-    fieldMap[OIDClientIDIssuedAtParam] =
+    fieldMap[SCTKClientIDIssuedAtParam] =
     [[SCTKFieldMapping alloc] initWithName:@"_clientIDIssuedAt"
                                      type:[NSDate class]
                                conversion:[SCTKFieldMapping dateEpochConversion]];
-    fieldMap[OIDClientSecretParam] =
+    fieldMap[SCTKClientSecretParam] =
     [[SCTKFieldMapping alloc] initWithName:@"_clientSecret"
                                      type:[NSString class]];
-    fieldMap[OIDClientSecretExpirestAtParam] =
+    fieldMap[SCTKClientSecretExpirestAtParam] =
     [[SCTKFieldMapping alloc] initWithName:@"_clientSecretExpiresAt"
                                      type:[NSDate class]
                                conversion:[SCTKFieldMapping dateEpochConversion]];
-    fieldMap[OIDRegistrationAccessTokenParam] =
+    fieldMap[SCTKRegistrationAccessTokenParam] =
     [[SCTKFieldMapping alloc] initWithName:@"_registrationAccessToken"
                                      type:[NSString class]];
-    fieldMap[OIDRegistrationClientURIParam] =
+    fieldMap[SCTKRegistrationClientURIParam] =
     [[SCTKFieldMapping alloc] initWithName:@"_registrationClientURI"
                                      type:[NSURL class]
                                conversion:[SCTKFieldMapping URLConversion]];
-    fieldMap[OIDTokenEndpointAuthenticationMethodParam] =
+    fieldMap[SCTKTokenEndpointAuthenticationMethodParam] =
     [[SCTKFieldMapping alloc] initWithName:@"_tokenEndpointAuthenticationMethod"
                                      type:[NSString class]];
   });

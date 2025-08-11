@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief The type of block called when a @c OIDServiceConfiguration has been created
         by loading a @c OIDServiceDiscovery from an @c NSURL.
  */
-typedef void (^OIDServiceConfigurationCreated)
+typedef void (^SCTKServiceConfigurationCreated)
     (SCTKServiceConfiguration *_Nullable serviceConfiguration,
      NSError *_Nullable error);
 

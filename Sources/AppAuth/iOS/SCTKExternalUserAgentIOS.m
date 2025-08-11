@@ -117,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
           NSError *safariError =
-              [SCTKErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+              [SCTKErrorUtilities errorWithCode:SCTKErrorCodeUserCanceledAuthorizationFlow
                                underlyingError:error
                                    description:nil];
           [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
@@ -193,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
   id<SCTKExternalUserAgentSession> session = _session;
   [self cleanUp];
-  NSError *error = [SCTKErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+  NSError *error = [SCTKErrorUtilities errorWithCode:SCTKErrorCodeUserCanceledAuthorizationFlow
                                     underlyingError:nil
                                         description:@"No external user agent flow in progress."];
   [session failExternalUserAgentFlowWithError:error];

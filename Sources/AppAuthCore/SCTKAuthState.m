@@ -122,7 +122,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                             externalUserAgent:(id<SCTKExternalUserAgent>)externalUserAgent
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback {
   // presents the authorization request
   id<SCTKExternalUserAgentSession> authFlowSession = [SCTKAuthorizationService
       presentAuthorizationRequest:authorizationRequest
@@ -341,7 +341,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 - (void)updateWithAuthorizationResponse:(nullable SCTKAuthorizationResponse *)authorizationResponse
                                   error:(nullable NSError *)error {
   // If the error is an OAuth authorization error, updates the state. Other errors are ignored.
-  if (error.domain == OIDOAuthAuthorizationErrorDomain) {
+  if (error.domain == SCTKOAuthAuthorizationErrorDomain) {
     [self updateWithAuthorizationError:error];
     return;
   }
@@ -380,7 +380,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   }
 
   // If the error is an OAuth authorization error, updates the state. Other errors are ignored.
-  if (error.domain == OIDOAuthTokenErrorDomain) {
+  if (error.domain == SCTKOAuthTokenErrorDomain) {
     [self updateWithAuthorizationError:error];
     return;
   }
@@ -518,7 +518,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
   if (!_refreshToken) {
     // no refresh token available and token has expired
     NSError *tokenRefreshError = [
-      SCTKErrorUtilities errorWithCode:OIDErrorCodeTokenRefreshError
+      SCTKErrorUtilities errorWithCode:SCTKErrorCodeTokenRefreshError
                       underlyingError:nil
                           description:@"Unable to refresh expired token without a refresh token."];
     dispatch_async(dispatchQueue, ^{
@@ -554,7 +554,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       self->_needsTokenRefresh = NO;
       [self updateWithTokenResponse:response error:nil];
     } else {
-      if (error.domain == OIDOAuthTokenErrorDomain) {
+      if (error.domain == SCTKOAuthTokenErrorDomain) {
         self->_needsTokenRefresh = NO;
         [self updateWithAuthorizationError:error];
       } else {

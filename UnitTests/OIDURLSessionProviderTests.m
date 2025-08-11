@@ -17,7 +17,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "OIDURLSessionProvider.h"
+#import "SCTKURLSessionProvider.h"
 
 @interface OIDURLSessionProviderTests : XCTestCase
 

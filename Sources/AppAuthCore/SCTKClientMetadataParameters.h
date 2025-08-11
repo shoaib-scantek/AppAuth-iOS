@@ -22,27 +22,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Parameter name for the token endpoint authentication method.
  */
-extern NSString *const OIDTokenEndpointAuthenticationMethodParam;
+extern NSString *const SCTKTokenEndpointAuthenticationMethodParam;
 
 /*! @brief Parameter name for the application type.
  */
-extern NSString *const OIDApplicationTypeParam;
+extern NSString *const SCTKApplicationTypeParam;
 
 /*! @brief Parameter name for the redirect URI values.
  */
-extern NSString *const OIDRedirectURIsParam;
+extern NSString *const SCTKRedirectURIsParam;
 
 /*! @brief Parameter name for the response type values.
  */
-extern NSString *const OIDResponseTypesParam;
+extern NSString *const SCTKResponseTypesParam;
 
 /*! @brief Parameter name for the grant type values.
  */
-extern NSString *const OIDGrantTypesParam;
+extern NSString *const SCTKGrantTypesParam;
 
 /*! @brief Parameter name for the subject type.
  */
-extern NSString *const OIDSubjectTypeParam;
+extern NSString *const SCTKSubjectTypeParam;
 
 /*! @brief Application type that indicates this client is a native (not a web) application.
  */

@@ -50,7 +50,7 @@ static NSUInteger const kStateSizeBytes = 32;
 
 /*! @brief Assertion text for missing end_session_endpoint.
  */
-static NSString *const OIDMissingEndSessionEndpointMessage =
+static NSString *const SCTKMissingEndSessionEndpointMessage =
 @"The service configuration is missing an end_session_endpoint.";
 
 @implementation SCTKEndSessionRequest
@@ -181,7 +181,7 @@ static NSString *const OIDMissingEndSessionEndpointMessage =
     [query addParameter:kStateKey value:_state];
   }
 
-  NSAssert(_configuration.endSessionEndpoint, OIDMissingEndSessionEndpointMessage);
+  NSAssert(_configuration.endSessionEndpoint, SCTKMissingEndSessionEndpointMessage);
 
   // Construct the URL
   return [query URLByReplacingQueryInURL:_configuration.endSessionEndpoint];
