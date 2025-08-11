@@ -21,8 +21,8 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDError.h"
-#import "Sources/AppAuthCore/OIDServiceDiscovery.h"
+#import "Sources/AppAuthCore/SCTKError.h"
+#import "Sources/AppAuthCore/SCTKServiceDiscovery.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -32,7 +32,7 @@
 
 // Define a subclass of @c OIDServiceDiscovery that provides the old NSCoding decoding
 // implementation.
-@interface OIDServiceDiscoveryOldDecoding : OIDServiceDiscovery
+@interface OIDServiceDiscoveryOldDecoding : SCTKServiceDiscovery
 @end
 
 @implementation OIDServiceDiscoveryOldDecoding
@@ -55,7 +55,7 @@
 
 // Define a subclass of @c OIDServiceDiscovery that provides the old NSCoding encoding
 // implementation.
-@interface OIDServiceDiscoveryOldEncoding : OIDServiceDiscovery
+@interface OIDServiceDiscoveryOldEncoding : SCTKServiceDiscovery
 @end
 
 @implementation OIDServiceDiscoveryOldEncoding
@@ -255,8 +255,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   NSMutableDictionary *serviceDiscoveryDictionary =
       [[[self class] minimumServiceDiscoveryDictionary] mutableCopy];
   serviceDiscoveryDictionary[kOPPolicyURIKey] = kTestURL;
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                 error:&error];
   XCTAssertNotNil(discovery, @"We supplied the minimum required fields when initializing the "
                              "service discovery instance, so we should have gotten a new "
@@ -273,50 +273,50 @@ static NSString *const kDiscoveryDocumentNotDictionary =
  */
 - (void)testErrorWhenBadFormat {
   NSError *error;
-  OIDServiceDiscovery *discovery = [[OIDServiceDiscovery alloc] initWithJSON:@"JUNK" error:&error];
+  SCTKServiceDiscovery *discovery = [[SCTKServiceDiscovery alloc] initWithJSON:@"JUNK" error:&error];
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                           "instance if it is not valid JSON.");
   XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeJSONDeserializationError, @"");
+  XCTAssertEqual(error.code, SCTKErrorCodeJSONDeserializationError, @"");
 }
 
 /*! @brief Tests that we get an error when the root JSON object isn't a dictionary.
  */
 - (void)testErrorWhenRootObjectNotNSDictionary {
   NSError *error;
-  OIDServiceDiscovery *discovery = [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNotDictionary error:&error];
+  SCTKServiceDiscovery *discovery = [[SCTKServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNotDictionary error:&error];
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                "instance if the root JSON object is not a NSDictionary.");
   XCTAssertNotNil(error, @"There should be an error indicating we received bad JSON.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+  XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that we get an error when the required fields aren't in the source dictionary.
  */
 - (void)testErrorWhenMissingFields {
   NSError *error;
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:@{ } error:&error];
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:@{ } error:&error];
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                           "instance if there are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+  XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that we get an error when the required fields aren't in the source dictionary.
  */
 - (void)testErrorWhenMissingFieldsJSON {
   NSError *error;
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentMissingField error:&error];
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentMissingField error:&error];
   XCTAssertNil(discovery, @"When initializing a discovery document with JSON, it should not return"
                           " an instance if there are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+  XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that we do not get an error, and we do get an instance of
@@ -325,8 +325,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 - (void)testNoErrorWhenNoMissingFields {
   NSError *error;
   NSDictionary *serviceDiscoveryDictionary = [[self class] minimumServiceDiscoveryDictionary];
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                 error:&error];
   XCTAssertNotNil(discovery, @"We supplied the minimum required fields when initializing the "
                              "service discovery instance, so we should have gotten a new "
@@ -346,14 +346,14 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   [serviceDiscoveryDictionary setObject:kTestURLInvalid forKey:kAuthorizationEndpointKey];
   [serviceDiscoveryDictionary setObject:kTestURLInvalid forKey:kTokenEndpointKey];
 
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary error:&error];
   XCTAssertNil(discovery,
                @"When initializing a discovery document, it should not return an  instance if there"
                    " are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+  XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that we get an error when null is passed in through JSON.
@@ -361,21 +361,21 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 // TODO: this test is failing
 - (void)pendingTestErrorWhenJSONNullField {
   NSError *error;
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNullField error:&error];
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithJSON:kDiscoveryDocumentNullField error:&error];
   XCTAssertNil(discovery, @"When initializing a discovery document, it should not return an "
                           "instance if there are missing required fields.");
   XCTAssertNotNil(error, @"There should be an error indicating we are missing required fields.");
   XCTAssertEqualObjects(error.domain, OIDGeneralErrorDomain, @"");
-  XCTAssertEqual(error.code, OIDErrorCodeInvalidDiscoveryDocument, @"");
+  XCTAssertEqual(error.code, SCTKErrorCodeInvalidDiscoveryDocument, @"");
 }
 
 /*! @brief Tests that the JSON String version results in a valid object.
  */
 - (void)testJSONStringDecoding {
   NSError *error;
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithJSON:kDiscoveryDocument error:&error];
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithJSON:kDiscoveryDocument error:&error];
   XCTAssertNotNil(discovery, @"When initializing a discovery document with JSON it should return a"
                               "valid object");
   XCTAssertNil(error, @"There should not be any errors.");
@@ -388,8 +388,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 - (void)testJSONDataDecoding {
   NSError *error;
   NSData *jsonData = [kDiscoveryDocument dataUsingEncoding:NSUTF8StringEncoding];
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithJSONData:jsonData error:&error];
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithJSONData:jsonData error:&error];
   XCTAssertNotNil(discovery, @"When initializing a discovery document with JSON it should return a"
                               "valid object");
   XCTAssertNil(error, @"There should not be any errors.");
@@ -403,8 +403,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 // TODO: this test is failing
 - (void)pendingTestJSONEqualsDictionary {
   NSError *error;
-  OIDServiceDiscovery *discovery =
-    [[OIDServiceDiscovery alloc] initWithDictionary:[[self class] minimumServiceDiscoveryDictionary]
+  SCTKServiceDiscovery *discovery =
+    [[SCTKServiceDiscovery alloc] initWithDictionary:[[self class] minimumServiceDiscoveryDictionary]
                                               error:&error];
   XCTAssertNotNil(discovery, @"Discovery document should initialize.");
   XCTAssertNil(error, @"There should not be any errors.");
@@ -415,8 +415,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
   XCTAssertNotNil(jsonData, @"Serialization error");
   XCTAssertNil(error, @"Serialization error");
 
-  OIDServiceDiscovery *discovery2 =
-      [[OIDServiceDiscovery alloc] initWithJSONData:jsonData error:&error];
+  SCTKServiceDiscovery *discovery2 =
+      [[SCTKServiceDiscovery alloc] initWithJSONData:jsonData error:&error];
   XCTAssertNotNil(discovery2, @"Discovery document should initialize.");
   XCTAssertNil(error, @"There should not be any errors.");
 
@@ -431,8 +431,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 - (void)testRequestURIParameterSupportedDefaultToYes {
   NSError *error;
   NSDictionary *serviceDiscoveryDictionary = [[self class] minimumServiceDiscoveryDictionary];
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                 error:&error];
   XCTAssert(discovery.requestURIParameterSupported,
             @"When not specified, |requestURIParameterSupported| should return YES.");
@@ -444,8 +444,8 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 - (void)testSecureCoding {
   NSError *error;
   NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                              error:&error];
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
@@ -458,9 +458,9 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 #endif
   }
   
-  OIDServiceDiscovery *unarchived;
+  SCTKServiceDiscovery *unarchived;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceDiscovery class]
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKServiceDiscovery class]
                                                    fromData:data
                                                       error:&error];
   } else {
@@ -492,9 +492,9 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 #endif
   }
   
-  OIDServiceDiscovery *unarchived;
+  SCTKServiceDiscovery *unarchived;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscovery class],
+    NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[SCTKServiceDiscovery class],
                                                          [NSDictionary class],
                                                          [NSArray class],
                                                          [NSString class],
@@ -532,7 +532,7 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 #endif
   }
   
-  OIDServiceDiscovery *unarchived;
+  SCTKServiceDiscovery *unarchived;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     NSSet<Class> *allowedClasses = [NSSet setWithArray:@[[OIDServiceDiscoveryOldDecoding class],
                                                          [NSDictionary class],
@@ -559,11 +559,11 @@ static NSString *const kDiscoveryDocumentNotDictionary =
 - (void)testCopying {
   NSError *error;
   NSDictionary *serviceDiscoveryDictionary = [[self class] completeServiceDiscoveryDictionary];
-  OIDServiceDiscovery *discovery =
-      [[OIDServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
+  SCTKServiceDiscovery *discovery =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:serviceDiscoveryDictionary
                                                 error:&error];
 
-  OIDServiceDiscovery *unarchived = [discovery copy];
+  SCTKServiceDiscovery *unarchived = [discovery copy];
 
   XCTAssertEqualObjects(discovery.discoveryDictionary, unarchived.discoveryDictionary, @"");
 }

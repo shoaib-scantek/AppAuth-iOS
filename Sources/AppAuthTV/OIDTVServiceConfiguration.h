@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Configuration for authorizing the user with the @c OIDTVAuthorizationService.
  */
-@interface OIDTVServiceConfiguration : OIDServiceConfiguration
+@interface OIDTVServiceConfiguration : SCTKServiceConfiguration
 
 /*! @brief The device authorization endpoint URI.
  */
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     @param discoveryDocument The discovery document from which to extract the required OAuth
        configuration.
 */
-- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument
+- (instancetype)initWithDiscoveryDocument:(SCTKServiceDiscovery *)discoveryDocument
     NS_DESIGNATED_INITIALIZER;
 
 /*! @brief Designated initializer.

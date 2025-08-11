@@ -21,7 +21,7 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDGrantTypes.h"
+#import "Sources/AppAuthCore/SCTKGrantTypes.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -38,19 +38,19 @@
 @implementation OIDGrantTypesTests
 
 - (void)testAuthorizationCode {
-  XCTAssertEqualObjects(OIDGrantTypeAuthorizationCode, @"authorization_code");
+  XCTAssertEqualObjects(SCTKGrantTypeAuthorizationCode, @"authorization_code");
 }
 
 - (void)testRefreshToken {
-  XCTAssertEqualObjects(OIDGrantTypeRefreshToken, @"refresh_token");
+  XCTAssertEqualObjects(SCTKGrantTypeRefreshToken, @"refresh_token");
 }
 
 - (void)testPassword {
-  XCTAssertEqualObjects(OIDGrantTypePassword, @"password");
+  XCTAssertEqualObjects(SCTKGrantTypePassword, @"password");
 }
 
 - (void)testClientCredentials {
-  XCTAssertEqualObjects(OIDGrantTypeClientCredentials, @"client_credentials");
+  XCTAssertEqualObjects(SCTKGrantTypeClientCredentials, @"client_credentials");
 }
 
 @end

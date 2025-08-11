@@ -21,7 +21,7 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDURLQueryComponent.h"
+#import "Sources/AppAuthCore/SCTKURLQueryComponent.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -78,7 +78,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
 @implementation OIDURLQueryComponentTests
 
 - (void)testAddingParameter {
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   XCTAssertEqualObjects([query valuesForParameter:kTestParameterName].firstObject,
                         kTestParameterValue, @"");
@@ -102,8 +102,8 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
     NSString* encodedScope =
         @"https://www.example.com/auth/userinfo.email+https://www.example.com/auth/userinfo.profile";
     NSString *authorizationResponse = [NSString stringWithFormat:responseURLtemplate,encodedScope];
-    OIDURLQueryComponent *query =
-        [[OIDURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
+    SCTKURLQueryComponent *query =
+        [[SCTKURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
      NSString* value = [query valuesForParameter:@"scope"][0];
       XCTAssertEqualObjects(value,
                             expectedDecodedScope,
@@ -114,8 +114,8 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
     NSString* encodedScope =
       @"https://www.example.com/auth/userinfo.email%20https://www.example.com/auth/userinfo.profile";
     NSString *authorizationResponse = [NSString stringWithFormat:responseURLtemplate,encodedScope];
-    OIDURLQueryComponent *query =
-        [[OIDURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
+    SCTKURLQueryComponent *query =
+        [[SCTKURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
     NSString* value = [query valuesForParameter:@"scope"][0];
     XCTAssertEqualObjects(value,
                           expectedDecodedScope,
@@ -125,8 +125,8 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   {
     NSString* encodedScope = @"+%25%26%2B%C2%A3%E2%82%AC";
     NSString *authorizationResponse = [NSString stringWithFormat:responseURLtemplate,encodedScope];
-    OIDURLQueryComponent *query =
-        [[OIDURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
+    SCTKURLQueryComponent *query =
+        [[SCTKURLQueryComponent alloc] initWithURL:[NSURL URLWithString:authorizationResponse]];
     NSString* value = [query valuesForParameter:@"scope"][0];
     XCTAssertEqualObjects(value,
                           @" %&+£€",
@@ -144,7 +144,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   NSURL *baseURL = [NSURL URLWithString:kTestURLRoot];
   // Tests that space is encoded as %20
   {
-    OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:baseURL];
+    SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] initWithURL:baseURL];
     [query addParameter:@"scope" value:@"openid profile"];
     NSString *encodedParams = [query URLEncodedParameters];
     NSString *expected = @"scope=openid%20profile";
@@ -155,7 +155,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   // Tests that the example string from RFC6749 Appendix B is encoded correctly (but with space
   // encoded as %20, not +, as allowed by application/x-www-form-urlencoded.
   {
-      OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:baseURL];
+      SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] initWithURL:baseURL];
       [query addParameter:@"scope" value:@" %&+£€"];
       // Tests the URLEncodedParameters method
       NSString *encodedParams = [query URLEncodedParameters];
@@ -167,7 +167,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
 }
 
 - (void)testAddingTwoParameters {
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   XCTAssertEqualObjects([query valuesForParameter:kTestParameterName].firstObject,
                         kTestParameterValue, @"");
@@ -185,7 +185,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
  */
 - (void)testURLEncodedParameters {
   NSURL *baseURL = [NSURL URLWithString:kTestURLRoot];
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:baseURL];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] initWithURL:baseURL];
   [query addParameter:kTestParameterName value:kEncodingTestUnencoded];
 
   // Tests the URLEncodedParameters method
@@ -200,7 +200,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
 }
 
 - (void)testAddingThreeParameters {
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] init];
   [query addParameter:kTestParameterName value:kTestParameterValue];
   XCTAssertEqualObjects([query valuesForParameter:kTestParameterName].firstObject,
                         kTestParameterValue, @"");
@@ -229,7 +229,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
       };
   NSURL *rootURL = [NSURL URLWithString:kTestURLRoot];
 
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] init];
   [query addParameters:parameters];
   NSURL *rootURLWithParameters = [query URLByReplacingQueryInURL:rootURL];
 
@@ -237,8 +237,8 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
             || [rootURLWithParameters.query isEqualToString:kTestSimpleParameterStringEncodedRev],
             @"");
 
-  OIDURLQueryComponent *parsedParameters =
-      [[OIDURLQueryComponent alloc] initWithURL:rootURLWithParameters];
+  SCTKURLQueryComponent *parsedParameters =
+      [[SCTKURLQueryComponent alloc] initWithURL:rootURLWithParameters];
 
   XCTAssertEqualObjects(parsedParameters.dictionaryValue, parameters, @"");
 }
@@ -247,7 +247,7 @@ static NSString *const kTestURLRoot = @"https://www.example.com/";
   NSString *URLString =
       [NSString stringWithFormat:@"%@?%@", kTestURLRoot, kTestSimpleParameterStringEncoded];
   NSURL *URLToParse = [NSURL URLWithString:URLString];
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] initWithURL:URLToParse];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] initWithURL:URLToParse];
 
   NSDictionary<NSString *, NSObject<NSCopying> *> *parameters =
       @{

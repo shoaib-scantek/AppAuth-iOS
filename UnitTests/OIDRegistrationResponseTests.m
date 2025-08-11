@@ -18,14 +18,14 @@
 
 #import "OIDRegistrationResponseTests.h"
 
-#import "OIDClientMetadataParameters.h"
+#import "SCTKClientMetadataParameters.h"
 #import "OIDRegistrationRequestTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDRegistrationRequest.h"
-#import "Sources/AppAuthCore/OIDRegistrationResponse.h"
+#import "Sources/AppAuthCore/SCTKRegistrationRequest.h"
+#import "Sources/AppAuthCore/SCTKRegistrationResponse.h"
 #endif
 
 /*! @brief The test value for the @c clientID property.
@@ -65,9 +65,9 @@ static NSString *const kTestAdditionalParameterKey = @"example_parameter";
 static NSString *const kTestAdditionalParameterValue = @"example_value";
 
 @implementation OIDRegistrationResponseTests
-+ (OIDRegistrationResponse *)testInstance {
-  OIDRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
-  OIDRegistrationResponse *response = [[OIDRegistrationResponse alloc] initWithRequest:request
++ (SCTKRegistrationResponse *)testInstance {
+  SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
+  SCTKRegistrationResponse *response = [[OIDRegistrationResponse alloc] initWithRequest:request
       parameters:@{
           OIDClientIDParam : kClientIDTestValue,
           OIDClientIDIssuedAtParam : @(kClientIDIssuedAtTestValue),
@@ -85,7 +85,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDRegistrationResponse *response = [[self class] testInstance];
+  SCTKRegistrationResponse *response = [[self class] testInstance];
   XCTAssertNotNil(response.request, @"");
   XCTAssertEqualObjects(response.clientID, kClientIDTestValue, @"");
   XCTAssertEqualObjects(response.clientIDIssuedAt,
@@ -101,7 +101,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   XCTAssertEqualObjects(response.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
 
-  OIDRegistrationResponse *responseCopy = [response copy];
+  SCTKRegistrationResponse *responseCopy = [response copy];
 
   XCTAssertNotNil(responseCopy.request, @"");
   XCTAssertEqualObjects(responseCopy.clientID, response.clientID, @"");
@@ -118,15 +118,15 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDRegistrationResponse *response = [[self class] testInstance];
-  OIDRegistrationResponse *responseCopy;
+  SCTKRegistrationResponse *response = [[self class] testInstance];
+  SCTKRegistrationResponse *responseCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:response
                                  requiringSecureCoding:YES
                                                  error:&error];
-    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDRegistrationResponse class]
+    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKRegistrationResponse class]
                                                      fromData:data
                                                         error:&error];
   } else {
@@ -138,7 +138,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
-  // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
+  // NSSecureCoding implementation. We'll leave it up to the SCTKAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
   XCTAssertNotNil(responseCopy.request, @"");
   XCTAssertEqualObjects(responseCopy.request.applicationType, response.request.applicationType, @"");
@@ -160,8 +160,8 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationResponse
  */
 - (void)testMissingClientSecretExpiresAtWithClientSecret {
-  OIDRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
-  OIDRegistrationResponse *response = [[OIDRegistrationResponse alloc] initWithRequest:request
+  SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
+  SCTKRegistrationResponse *response = [[SCTKRegistrationResponse alloc] initWithRequest:request
       parameters:@{
           OIDClientIDParam : kClientIDTestValue,
           OIDClientSecretParam : kClientSecretTestValue,
@@ -174,8 +174,8 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationResponse
  */
 - (void)testMissingRegistrationAccessTokenWithRegistrationClientURI {
-  OIDRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
-  OIDRegistrationResponse *response = [[OIDRegistrationResponse alloc] initWithRequest:request
+  SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
+  SCTKRegistrationResponse *response = [[SCTKRegistrationResponse alloc] initWithRequest:request
       parameters:@{
           OIDClientIDParam : kClientIDTestValue,
           OIDRegistrationClientURIParam : [NSURL URLWithString:kRegistrationClientURITestValue]
@@ -188,8 +188,8 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
     @see https://openid.net/specs/openid-connect-registration-1_0.html#RegistrationResponse
  */
 - (void)testMissingRegistrationClientURIWithRegistrationAccessToken {
-  OIDRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
-  OIDRegistrationResponse *response = [[OIDRegistrationResponse alloc] initWithRequest:request
+  SCTKRegistrationRequest *request = [OIDRegistrationRequestTests testInstance];
+  SCTKRegistrationResponse *response = [[SCTKRegistrationResponse alloc] initWithRequest:request
       parameters:@{
           OIDClientIDParam : kClientIDTestValue,
           OIDRegistrationAccessTokenParam : kClientRegistrationAccessTokenTestValue

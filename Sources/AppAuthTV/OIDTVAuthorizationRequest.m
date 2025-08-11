@@ -17,7 +17,7 @@
  */
 #import "OIDTVAuthorizationRequest.h"
 #import "OIDTVServiceConfiguration.h"
-#import "OIDURLQueryComponent.h"
+#import "SCTKURLQueryComponent.h"
 
 @implementation OIDTVAuthorizationRequest
 
@@ -83,7 +83,7 @@
 #pragma mark -
 
 - (NSURLRequest *)URLRequest {
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] init];
 
   // Required parameters.
   [query addParameter:@"client_id" value:self.clientID];

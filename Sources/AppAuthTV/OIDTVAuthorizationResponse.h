@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents the response to a TV authorization request.
     @see https://tools.ietf.org/html/rfc8628#section-3.5
  */
-@interface OIDTVAuthorizationResponse : OIDAuthorizationResponse
+@interface OIDTVAuthorizationResponse : SCTKAuthorizationResponse
 
 /*! @brief The verification URI that should be displayed to the user instructing them to visit the
         URI and enter the code.

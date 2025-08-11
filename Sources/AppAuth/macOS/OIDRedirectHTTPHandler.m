@@ -22,9 +22,9 @@
 
 #import "OIDRedirectHTTPHandler.h"
 
-#import "OIDAuthorizationService.h"
-#import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgentSession.h"
+#import "SCTKAuthorizationService.h"
+#import "SCTKErrorUtilities.h"
+#import "SCTKExternalUserAgentSession.h"
 #import "OIDLoopbackHTTPServer.h"
 
 /*! @brief Page that is returned following a completed authorization. Show your own page instead by
@@ -36,9 +36,9 @@ static NSString *const kHTMLAuthorizationComplete =
 /*! @brief Error warning that the @c currentAuthorizationFlow is not set on this object (likely a
         developer error, unless the user stumbled upon the loopback server before the authorization
         had started completely).
-    @description An object conforming to @c OIDExternalUserAgentSession is returned when the
+    @description An object conforming to @c SCTKExternalUserAgentSession is returned when the
         authorization is presented with
-        @c OIDAuthorizationService::presentAuthorizationRequest:callback:. It should be set to
+        @c SCTKAuthorizationService::presentAuthorizationRequest:callback:. It should be set to
         @c currentAuthorization when using a loopback redirect.
  */
 static NSString *const kHTMLErrorMissingCurrentAuthorizationFlow =
@@ -106,7 +106,7 @@ static NSString *const kHTMLErrorRedirectNotValid =
 
   // Cancels the pending authorization flow (if any) with error.
   NSError *cancelledError =
-      [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
+      [SCTKErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
                        underlyingError:nil
                            description:@"The HTTP listener was cancelled programmatically."];
   [_currentAuthorizationFlow failExternalUserAgentFlowWithError:cancelledError];

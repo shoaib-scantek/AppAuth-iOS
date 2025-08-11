@@ -18,12 +18,12 @@
 
 #import "OIDTVAuthorizationService.h"
 
-#import "OIDAuthorizationService.h"
+#import "SCTKAuthorizationService.h"
 #import "OIDAuthState.h"
-#import "OIDDefines.h"
+#import "SCTKDefines.h"
 #import "OIDErrorUtilities.h"
 #import "OIDServiceDiscovery.h"
-#import "OIDURLQueryComponent.h"
+#import "SCTKURLQueryComponent.h"
 #import "OIDURLSessionProvider.h"
 
 #import "OIDTVAuthorizationRequest.h"
@@ -61,8 +61,8 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
 + (void)discoverServiceConfigurationForDiscoveryURL:(NSURL *)discoveryURL
                                          completion:(OIDTVDiscoveryCallback)completion {
-  // Call the corresponding discovery method in OIDAuthorizationService
-  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
+  // Call the corresponding discovery method in SCTKAuthorizationService
+  [SCTKAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
       completion:^(OIDServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
     if (configuration == nil) {
       completion(nil, error);
@@ -100,7 +100,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (pollRunning) {
       dispatch_async(dispatch_get_main_queue(), ^{
         NSError *cancelError =
-            [OIDErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
+            [SCTKErrorUtilities errorWithCode:OIDErrorCodeProgramCanceledAuthorizationFlow
                              underlyingError:nil
                                  description:@"Authorization cancelled"];
         completion(nil, cancelError);
@@ -119,7 +119,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (error) {
       // A network error or server error occurred.
       NSError *returnedError =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeNetworkError
+          [SCTKErrorUtilities errorWithCode:OIDErrorCodeNetworkError
                            underlyingError:error
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -133,7 +133,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (HTTPURLResponse.statusCode != 200) {
       // A server error occurred.
       NSError *serverError =
-          [OIDErrorUtilities HTTPErrorWithHTTPResponse:HTTPURLResponse data:data];
+          [SCTKErrorUtilities HTTPErrorWithHTTPResponse:HTTPURLResponse data:data];
 
       // HTTP 400 may indicate an RFC6749 Section 5.2 error response, checks for that
       if (HTTPURLResponse.statusCode == 400) {
@@ -147,7 +147,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
         // these errors are special as they indicate a problem with the authorization grant
         if (json[OIDOAuthErrorFieldError]) {
           NSError *oauthError =
-            [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+            [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
                                       OAuthResponse:json
                                     underlyingError:serverError];
           dispatch_async(dispatch_get_main_queue(), ^{
@@ -159,7 +159,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
       // not an OAuth error, just a generic server error
       NSError *returnedError =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeServerError
+          [SCTKErrorUtilities errorWithCode:OIDErrorCodeServerError
                            underlyingError:serverError
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -176,7 +176,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (jsonDeserializationError) {
       // A problem occurred deserializing the response/JSON.
       NSError *returnedError =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
+          [SCTKErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
                            underlyingError:jsonDeserializationError
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -191,7 +191,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (!TVAuthorizationResponse) {
       // A problem occurred constructing the token response from the JSON.
       NSError *returnedError =
-          [OIDErrorUtilities errorWithCode:OIDErrorCodeTokenResponseConstructionError
+          [SCTKErrorUtilities errorWithCode:OIDErrorCodeTokenResponseConstructionError
                            underlyingError:jsonDeserializationError
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -230,7 +230,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
         }
 
         // Polls token endpoint.
-        [OIDAuthorizationService performTokenRequest:pollRequest
+        [SCTKAuthorizationService performTokenRequest:pollRequest
                                             callback:^(OIDTokenResponse *_Nullable tokenResponse,
                                                        NSError *_Nullable tokenError) {
           if (!pollRunning) {

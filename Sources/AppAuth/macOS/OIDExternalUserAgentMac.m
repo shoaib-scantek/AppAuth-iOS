@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentMac.m
+/*! @file SCTKExternalUserAgentMac.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -20,24 +20,24 @@
 
 #if TARGET_OS_OSX
 
-#import "OIDExternalUserAgentMac.h"
+#import "SCTKExternalUserAgentMac.h"
 
 #import <Cocoa/Cocoa.h>
 
-#import "OIDErrorUtilities.h"
-#import "OIDExternalUserAgentSession.h"
-#import "OIDExternalUserAgentRequest.h"
+#import "SCTKErrorUtilities.h"
+#import "SCTKExternalUserAgentSession.h"
+#import "SCTKExternalUserAgentRequest.h"
 #import <AuthenticationServices/AuthenticationServices.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDExternalUserAgentMac ()<ASWebAuthenticationPresentationContextProviding>
+@interface SCTKExternalUserAgentMac ()<ASWebAuthenticationPresentationContextProviding>
 @end
 
-@implementation OIDExternalUserAgentMac {
+@implementation SCTKExternalUserAgentMac {
   BOOL _externalUserAgentFlowInProgress;
-  __weak id<OIDExternalUserAgentSession> _session;
+  __weak id<SCTKExternalUserAgentSession> _session;
   BOOL _prefersEphemeralSession;
 
   NSWindow *_presentingWindow;
@@ -71,8 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
-- (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest>)request
-                                session:(id<OIDExternalUserAgentSession>)session {
+- (BOOL)presentExternalUserAgentRequest:(id<SCTKExternalUserAgentRequest>)request
+                                session:(id<SCTKExternalUserAgentSession>)session {
   if (_externalUserAgentFlowInProgress) {
     // TODO: Handle errors as authorization is already in progress.
     return NO;
@@ -84,14 +84,14 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (@available(macOS 10.15, *)) {
     if (_presentingWindow) {
-      __weak OIDExternalUserAgentMac *weakSelf = self;
+      __weak SCTKExternalUserAgentMac *weakSelf = self;
       NSString *redirectScheme = request.redirectScheme;
       ASWebAuthenticationSession *authenticationSession =
         [[ASWebAuthenticationSession alloc] initWithURL:requestURL
                                       callbackURLScheme:redirectScheme
                                       completionHandler:^(NSURL * _Nullable callbackURL,
                                                           NSError * _Nullable error) {
-        __strong OIDExternalUserAgentMac *strongSelf = weakSelf;
+        __strong SCTKExternalUserAgentMac *strongSelf = weakSelf;
         if (!strongSelf) {
             return;
         }
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
           [strongSelf->_session resumeExternalUserAgentFlowWithURL:callbackURL];
         } else {
           NSError *safariError =
-              [OIDErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
+              [SCTKErrorUtilities errorWithCode:OIDErrorCodeUserCanceledAuthorizationFlow
                                underlyingError:error
                                    description:nil];
           [strongSelf->_session failExternalUserAgentFlowWithError:safariError];
@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL openedBrowser = [[NSWorkspace sharedWorkspace] openURL:requestURL];
   if (!openedBrowser) {
     [self cleanUp];
-    NSError *safariError = [OIDErrorUtilities errorWithCode:OIDErrorCodeBrowserOpenError
+    NSError *safariError = [SCTKErrorUtilities errorWithCode:OIDErrorCodeBrowserOpenError
                                             underlyingError:nil
                                                 description:@"Unable to open the browser."];
     [session failExternalUserAgentFlowWithError:safariError];

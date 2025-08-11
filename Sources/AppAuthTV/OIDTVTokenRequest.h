@@ -20,12 +20,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class OIDServiceConfiguration;
+@class SCTKServiceConfiguration;
 @class OIDTVServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OIDTVTokenRequest : OIDTokenRequest
+@interface OIDTVTokenRequest : SCTKTokenRequest
 
 /*! @brief The device code received from the authorization server.
     @remarks device_code
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
         @c initWithConfiguration:deviceCode:clientID:clientSecret:additionalParameters:additionalHeaders:
         or @c initWithCoder:.
 */
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(SCTKServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
                     authorizationCode:(nullable NSString *)code
                           redirectURL:(nullable NSURL *)redirectURL
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
         @c initWithConfiguration:deviceCode:clientID:clientSecret:additionalParameters:additionalHeaders:
         or @c initWithCoder:.
 */
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(SCTKServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
                     authorizationCode:(nullable NSString *)code
                           redirectURL:(nullable NSURL *)redirectURL

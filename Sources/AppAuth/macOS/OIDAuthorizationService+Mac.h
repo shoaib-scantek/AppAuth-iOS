@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationService+Mac.h
+/*! @file SCTKAuthorizationService+Mac.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -21,25 +21,25 @@
 #if TARGET_OS_OSX
 
 #import <AppKit/AppKit.h>
-#import "OIDAuthorizationService.h"
+#import "SCTKAuthorizationService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Provides macOS specific authorization request handling.
  */
-@interface OIDAuthorizationService (Mac)
+@interface SCTKAuthorizationService (Mac)
 
 /*! @brief Perform an authorization flow.
     @param request The authorization request.
     @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
-        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c SCTKExternalUserAgentSession instance which will terminate when it
+        receives a @c SCTKExternalUserAgentSession.cancel message, or after processing a
+        @c SCTKExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
     @discussion This method adopts @c ASWebAuthenticationSession for macOS 10.15 and above or the
         default browser otherwise.
  */
-+ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
++ (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
                                                presentingWindow:(NSWindow *)presentingWindow
                                                        callback:(OIDAuthorizationCallback)callback;
 
@@ -50,11 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
-        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c SCTKExternalUserAgentSession instance which will terminate when it
+        receives a @c SCTKExternalUserAgentSession.cancel message, or after processing a
+        @c SCTKExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
++ (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
                                                presentingWindow:(NSWindow *)presentingWindow
                                         prefersEphemeralSession:(BOOL)prefersEphemeralSession
                                                        callback:(OIDAuthorizationCallback)callback
@@ -63,11 +63,11 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Perform an authorization flow using the default browser.
     @param request The authorization request.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
-        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c SCTKExternalUserAgentSession instance which will terminate when it
+        receives a @c SCTKExternalUserAgentSession.cancel message, or after processing a
+        @c SCTKExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentSession>)presentAuthorizationRequest:(OIDAuthorizationRequest *)request
++ (id<SCTKExternalUserAgentSession>)presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
                                                       callback:(OIDAuthorizationCallback)callback
     __deprecated_msg("For macOS 10.15 and above please use presentAuthorizationRequest:presentingWindow:callback:");
 

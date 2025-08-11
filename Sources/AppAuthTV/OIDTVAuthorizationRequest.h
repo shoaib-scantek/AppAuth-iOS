@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OIDAuthorizationRequest.h"
+#import "SCTKAuthorizationRequest.h"
 
 @class OIDTVServiceConfiguration;
 
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Represents a TV and limited input device authorization request.
     @see https://tools.ietf.org/html/rfc8628#section-3.1
  */
-@interface OIDTVAuthorizationRequest : OIDAuthorizationRequest
+@interface OIDTVAuthorizationRequest : SCTKAuthorizationRequest
 
 /*! @brief Creates a TV authorization request with opinionated defaults
     @param configuration The service's configuration.

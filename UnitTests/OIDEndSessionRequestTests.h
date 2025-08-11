@@ -18,13 +18,13 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDEndSessionRequest;
+@class SCTKEndSessionRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface OIDEndSessionRequestTests : XCTestCase
 
-+ (OIDEndSessionRequest *)testInstance;
++ (SCTKEndSessionRequest *)testInstance;
 
 @end
 

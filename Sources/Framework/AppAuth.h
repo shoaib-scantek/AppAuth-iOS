@@ -25,22 +25,22 @@ FOUNDATION_EXPORT double AppAuthVersionNumber;
 FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 
 #import <AppAuth/OIDAuthState.h>
-#import <AppAuth/OIDAuthStateChangeDelegate.h>
-#import <AppAuth/OIDAuthStateErrorDelegate.h>
-#import <AppAuth/OIDAuthorizationRequest.h>
+#import <AppAuth/SCTKAuthStateChangeDelegate.h>
+#import <AppAuth/SCTKAuthStateErrorDelegate.h>
+#import <AppAuth/SCTKAuthorizationRequest.h>
 #import <AppAuth/OIDAuthorizationResponse.h>
-#import <AppAuth/OIDAuthorizationService.h>
-#import <AppAuth/OIDError.h>
+#import <AppAuth/SCTKAuthorizationService.h>
+#import <AppAuth/SCTKError.h>
 #import <AppAuth/OIDErrorUtilities.h>
-#import <AppAuth/OIDExternalUserAgent.h>
-#import <AppAuth/OIDExternalUserAgentRequest.h>
-#import <AppAuth/OIDExternalUserAgentSession.h>
-#import <AppAuth/OIDGrantTypes.h>
+#import <AppAuth/SCTKExternalUserAgent.h>
+#import <AppAuth/SCTKExternalUserAgentRequest.h>
+#import <AppAuth/SCTKExternalUserAgentSession.h>
+#import <AppAuth/SCTKGrantTypes.h>
 #import <AppAuth/OIDIDToken.h>
 #import <AppAuth/OIDRegistrationRequest.h>
 #import <AppAuth/OIDRegistrationResponse.h>
-#import <AppAuth/OIDResponseTypes.h>
-#import <AppAuth/OIDScopes.h>
+#import <AppAuth/SCTKResponseTypes.h>
+#import <AppAuth/SCTKScopes.h>
 #import <AppAuth/OIDScopeUtilities.h>
 #import <AppAuth/OIDServiceConfiguration.h>
 #import <AppAuth/OIDServiceDiscovery.h>
@@ -55,14 +55,14 @@ FOUNDATION_EXPORT const unsigned char AppAuthVersionString[];
 #elif TARGET_OS_WATCH
 #elif TARGET_OS_IOS || TARGET_OS_MACCATALYST
 #import <AppAuth/OIDAuthState+IOS.h>
-#import <AppAuth/OIDAuthorizationService+IOS.h>
-#import <AppAuth/OIDExternalUserAgentIOS.h>
-#import <AppAuth/OIDExternalUserAgentIOSCustomBrowser.h>
-#import "AppAuth/OIDExternalUserAgentCatalyst.h"
+#import <AppAuth/SCTKAuthorizationService+IOS.h>
+#import <AppAuth/SCTKExternalUserAgentIOS.h>
+#import <AppAuth/SCTKExternalUserAgentIOSCustomBrowser.h>
+#import "AppAuth/SCTKExternalUserAgentCatalyst.h"
 #elif TARGET_OS_OSX
 #import <AppAuth/OIDAuthState+Mac.h>
-#import <AppAuth/OIDAuthorizationService+Mac.h>
-#import <AppAuth/OIDExternalUserAgentMac.h>
+#import <AppAuth/SCTKAuthorizationService+Mac.h>
+#import <AppAuth/SCTKExternalUserAgentMac.h>
 #import <AppAuth/OIDRedirectHTTPHandler.h>
 #else
 #error "Platform Undefined"

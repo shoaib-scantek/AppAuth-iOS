@@ -24,11 +24,11 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/SCTKAuthorizationRequest.h"
 #import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
-#import "Sources/AppAuthCore/OIDScopeUtilities.h"
-#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
-#import "Sources/AppAuthCore/OIDTokenRequest.h"
+#import "Sources/AppAuthCore/SCTKScopeUtilities.h"
+#import "Sources/AppAuthCore/SCTKServiceConfiguration.h"
+#import "Sources/AppAuthCore/SCTKTokenRequest.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -66,18 +66,18 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
 
 @implementation OIDTokenRequestTests
 
-+ (OIDTokenRequest *)testInstance {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
++ (SCTKTokenRequest *)testInstance {
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
   NSArray<NSString *> *scopesArray =
-      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+      [SCTKScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
       @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   
-  OIDTokenRequest *request =
-      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
-                                           grantType:OIDGrantTypeAuthorizationCode
+  SCTKTokenRequest *request =
+      [[SCTKTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:SCTKGrantTypeAuthorizationCode
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
@@ -90,18 +90,18 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
   return request;
 }
 
-+ (OIDTokenRequest *)testInstanceCodeExchange {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstanceCodeFlow];
++ (SCTKTokenRequest *)testInstanceCodeExchange {
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstanceCodeFlow];
   NSArray<NSString *> *scopesArray =
-      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+      [SCTKScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
       @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   
-  OIDTokenRequest *request =
-      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
-                                           grantType:OIDGrantTypeAuthorizationCode
+  SCTKTokenRequest *request =
+      [[SCTKTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:SCTKGrantTypeAuthorizationCode
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
@@ -114,18 +114,18 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
   return request;
 }
 
-+ (OIDTokenRequest *)testInstanceCodeExchangeClientAuth {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstanceCodeFlowClientAuth];
++ (SCTKTokenRequest *)testInstanceCodeExchangeClientAuth {
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstanceCodeFlowClientAuth];
   NSArray<NSString *> *scopesArray =
-      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+      [SCTKScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
       @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   
-  OIDTokenRequest *request =
-      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
-                                           grantType:OIDGrantTypeAuthorizationCode
+  SCTKTokenRequest *request =
+      [[SCTKTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:SCTKGrantTypeAuthorizationCode
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
@@ -138,18 +138,18 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
   return request;
 }
 
-+ (OIDTokenRequest *)testInstanceRefresh {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
++ (SCTKTokenRequest *)testInstanceRefresh {
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
   NSArray<NSString *> *scopesArray =
-      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+      [SCTKScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
       @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
   
-  OIDTokenRequest *request =
-      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
-                                           grantType:OIDGrantTypeAuthorizationCode
+  SCTKTokenRequest *request =
+      [[SCTKTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:SCTKGrantTypeAuthorizationCode
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:nil
                                             clientID:authResponse.request.clientID
@@ -162,10 +162,10 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
   return request;
 }
 
-+ (OIDTokenRequest *)testInstanceAdditionalHeaders {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
++ (SCTKTokenRequest *)testInstanceAdditionalHeaders {
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
   NSArray<NSString *> *scopesArray =
-      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+      [SCTKScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders = @{
@@ -173,9 +173,9 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
     kTestAdditionalHeaderKey2 : kTestAdditionalHeaderValue2
   };
   
-  OIDTokenRequest *request =
-      [[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
-                                           grantType:OIDGrantTypeAuthorizationCode
+  SCTKTokenRequest *request =
+      [[SCTKTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                           grantType:SCTKGrantTypeAuthorizationCode
                                    authorizationCode:authResponse.authorizationCode
                                          redirectURL:authResponse.request.redirectURL
                                             clientID:authResponse.request.clientID
@@ -192,13 +192,13 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
-  OIDTokenRequest *request = [[self class] testInstance];
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
+  SCTKTokenRequest *request = [[self class] testInstance];
 
   XCTAssertEqualObjects(request.configuration.authorizationEndpoint,
                         authResponse.request.configuration.authorizationEndpoint,
                         @"Request and response authorization endpoints should be equal.");
-  XCTAssertEqualObjects(request.grantType, OIDGrantTypeAuthorizationCode,
+  XCTAssertEqualObjects(request.grantType, SCTKGrantTypeAuthorizationCode,
                         @"Request grant type should be OIDGrantTypeAuthorizationCode.");
   XCTAssertEqualObjects(request.authorizationCode, authResponse.authorizationCode,
                         @"Request and response authorization codes should be equal.");
@@ -227,7 +227,7 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
                         @"The request's kTestAdditionalHeaderKey additional parameter should "
                         "be equal to kTestAdditionalHeaderValue.");
 
-  OIDTokenRequest *requestCopy = [request copy];
+  SCTKTokenRequest *requestCopy = [request copy];
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting carried along in the copy implementation.
@@ -254,12 +254,12 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
-  OIDTokenRequest *request = [[self class] testInstance];
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
+  SCTKTokenRequest *request = [[self class] testInstance];
 
   XCTAssertEqualObjects(request.configuration.authorizationEndpoint,
                         authResponse.request.configuration.authorizationEndpoint, @"");
-  XCTAssertEqualObjects(request.grantType, OIDGrantTypeAuthorizationCode, @"");
+  XCTAssertEqualObjects(request.grantType, SCTKGrantTypeAuthorizationCode, @"");
   XCTAssertEqualObjects(request.authorizationCode, authResponse.authorizationCode, @"");
   XCTAssertEqualObjects(request.redirectURL, authResponse.request.redirectURL, @"");
   XCTAssertEqualObjects(request.clientID, authResponse.request.clientID, @"");
@@ -278,14 +278,14 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
   XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],
                         kTestAdditionalHeaderValue);
 
-  OIDTokenRequest *requestCopy;
+  SCTKTokenRequest *requestCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:request
                                  requiringSecureCoding:YES
                                                  error:&error];
-    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTokenRequest class]
+    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKTokenRequest class]
                                                     fromData:data
                                                        error:&error];
   } else {
@@ -322,7 +322,7 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
 }
 
 - (void)testURLRequestNoClientAuth {
-  OIDTokenRequest *request = [[self class] testInstanceCodeExchange];
+  SCTKTokenRequest *request = [[self class] testInstanceCodeExchange];
   NSURLRequest *urlRequest = [request URLRequest];
 
   id authorization = [urlRequest.allHTTPHeaderFields objectForKey:@"Authorization"];
@@ -330,7 +330,7 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
 }
 
 - (void)testURLRequestBasicClientAuth {
-  OIDTokenRequest *request = [[self class] testInstanceCodeExchangeClientAuth];
+  SCTKTokenRequest *request = [[self class] testInstanceCodeExchangeClientAuth];
   NSURLRequest* urlRequest = [request URLRequest];
 
   id authorization = [urlRequest.allHTTPHeaderFields objectForKey:@"Authorization"];
@@ -338,15 +338,15 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
 }
 
 - (void)testAuthorizationCodeNullRedirectURL {
-  OIDAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
+  SCTKAuthorizationResponse *authResponse = [OIDAuthorizationResponseTests testInstance];
   NSArray<NSString *> *scopesArray =
-      [OIDScopeUtilities scopesArrayWithString:authResponse.request.scope];
+      [SCTKScopeUtilities scopesArrayWithString:authResponse.request.scope];
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
   NSDictionary *additionalHeaders =
       @{ kTestAdditionalHeaderKey : kTestAdditionalHeaderValue };
-  XCTAssertThrows([[OIDTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
-                                                       grantType:OIDGrantTypeAuthorizationCode
+  XCTAssertThrows([[SCTKTokenRequest alloc] initWithConfiguration:authResponse.request.configuration
+                                                       grantType:SCTKGrantTypeAuthorizationCode
                                                authorizationCode:authResponse.authorizationCode
                                                      redirectURL:nil
                                                         clientID:authResponse.request.clientID
@@ -359,7 +359,7 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
 }
 
 - (void)testThatAdditionalHeadersAreInTokenRequest {
-  OIDTokenRequest *request = [[self class] testInstanceAdditionalHeaders];
+  SCTKTokenRequest *request = [[self class] testInstanceAdditionalHeaders];
   NSURLRequest* urlRequest = [request URLRequest];
 
   XCTAssertEqualObjects([urlRequest.allHTTPHeaderFields objectForKey:kTestAdditionalHeaderKey],

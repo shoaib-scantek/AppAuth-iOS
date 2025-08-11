@@ -18,8 +18,8 @@
 
 #import "OIDTVAuthorizationResponse.h"
 
-#import "OIDDefines.h"
-#import "OIDFieldMapping.h"
+#import "SCTKDefines.h"
+#import "SCTKFieldMapping.h"
 
 #import "OIDTVTokenRequest.h"
 #import "OIDTVAuthorizationRequest.h"
@@ -74,21 +74,21 @@ static NSString *const kRequestKey = @"request";
 /*! @brief Returns a mapping of incoming parameters to instance variables.
     @return A mapping of incoming parameters to instance variables.
  */
-+ (NSDictionary<NSString *, OIDFieldMapping *> *)fieldMap {
-  static NSMutableDictionary<NSString *, OIDFieldMapping *> *fieldMap;
++ (NSDictionary<NSString *, SCTKFieldMapping *> *)fieldMap {
+  static NSMutableDictionary<NSString *, SCTKFieldMapping *> *fieldMap;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     fieldMap = [NSMutableDictionary dictionary];
     fieldMap[kVerificationURIKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
+        [[SCTKFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
     fieldMap[kVerificationURICompleteKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_verificationURIComplete" type:[NSString class]];
+        [[SCTKFieldMapping alloc] initWithName:@"_verificationURIComplete" type:[NSString class]];
     fieldMap[kUserCodeKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_userCode" type:[NSString class]];
+        [[SCTKFieldMapping alloc] initWithName:@"_userCode" type:[NSString class]];
     fieldMap[kDeviceCodeKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_deviceCode" type:[NSString class]];
+        [[SCTKFieldMapping alloc] initWithName:@"_deviceCode" type:[NSString class]];
     fieldMap[kExpiresInKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_expirationDate"
+        [[SCTKFieldMapping alloc] initWithName:@"_expirationDate"
                                          type:[NSDate class]
                                    conversion:^id _Nullable(NSObject *_Nullable value) {
           if (![value isKindOfClass:[NSNumber class]]) {
@@ -98,12 +98,12 @@ static NSString *const kRequestKey = @"request";
           return [NSDate dateWithTimeIntervalSinceNow:[valueAsNumber longLongValue]];
         }];
     fieldMap[kIntervalKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_interval" type:[NSNumber class]];
+        [[SCTKFieldMapping alloc] initWithName:@"_interval" type:[NSNumber class]];
 
     // Map the alternative verification URI key to "_verificationURI" to support legacy
     // implementations using the alternative key
     fieldMap[kVerificationURIAlternativeKey] =
-        [[OIDFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
+        [[SCTKFieldMapping alloc] initWithName:@"_verificationURI" type:[NSString class]];
   });
   return fieldMap;
 }

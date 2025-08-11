@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDServiceConfiguration;
+@class SCTKServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Creates a new @c OIDServiceConfiguration for testing.
  */
-+ (OIDServiceConfiguration *)testInstance;
++ (SCTKServiceConfiguration *)testInstance;
 
 @end
 

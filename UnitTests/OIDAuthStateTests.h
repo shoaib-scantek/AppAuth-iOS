@@ -21,11 +21,11 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDAuthStateChangeDelegate.h"
-#import "Sources/AppAuthCore/OIDAuthStateErrorDelegate.h"
+#import "Sources/AppAuthCore/SCTKAuthStateChangeDelegate.h"
+#import "Sources/AppAuthCore/SCTKAuthStateErrorDelegate.h"
 #endif
 
-@class OIDAuthState;
+@class SCTKAuthState;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Creates a new @c OIDAuthState for testing.
  */
-+ (OIDAuthState *)testInstance;
++ (SCTKAuthState *)testInstance;
 
 @end
 

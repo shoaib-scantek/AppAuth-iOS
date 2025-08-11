@@ -21,7 +21,7 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDTokenUtilities.h"
+#import "Sources/AppAuthCore/SCTKTokenUtilities.h"
 #endif
 
 @interface OIDTokenUtilitiesTests : XCTestCase
@@ -29,28 +29,28 @@
 @implementation OIDTokenUtilitiesTests
 
 - (void)testRedact {
-  XCTAssertEqualObjects([OIDTokenUtilities redact:@"0123456789"], @"012345...[redacted]", @"");
+  XCTAssertEqualObjects([SCTKTokenUtilities redact:@"0123456789"], @"012345...[redacted]", @"");
 }
 
 - (void)testRedactWithNilParamater {
-  XCTAssertEqualObjects([OIDTokenUtilities redact:nil], nil, @"");
+  XCTAssertEqualObjects([SCTKTokenUtilities redact:nil], nil, @"");
 }
 
 - (void)testRedactWithEmptyString {
-    XCTAssertEqualObjects([OIDTokenUtilities redact:@""], @"", @"");
+    XCTAssertEqualObjects([SCTKTokenUtilities redact:@""], @"", @"");
 }
 
 - (void)testRedactWithShortInput {
-  XCTAssertEqualObjects([OIDTokenUtilities redact:@"01234"], @"[redacted]", @"");
+  XCTAssertEqualObjects([SCTKTokenUtilities redact:@"01234"], @"[redacted]", @"");
 }
 
 - (void)testFormUrlEncode {
-  XCTAssertEqualObjects([OIDTokenUtilities formUrlEncode:@"t _9V-F*I+Z1Lk.u7:2/8L+w="],
+  XCTAssertEqualObjects([SCTKTokenUtilities formUrlEncode:@"t _9V-F*I+Z1Lk.u7:2/8L+w="],
                         @"t+_9V-F*I%2BZ1Lk.u7%3A2%2F8L%2Bw%3D", @"");
 }
 
 - (void)testFormUrlEncodeEmptyString {
-  XCTAssertEqualObjects([OIDTokenUtilities formUrlEncode:@""], @"", @"");
+  XCTAssertEqualObjects([SCTKTokenUtilities formUrlEncode:@""], @"", @"");
 }
 
 @end

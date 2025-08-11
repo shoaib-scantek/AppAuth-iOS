@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDAuthorizationResponse;
+@class SCTKAuthorizationResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,16 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Creates a new @c OIDAuthorizationResponse for testing.
  */
-+ (OIDAuthorizationResponse *)testInstance;
++ (SCTKAuthorizationResponse *)testInstance;
 
 /*! @brief Creates a new @c OIDAuthorizationResponse for testing the code flow.
  */
-+ (OIDAuthorizationResponse *)testInstanceCodeFlow;
++ (SCTKAuthorizationResponse *)testInstanceCodeFlow;
 
 /*! @brief Creates a new @c OIDAuthorizationResponse with client authentication for testing the
         code flow.
  */
-+ (OIDAuthorizationResponse *)testInstanceCodeFlowClientAuth;
++ (SCTKAuthorizationResponse *)testInstanceCodeFlowClientAuth;
 
 @end
 

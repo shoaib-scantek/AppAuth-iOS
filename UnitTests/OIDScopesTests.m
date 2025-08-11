@@ -21,7 +21,7 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDScopes.h"
+#import "Sources/AppAuthCore/SCTKScopes.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -38,19 +38,19 @@
 @implementation OIDScopesTests
 
 - (void)testAddress {
-  XCTAssertEqualObjects(OIDScopeAddress, @"address");
+  XCTAssertEqualObjects(SCTKScopeAddress, @"address");
 }
 
 - (void)testEmail {
-  XCTAssertEqualObjects(OIDScopeEmail, @"email");
+  XCTAssertEqualObjects(SCTKScopeEmail, @"email");
 }
 
 - (void)testPhone {
-  XCTAssertEqualObjects(OIDScopePhone, @"phone");
+  XCTAssertEqualObjects(SCTKScopePhone, @"phone");
 }
 
 - (void)testProfile {
-  XCTAssertEqualObjects(OIDScopeProfile, @"profile");
+  XCTAssertEqualObjects(SCTKScopeProfile, @"profile");
 }
 
 @end

@@ -27,25 +27,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief macOS specific convenience methods for @c OIDAuthState.
  */
-@interface OIDAuthState (Mac)
+@interface SCTKAuthState (Mac)
 
 /*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests. For
         the hybrid flow, the caller should validate the id_token and c_hash, then perform the token
-        request (@c OIDAuthorizationService.performTokenRequest:callback:)
+        request (@c SCTKAuthorizationService.performTokenRequest:callback:)
         and update the OIDAuthState with the results (@c
         OIDAuthState.updateWithTokenResponse:error:).
     @param authorizationRequest The authorization request to present.
     @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
-        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c SCTKExternalUserAgentSession instance which will terminate when it
+        receives a @c SCTKExternalUserAgentSession.cancel message, or after processing a
+        @c SCTKExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
     @discussion This method adopts @c ASWebAuthenticationSession for macOS 10.15 and above or the
         default browser otherwise.
  */
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
++ (id<SCTKExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                                      callback:(OIDAuthStateAuthorizationCallback)callback;
 
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
         (optionally using an emphemeral browser session that shares no cookies or data with the
         normal browser session) and performing the authorization code exchange in the case of code
         flow requests. For the hybrid flow, the caller should validate the id_token and c_hash, then
-        perform the token request (@c OIDAuthorizationService.performTokenRequest:callback:)
+        perform the token request (@c SCTKAuthorizationService.performTokenRequest:callback:)
         and update the OIDAuthState with the results using
         @c OIDAuthState.updateWithTokenResponse:error:.
     @param authorizationRequest The authorization request to present.
@@ -61,12 +61,12 @@ NS_ASSUME_NONNULL_BEGIN
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
         session. See @c ASWebAuthenticationSession.prefersEphemeralWebBrowserSession for more.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
-        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c SCTKExternalUserAgentSession instance which will terminate when it
+        receives a @c SCTKExternalUserAgentSession.cancel message, or after processing a
+        @c SCTKExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
  */
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
++ (id<SCTKExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
                                      callback:(OIDAuthStateAuthorizationCallback)callback
@@ -74,13 +74,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @param authorizationRequest The authorization request to present.
     @param callback The method called when the request has completed or failed.
-    @return A @c OIDExternalUserAgentSession instance which will terminate when it
-        receives a @c OIDExternalUserAgentSession.cancel message, or after processing a
-        @c OIDExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
+    @return A @c SCTKExternalUserAgentSession instance which will terminate when it
+        receives a @c SCTKExternalUserAgentSession.cancel message, or after processing a
+        @c SCTKExternalUserAgentSession.resumeExternalUserAgentFlowWithURL: message.
     @discussion This method uses the default browser to present the authentication flow.
  */
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
++ (id<SCTKExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback
     __deprecated_msg("For macOS 10.15 and above please use "
         "authStateByPresentingAuthorizationRequest:presentingWindow:callback:");

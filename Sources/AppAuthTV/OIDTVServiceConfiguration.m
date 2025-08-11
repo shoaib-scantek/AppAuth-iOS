@@ -18,7 +18,7 @@
 
 #import "OIDTVServiceConfiguration.h"
 
-#import "OIDDefines.h"
+#import "SCTKDefines.h"
 #import "OIDServiceDiscovery.h"
 
 /*! @brief The key for the @c deviceAuthorizationEndpoint property.
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 tokenEndpoint:(NSURL *)tokenEndpoint
     OID_UNAVAILABLE_USE_INITIALIZER(@selector(initWithDeviceAuthorizationEndpoint:tokenEndpoint:))
 
-- (instancetype)initWithDiscoveryDocument:(OIDServiceDiscovery *)discoveryDocument {
+- (instancetype)initWithDiscoveryDocument:(SCTKServiceDiscovery *)discoveryDocument {
   self = [super initWithDiscoveryDocument:discoveryDocument];
 
   if (self) {

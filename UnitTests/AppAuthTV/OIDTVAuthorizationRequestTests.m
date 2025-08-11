@@ -21,8 +21,8 @@
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
-#import "Sources/AppAuthCore/OIDScopeUtilities.h"
-#import "Sources/AppAuthCore/OIDURLQueryComponent.h"
+#import "Sources/AppAuthCore/SCTKScopeUtilities.h"
+#import "Sources/AppAuthCore/SCTKURLQueryComponent.h"
 #import "Sources/AppAuthTV/OIDTVAuthorizationRequest.h"
 #import "Sources/AppAuthTV/OIDTVServiceConfiguration.h"
 #endif
@@ -120,7 +120,7 @@ static NSString *const kHTTPContentTypeHeaderValue =
 - (void)testInitializer {
   OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
+  NSString *testScopeString = [SCTKScopeUtilities scopesWithArray:testScopes];
   NSDictionary<NSString *, NSString *> *testAdditionalParameters =
       @{kTestAdditionalParameterKey : kTestAdditionalParameterValue};
 
@@ -221,9 +221,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
 - (void)testURLRequestScopes {
   OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
+  NSString *testScopeString = [SCTKScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
-      stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
+      stringByAddingPercentEncodingWithAllowedCharacters:[SCTKURLQueryComponent
                                                              URLParamValueAllowedCharacters]];
 
   OIDTVAuthorizationRequest *authRequest =
@@ -253,9 +253,9 @@ static NSString *const kHTTPContentTypeHeaderValue =
 - (void)testURLRequestAdditionalParams {
   OIDTVServiceConfiguration *serviceConfiguration = [self testServiceConfiguration];
   NSArray<NSString *> *testScopes = @[ kTestScope, kTestScopeA ];
-  NSString *testScopeString = [OIDScopeUtilities scopesWithArray:testScopes];
+  NSString *testScopeString = [SCTKScopeUtilities scopesWithArray:testScopes];
   NSString *testScopeStringPercentEncoded = [testScopeString
-      stringByAddingPercentEncodingWithAllowedCharacters:[OIDURLQueryComponent
+      stringByAddingPercentEncodingWithAllowedCharacters:[SCTKURLQueryComponent
                                                              URLParamValueAllowedCharacters]];
   OIDTVAuthorizationRequest *authRequest = [[OIDTVAuthorizationRequest alloc]
       initWithConfiguration:serviceConfiguration

@@ -23,9 +23,9 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDEndSessionRequest.h"
-#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
-#import "Sources/AppAuthCore/OIDServiceDiscovery.h"
+#import "Sources/AppAuthCore/SCTKEndSessionRequest.h"
+#import "Sources/AppAuthCore/SCTKServiceConfiguration.h"
+#import "Sources/AppAuthCore/SCTKServiceDiscovery.h"
 #endif
 
 /*! @brief Test value for the @c redirectURL property.
@@ -50,14 +50,14 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
 
 @implementation OIDEndSessionRequestTests
 
-+ (OIDEndSessionRequest *)testInstance {
++ (SCTKEndSessionRequest *)testInstance {
     NSDictionary *additionalParameters =
         @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
 
-    OIDServiceDiscovery *discoveryDocument = [[OIDServiceDiscovery alloc] initWithDictionary:[OIDServiceDiscoveryTests completeServiceDiscoveryDictionary] error:nil];
-    OIDServiceConfiguration *configuration = [[OIDServiceConfiguration alloc] initWithDiscoveryDocument:discoveryDocument];
+    SCTKServiceDiscovery *discoveryDocument = [[SCTKServiceDiscovery alloc] initWithDictionary:[OIDServiceDiscoveryTests completeServiceDiscoveryDictionary] error:nil];
+    SCTKServiceConfiguration *configuration = [[SCTKServiceConfiguration alloc] initWithDiscoveryDocument:discoveryDocument];
 
-    return [[OIDEndSessionRequest alloc] initWithConfiguration:configuration
+    return [[SCTKEndSessionRequest alloc] initWithConfiguration:configuration
                                                idTokenHint:kTestIdTokenHint
                                      postLogoutRedirectURL:[NSURL URLWithString:kTestRedirectURL]
                                                      state:kTestState
@@ -68,7 +68,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
  process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-    OIDEndSessionRequest *request = [[self class] testInstance];
+    SCTKEndSessionRequest *request = [[self class] testInstance];
 
     XCTAssertEqualObjects(request.idTokenHint, kTestIdTokenHint);
     XCTAssertEqualObjects(request.postLogoutRedirectURL, [NSURL URLWithString:kTestRedirectURL]);
@@ -76,7 +76,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
     XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                           kTestAdditionalParameterValue);
 
-    OIDEndSessionRequest *requestCopy = [request copy];
+    SCTKEndSessionRequest *requestCopy = [request copy];
 
     XCTAssertNotNil(requestCopy.configuration);
     XCTAssertEqualObjects(requestCopy.configuration, request.configuration);
@@ -89,7 +89,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
  checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-    OIDEndSessionRequest *request = [[self class] testInstance];
+    SCTKEndSessionRequest *request = [[self class] testInstance];
 
     XCTAssertEqualObjects(request.idTokenHint, kTestIdTokenHint);
     XCTAssertEqualObjects(request.postLogoutRedirectURL, [NSURL URLWithString:kTestRedirectURL]);
@@ -97,14 +97,14 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
     XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                           kTestAdditionalParameterValue);
 
-    OIDEndSessionRequest *requestCopy;
+    SCTKEndSessionRequest *requestCopy;
     NSError *error;
     NSData *data;
     if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
       data = [NSKeyedArchiver archivedDataWithRootObject:request
                                    requiringSecureCoding:YES
                                                    error:&error];
-      requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDEndSessionRequest class]
+      requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKEndSessionRequest class]
                                                       fromData:data
                                                          error:&error];
     } else {
@@ -123,7 +123,7 @@ static NSString *const kTestIdTokenHint = @"id-token-hint";
 }
 
 - (void)testLogoutRequestURL {
-    OIDEndSessionRequest *request = [[self class] testInstance];
+    SCTKEndSessionRequest *request = [[self class] testInstance];
     NSURL *endSessionRequestURL = request.endSessionRequestURL;
 
     NSURLComponents *components = [NSURLComponents componentsWithString:endSessionRequestURL.absoluteString];

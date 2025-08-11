@@ -23,8 +23,8 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDTokenRequest.h"
-#import "Sources/AppAuthCore/OIDTokenResponse.h"
+#import "Sources/AppAuthCore/SCTKTokenRequest.h"
+#import "Sources/AppAuthCore/SCTKTokenResponse.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -95,10 +95,10 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
 
 @implementation OIDTokenResponseTests
 
-+ (OIDTokenResponse *)testInstance {
-  OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
-  OIDTokenResponse *response =
-      [[OIDTokenResponse alloc] initWithRequest:request
++ (SCTKTokenResponse *)testInstance {
+  SCTKTokenRequest *request = [OIDTokenRequestTests testInstance];
+  SCTKTokenResponse *response =
+      [[SCTKTokenResponse alloc] initWithRequest:request
                                      parameters:@{
         kAccessTokenKey : kAccessTokenTestValue,
         kExpiresInKey : @(kExpiresInTestValue),
@@ -111,10 +111,10 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   return response;
 }
 
-+ (OIDTokenResponse *)testInstanceCodeExchange {
-  OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
-  OIDTokenResponse *response =
-      [[OIDTokenResponse alloc] initWithRequest:request
++ (SCTKTokenResponse *)testInstanceCodeExchange {
+  SCTKTokenRequest *request = [OIDTokenRequestTests testInstance];
+  SCTKTokenResponse *response =
+      [[SCTKTokenResponse alloc] initWithRequest:request
                                      parameters:@{
         kAccessTokenKey : kAccessTokenTestValue,
         kExpiresInKey : @(kExpiresInTestValue),
@@ -125,10 +125,10 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   return response;
 }
 
-+ (OIDTokenResponse *)testInstanceRefresh {
-  OIDTokenRequest *request = [OIDTokenRequestTests testInstance];
-  OIDTokenResponse *response =
-      [[OIDTokenResponse alloc] initWithRequest:request
++ (SCTKTokenResponse *)testInstanceRefresh {
+  SCTKTokenRequest *request = [OIDTokenRequestTests testInstance];
+  SCTKTokenResponse *response =
+      [[SCTKTokenResponse alloc] initWithRequest:request
                                      parameters:@{
         kAccessTokenKey : kAccessTokenTestValue,
         kIDTokenKey : kIDTokenTestValue,
@@ -142,7 +142,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDTokenResponse *response = [[self class] testInstance];
+  SCTKTokenResponse *response = [[self class] testInstance];
   XCTAssertNotNil(response.request, @"");
   XCTAssertEqualObjects(response.accessToken, kAccessTokenTestValue, @"");
   XCTAssertEqualObjects(response.tokenType, kTokenTypeTestValue, @"");
@@ -158,7 +158,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
   NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
   XCTAssert(expiration > kExpiresInTestValue - 5 && expiration <= kExpiresInTestValue, @"");
 
-  OIDTokenResponse *responseCopy = [response copy];
+  SCTKTokenResponse *responseCopy = [response copy];
 
   XCTAssertNotNil(responseCopy.request, @"");
   XCTAssertEqualObjects(responseCopy.accessToken, kAccessTokenTestValue, @"");
@@ -174,15 +174,15 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDTokenResponse *response = [[self class] testInstance];
-  OIDTokenResponse *responseCopy;
+  SCTKTokenResponse *response = [[self class] testInstance];
+  SCTKTokenResponse *responseCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:response
                                  requiringSecureCoding:YES
                                                  error:&error];
-    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDTokenResponse class]
+    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKTokenResponse class]
                                                      fromData:data
                                                         error:&error];
   } else {
@@ -194,7 +194,7 @@ static NSString *const kTestAdditionalParameterValue = @"example_value";
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
-  // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
+  // NSSecureCoding implementation. We'll leave it up to the SCTKAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
   XCTAssertNotNil(responseCopy.request, @"");
   XCTAssertEqualObjects(responseCopy.request.clientID, response.request.clientID, @"");

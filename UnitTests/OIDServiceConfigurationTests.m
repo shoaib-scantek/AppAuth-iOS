@@ -25,10 +25,10 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDAuthorizationService.h"
-#import "Sources/AppAuthCore/OIDError.h"
-#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
-#import "Sources/AppAuthCore/OIDServiceDiscovery.h"
+#import "Sources/AppAuthCore/SCTKAuthorizationService.h"
+#import "Sources/AppAuthCore/SCTKError.h"
+#import "Sources/AppAuthCore/SCTKServiceConfiguration.h"
+#import "Sources/AppAuthCore/SCTKServiceDiscovery.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -92,12 +92,12 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
   NSMutableArray<TeardownTask> *_teardownTasks;
 }
 
-+ (OIDServiceConfiguration *)testInstance {
++ (SCTKServiceConfiguration *)testInstance {
   NSURL *authEndpoint = [NSURL URLWithString:kInitializerTestAuthEndpoint];
   NSURL *tokenEndpoint = [NSURL URLWithString:kInitializerTestTokenEndpoint];
   NSURL *registrationEndpoint = [NSURL URLWithString:kInitializerTestRegistrationEndpoint];
-  OIDServiceConfiguration *configuration =
-      [[OIDServiceConfiguration alloc] initWithAuthorizationEndpoint:authEndpoint
+  SCTKServiceConfiguration *configuration =
+      [[SCTKServiceConfiguration alloc] initWithAuthorizationEndpoint:authEndpoint
                                                        tokenEndpoint:tokenEndpoint
                                                 registrationEndpoint:registrationEndpoint];
   return configuration;
@@ -155,7 +155,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 /*! @brief Tests the designated initializer.
  */
 - (void)testInitializer {
-  OIDServiceConfiguration *configuration = [[self class] testInstance];
+  SCTKServiceConfiguration *configuration = [[self class] testInstance];
   XCTAssertEqualObjects(configuration.authorizationEndpoint.absoluteString,
                         kInitializerTestAuthEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint.absoluteString,
@@ -189,12 +189,12 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
                   [discoveryURL absoluteString]);
       };
 
-  [self replaceClassMethodForClass:[OIDAuthorizationService class]
+  [self replaceClassMethodForClass:[SCTKAuthorizationService class]
        selector:@selector(discoverServiceConfigurationForDiscoveryURL:completion:)
       withBlock:successfulResponse];
 
   NSURL *issuerURL = [NSURL URLWithString:issuer];
-  [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuerURL
+  [SCTKAuthorizationService discoverServiceConfigurationForIssuer:issuerURL
       completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {}];
 
   [self waitForExpectationsWithTimeout:2 handler:nil];
@@ -230,12 +230,12 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   NSDictionary *expectedDictionary =
       [OIDServiceDiscoveryTests completeServiceDiscoveryDictionary];
-  OIDServiceDiscovery *expectedValues =
-      [[OIDServiceDiscovery alloc] initWithDictionary:expectedDictionary error:NULL];
+  SCTKServiceDiscovery *expectedValues =
+      [[SCTKServiceDiscovery alloc] initWithDictionary:expectedDictionary error:NULL];
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
   OIDServiceConfigurationCreated callback =
-    ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
+    ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
       XCTAssertNil(error, @"");
@@ -245,7 +245,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
       XCTAssertEqualObjects(serviceConfiguration.authorizationEndpoint,
                             expectedValues.authorizationEndpoint, @"");
     };
-  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
+  [SCTKAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
@@ -270,13 +270,13 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
   OIDServiceConfigurationCreated callback =
-    ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
+    ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
       XCTAssertNotNil(error, @"");
       XCTAssertNil(serviceConfiguration, @"");
     };
-  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
+  [SCTKAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
@@ -311,13 +311,13 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
   OIDServiceConfigurationCreated callback =
-    ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
+    ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
       XCTAssertNotNil(error, @"");
       XCTAssertNil(serviceConfiguration, @"");
     };
-  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
+  [SCTKAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
@@ -347,13 +347,13 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   XCTestExpectation *expectation = [self expectationWithDescription:@"Callback should be fired."];
   OIDServiceConfigurationCreated callback =
-    ^(OIDServiceConfiguration *_Nullable serviceConfiguration,
+    ^(SCTKServiceConfiguration *_Nullable serviceConfiguration,
       NSError *_Nullable error) {
       [expectation fulfill];
       XCTAssertNotNil(error, @"");
       XCTAssertNil(serviceConfiguration, @"");
     };
-  [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
+  [SCTKAuthorizationService discoverServiceConfigurationForDiscoveryURL:url
                                                             completion:callback];
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }
@@ -362,15 +362,15 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
         checking to make sure the source and destination instances have equivalent dictionaries.
  */
 - (void)testSecureCoding {
-  OIDServiceConfiguration *configuration = [[self class] testInstance];
-  OIDServiceConfiguration *unarchived;
+  SCTKServiceConfiguration *configuration = [[self class] testInstance];
+  SCTKServiceConfiguration *unarchived;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:configuration
                                  requiringSecureCoding:YES
                                                  error:&error];
-    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDServiceConfiguration class]
+    unarchived = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKServiceConfiguration class]
                                                    fromData:data
                                                       error:&error];
   } else {
@@ -390,8 +390,8 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
         dictionaries.
  */
 - (void)testCopying {
-  OIDServiceConfiguration *configuration = [[self class] testInstance];
-  OIDServiceConfiguration *unarchived = [configuration copy];
+  SCTKServiceConfiguration *configuration = [[self class] testInstance];
+  SCTKServiceConfiguration *unarchived = [configuration copy];
 
   XCTAssertEqualObjects(configuration.authorizationEndpoint, unarchived.authorizationEndpoint, @"");
   XCTAssertEqualObjects(configuration.tokenEndpoint, unarchived.tokenEndpoint, @"");
