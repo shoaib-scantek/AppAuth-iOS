@@ -22,36 +22,36 @@
 
 #import "OIDAuthState+Mac.h"
 
-#import "OIDExternalUserAgentMac.h"
+#import "SCTKExternalUserAgentMac.h"
 
-@implementation OIDAuthState (Mac)
+@implementation SCTKAuthState (Mac)
 
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
++ (id<SCTKExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
+  SCTKExternalUserAgentMac *externalUserAgent = [[SCTKExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
                                                 callback:callback];
 }
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
++ (id<SCTKExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent =
-      [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
+  SCTKExternalUserAgentMac *externalUserAgent =
+      [[SCTKExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
                                         prefersEphemeralSession:prefersEphemeralSession];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
                                                 callback:callback];
 }
 
-+ (id<OIDExternalUserAgentSession>)
-    authStateByPresentingAuthorizationRequest:(OIDAuthorizationRequest *)authorizationRequest
++ (id<SCTKExternalUserAgentSession>)
+    authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                                      callback:(OIDAuthStateAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
+  SCTKExternalUserAgentMac *externalUserAgent = [[SCTKExternalUserAgentMac alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
                                                 callback:callback];

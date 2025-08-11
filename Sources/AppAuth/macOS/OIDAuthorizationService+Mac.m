@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationService+Mac.m
+/*! @file SCTKAuthorizationService+Mac.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -20,38 +20,38 @@
 
 #if TARGET_OS_OSX
 
-#import "OIDAuthorizationService+Mac.h"
+#import "SCTKAuthorizationService+Mac.h"
 
-#import "OIDExternalUserAgentMac.h"
+#import "SCTKExternalUserAgentMac.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation OIDAuthorizationService (Mac)
+@implementation SCTKAuthorizationService (Mac)
 
-+ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
++ (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
                                                presentingWindow:(NSWindow *)presentingWindow
                                                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
+  SCTKExternalUserAgentMac *externalUserAgent = [[SCTKExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
   return [self presentAuthorizationRequest:request
                          externalUserAgent:externalUserAgent
                                   callback:callback];
 }
 
-+ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
++ (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
                                                presentingWindow:(NSWindow *)presentingWindow
                                         prefersEphemeralSession:(BOOL)prefersEphemeralSession
                                                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent =
-      [[OIDExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
+  SCTKExternalUserAgentMac *externalUserAgent =
+      [[SCTKExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
                                         prefersEphemeralSession:prefersEphemeralSession];
   return [self presentAuthorizationRequest:request
                          externalUserAgent:externalUserAgent
                                   callback:callback];
 }
 
-+ (id<OIDExternalUserAgentSession>) presentAuthorizationRequest:(OIDAuthorizationRequest *)request
++ (id<SCTKExternalUserAgentSession>) presentAuthorizationRequest:(SCTKAuthorizationRequest *)request
                                                        callback:(OIDAuthorizationCallback)callback {
-  OIDExternalUserAgentMac *externalUserAgent = [[OIDExternalUserAgentMac alloc] init];
+  SCTKExternalUserAgentMac *externalUserAgent = [[SCTKExternalUserAgentMac alloc] init];
   return [self presentAuthorizationRequest:request
                          externalUserAgent:externalUserAgent
                                   callback:callback];

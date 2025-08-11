@@ -32,7 +32,7 @@ class OIDSwiftTests: XCTestCase {
   func testSwift() {
     let authorizationEndpoint = URL(string: "https://example.com/authorization")!
     let tokenEndpoint = URL(string: "https://example.com/token")!
-    let service = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
+    let service = SCTKServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
                                           tokenEndpoint: tokenEndpoint)
     XCTAssertNotNil(service, "OIDServiceConfiguration not nil")
   }

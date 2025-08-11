@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationRequestTests.h
+/*! @file SCTKAuthorizationRequestTests.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -18,26 +18,26 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDAuthorizationRequest;
+@class SCTKAuthorizationRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Unit tests for @c OIDAuthorizationRequest.
+/*! @brief Unit tests for @c SCTKAuthorizationRequest.
  */
-@interface OIDAuthorizationRequestTests : XCTestCase
+@interface SCTKAuthorizationRequestTests : XCTestCase
 
-/*! @brief Creates a new @c OIDAuthorizationRequest for testing.
+/*! @brief Creates a new @c SCTKAuthorizationRequest for testing.
  */
-+ (OIDAuthorizationRequest *)testInstance;
++ (SCTKAuthorizationRequest *)testInstance;
 
-/*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request.
+/*! @brief Creates a new @c SCTKAuthorizationRequest testing a code flow request.
  */
-+ (OIDAuthorizationRequest *)testInstanceCodeFlow;
++ (SCTKAuthorizationRequest *)testInstanceCodeFlow;
 
-/*! @brief Creates a new @c OIDAuthorizationRequest testing a code flow request
+/*! @brief Creates a new @c SCTKAuthorizationRequest testing a code flow request
         with client authentication.
  */
-+ (OIDAuthorizationRequest *)testInstanceCodeFlowClientAuth;
++ (SCTKAuthorizationRequest *)testInstanceCodeFlowClientAuth;
 
 @end
 

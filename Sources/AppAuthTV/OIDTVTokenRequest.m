@@ -18,9 +18,9 @@
 
 #import "OIDTVTokenRequest.h"
 
-#import "OIDDefines.h"
+#import "SCTKDefines.h"
 #import "OIDTVServiceConfiguration.h"
-#import "OIDURLQueryComponent.h"
+#import "SCTKURLQueryComponent.h"
 
 /*! @brief The key for the @c deviceCode property for @c NSSecureCoding and request body.
  */
@@ -46,7 +46,7 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
                                                             additionalHeaders:
                                                              ))
 
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(SCTKServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
                     authorizationCode:(nullable NSString *)code
                           redirectURL:(nullable NSURL *)redirectURL
@@ -68,7 +68,7 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
                                            additionalHeaders:
                                             ))
 
-- (instancetype)initWithConfiguration:(OIDServiceConfiguration *)configuration
+- (instancetype)initWithConfiguration:(SCTKServiceConfiguration *)configuration
                             grantType:(NSString *)grantType
                     authorizationCode:(nullable NSString *)code
                           redirectURL:(nullable NSURL *)redirectURL
@@ -157,8 +157,8 @@ static NSString *const kOIDTVDeviceTokenGrantType = @"urn:ietf:params:oauth:gran
   [aCoder encodeObject:_deviceCode forKey:kDeviceCodeKey];
 }
 
-- (OIDURLQueryComponent *)tokenRequestBody {
-  OIDURLQueryComponent *query = [[OIDURLQueryComponent alloc] init];
+- (SCTKURLQueryComponent *)tokenRequestBody {
+  SCTKURLQueryComponent *query = [[SCTKURLQueryComponent alloc] init];
 
   if (self.grantType) {
     [query addParameter:kGrantTypeKey value:self.grantType];

@@ -25,22 +25,22 @@ FOUNDATION_EXPORT double AppAuthCoreVersionNumber;
 FOUNDATION_EXPORT const unsigned char AppAuthCoreVersionString[];
 
 #import <AppAuthCore/OIDAuthState.h>
-#import <AppAuthCore/OIDAuthStateChangeDelegate.h>
-#import <AppAuthCore/OIDAuthStateErrorDelegate.h>
-#import <AppAuthCore/OIDAuthorizationRequest.h>
+#import <AppAuthCore/SCTKAuthStateChangeDelegate.h>
+#import <AppAuthCore/SCTKAuthStateErrorDelegate.h>
+#import <AppAuthCore/SCTKAuthorizationRequest.h>
 #import <AppAuthCore/OIDAuthorizationResponse.h>
-#import <AppAuthCore/OIDAuthorizationService.h>
-#import <AppAuthCore/OIDError.h>
+#import <AppAuthCore/SCTKAuthorizationService.h>
+#import <AppAuthCore/SCTKError.h>
 #import <AppAuthCore/OIDErrorUtilities.h>
-#import <AppAuthCore/OIDExternalUserAgent.h>
-#import <AppAuthCore/OIDExternalUserAgentRequest.h>
-#import <AppAuthCore/OIDExternalUserAgentSession.h>
-#import <AppAuthCore/OIDGrantTypes.h>
+#import <AppAuthCore/SCTKExternalUserAgent.h>
+#import <AppAuthCore/SCTKExternalUserAgentRequest.h>
+#import <AppAuthCore/SCTKExternalUserAgentSession.h>
+#import <AppAuthCore/SCTKGrantTypes.h>
 #import <AppAuthCore/OIDIDToken.h>
 #import <AppAuthCore/OIDRegistrationRequest.h>
 #import <AppAuthCore/OIDRegistrationResponse.h>
-#import <AppAuthCore/OIDResponseTypes.h>
-#import <AppAuthCore/OIDScopes.h>
+#import <AppAuthCore/SCTKResponseTypes.h>
+#import <AppAuthCore/SCTKScopes.h>
 #import <AppAuthCore/OIDScopeUtilities.h>
 #import <AppAuthCore/OIDServiceConfiguration.h>
 #import <AppAuthCore/OIDServiceDiscovery.h>

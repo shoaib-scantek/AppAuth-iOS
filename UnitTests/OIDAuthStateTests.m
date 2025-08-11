@@ -27,9 +27,9 @@
 #else
 #import "Sources/AppAuthCore/OIDAuthState.h"
 #import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
-#import "Sources/AppAuthCore/OIDErrorUtilities.h"
-#import "Sources/AppAuthCore/OIDRegistrationResponse.h"
-#import "Sources/AppAuthCore/OIDTokenResponse.h"
+#import "Sources/AppAuthCore/SCTKErrorUtilities.h"
+#import "Sources/AppAuthCore/SCTKRegistrationResponse.h"
+#import "Sources/AppAuthCore/SCTKTokenResponse.h"
 #endif
 
 #import "OIDTokenRequestTests.h"
@@ -39,36 +39,36 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wgnu"
 
-@interface OIDAuthState (Testing)
+@interface SCTKAuthState (Testing)
   // expose private method for simple testing
 - (BOOL)isTokenFresh;
 @end
 
-@interface OIDAuthStateTests () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
+@interface OIDAuthStateTests () <SCTKAuthStateChangeDelegate, SCTKAuthStateErrorDelegate>
 @end
 
 @implementation OIDAuthStateTests {
-  /*! @brief An expectation for tests waiting on OIDAuthStateChangeDelegate.didChangeState:.
+  /*! @brief An expectation for tests waiting on SCTKAuthStateChangeDelegate.didChangeState:.
    */
   XCTestExpectation *_didChangeStateExpectation;
 
   /*! @brief An expectation for tests waiting on
-          OIDAuthStateErrorDelegate.didEncounterAuthorizationError:.
+          SCTKAuthStateErrorDelegate.didEncounterAuthorizationError:.
    */
   XCTestExpectation *_didEncounterAuthorizationErrorExpectation;
 
   /*! @brief An expectation for tests waiting on
-          OIDAuthStateErrorDelegate.didEncounterTransientError:.
+          SCTKAuthStateErrorDelegate.didEncounterTransientError:.
    */
   XCTestExpectation *_didEncounterTransientErrorExpectation;
 }
 
-+ (OIDAuthState *)testInstance {
-  OIDAuthorizationResponse *authorizationResponse =
++ (SCTKAuthState *)testInstance {
+  SCTKAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
-  OIDTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceCodeExchange];
-  OIDAuthState *authstate =
-      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+  SCTKTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceCodeExchange];
+  SCTKAuthState *authstate =
+      [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                             tokenResponse:tokenResponse];
   return authstate;
 }
@@ -77,7 +77,7 @@
  */
 + (NSError *)OAuthAuthorizationError {
   NSError *oauthError =
-      [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
+      [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthAuthorizationErrorDomain
                                 OAuthResponse:@{@"error": @"invalid_request"}
                               underlyingError:nil];
   return oauthError;
@@ -88,7 +88,7 @@
  */
 + (NSError *)OAuthTokenInvalidGrantErrorWithUnderlyingError:(NSError *)underlyingError {
   NSError *oauthError =
-      [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+      [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
                                 OAuthResponse:@{@"error": @"invalid_grant"}
                               underlyingError:underlyingError];
   return oauthError;
@@ -98,24 +98,24 @@
  */
 + (NSError *)OAuthTokenInvalidClientError {
   NSError *oauthError =
-      [OIDErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
+      [SCTKErrorUtilities OAuthErrorWithDomain:OIDOAuthTokenErrorDomain
                                 OAuthResponse:@{@"error": @"invalid_client"}
                               underlyingError:nil];
   return oauthError;
 }
 
-#pragma mark OIDAuthStateChangeDelegate methods
+#pragma mark SCTKAuthStateChangeDelegate methods
 
-- (void)didChangeState:(OIDAuthState *)state {
+- (void)didChangeState:(SCTKAuthState *)state {
   // in this test, this method should only be called when we expect it
   XCTAssertNotNil(_didChangeStateExpectation, @"");
 
   [_didChangeStateExpectation fulfill];
 }
 
-#pragma mark OIDAuthStateErrorDelegate methods
+#pragma mark SCTKAuthStateErrorDelegate methods
 
-- (void)authState:(OIDAuthState *)state didEncounterAuthorizationError:(NSError *)error {
+- (void)authState:(SCTKAuthState *)state didEncounterAuthorizationError:(NSError *)error {
   // in this test, this method should only be called when we expect it
   XCTAssertNotNil(_didEncounterAuthorizationErrorExpectation, @"");
 
@@ -135,7 +135,7 @@
 /*! @brief Tests that the isAuthorized state is correctly reflected when updated with an error.
  */
 - (void)testErrorState {
-  OIDAuthState *authstate = [[self class] testInstance];
+  SCTKAuthState *authstate = [[self class] testInstance];
 
   // starting state should be authorized
   XCTAssert([authstate isAuthorized], @"");
@@ -154,9 +154,9 @@
  */
 - (void)testStateChangeDelegates {
   _didChangeStateExpectation = [self expectationWithDescription:
-      @"OIDAuthStateChangeDelegate.didChangeState: should be called."];
+      @"SCTKAuthStateChangeDelegate.didChangeState: should be called."];
 
-  OIDAuthState *authstate = [[self class] testInstance];
+  SCTKAuthState *authstate = [[self class] testInstance];
   authstate.stateChangeDelegate = self;
 
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
@@ -168,27 +168,27 @@
 /*! @brief Tests that the isAuthorized state is correctly reflected when updated with an error.
  */
 - (void)testErrorDelegates {
-  OIDAuthState *authstate = [[self class] testInstance];
+  SCTKAuthState *authstate = [[self class] testInstance];
   authstate.errorDelegate = self;
 
   // test invalid_grant error
   _didEncounterAuthorizationErrorExpectation = [self expectationWithDescription:
-      @"OIDAuthStateErrorDelegate.authState:didEncounterAuthorizationErrorExpectation: delegate "
+      @"SCTKAuthStateErrorDelegate.authState:didEncounterAuthorizationErrorExpectation: delegate "
       "should be called for invalid_grant error."];
   NSError *oauthErrorInvalidGrant =
       [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authstate updateWithAuthorizationError:oauthErrorInvalidGrant];
-  // waits for OIDAuthStateErrorDelegate.authState:didEncounterInvalidGrantError:
+  // waits for SCTKAuthStateErrorDelegate.authState:didEncounterInvalidGrantError:
   [self waitForExpectationsWithTimeout:2 handler:nil];
 
   // test invalid_client error
   _didEncounterAuthorizationErrorExpectation = [self expectationWithDescription:
-      @"OIDAuthStateErrorDelegate.authState:didEncounterAuthorizationErrorExpectation: delegate "
+      @"SCTKAuthStateErrorDelegate.authState:didEncounterAuthorizationErrorExpectation: delegate "
       "should be called for invalid_client error."];
   NSError *oauthErrorInvalidClient = [[self class] OAuthTokenInvalidClientError];
   [authstate updateWithAuthorizationError:oauthErrorInvalidClient];
 
-  // waits for OIDAuthStateErrorDelegate.authState:didEncounterAuthorizationErrorExpectation:
+  // waits for SCTKAuthStateErrorDelegate.authState:didEncounterAuthorizationErrorExpectation:
   [self waitForExpectationsWithTimeout:2 handler:nil];
   _didEncounterAuthorizationErrorExpectation = nil;
 }
@@ -197,7 +197,7 @@
         compliant.
  */
 - (void)testNonCompliantNSCodingNSErrors {
-  OIDAuthState *authstate = [[self class] testInstance];
+  SCTKAuthState *authstate = [[self class] testInstance];
   NSError *nonCompliantError = [NSError errorWithDomain:@"domain"
                                                    code:1
                                                userInfo:@{@"object": [[NSObject alloc] init]}];
@@ -221,8 +221,8 @@
 /*! @brief Tests @c OIDAuthState.updateWithAuthorizationResponse:error: with a success response.
  */
 - (void)testUpdateWithAuthorizationResponseSuccess {
-  OIDAuthState *authState = [[self class] testInstance];
-  OIDAuthorizationResponse *authorizationResponse =
+  SCTKAuthState *authState = [[self class] testInstance];
+  SCTKAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
   [authState updateWithAuthorizationResponse:authorizationResponse error:nil];
   XCTAssertEqual(authState.lastAuthorizationResponse, authorizationResponse, @"");
@@ -233,7 +233,7 @@
         error.
  */
 - (void)testUpdateWithAuthorizationResponseOAuthError {
-  OIDAuthState *authState = [[self class] testInstance];
+  SCTKAuthState *authState = [[self class] testInstance];
   NSError *oauthError = [[self class] OAuthAuthorizationError];
   [authState updateWithAuthorizationResponse:nil error:oauthError];
   XCTAssertNotNil(authState.authorizationError, @"");
@@ -243,7 +243,7 @@
         (non-OAuth) error.
  */
 - (void)testUpdateWithAuthorizationResponseTransientError {
-  OIDAuthState *authState = [[self class] testInstance];
+  SCTKAuthState *authState = [[self class] testInstance];
   NSError *transientError = [[NSError alloc] init];
   [authState updateWithAuthorizationResponse:nil error:transientError];
   XCTAssertNil(authState.authorizationError, @"");
@@ -253,8 +253,8 @@
         response and an authorization error.
  */
 - (void)testUpdateWithAuthorizationResponseBothSuccessAndError {
-  OIDAuthState *authState = [[self class] testInstance];
-  OIDAuthorizationResponse *authorizationResponse =
+  SCTKAuthState *authState = [[self class] testInstance];
+  SCTKAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
   NSError *oauthError = [[self class] OAuthAuthorizationError];
   [authState updateWithAuthorizationResponse:authorizationResponse error:oauthError];
@@ -264,8 +264,8 @@
 /*! @brief Tests @c OIDAuthState.updateWithRegistrationResponse: with a success response.
  */
 - (void)testupdateWithRegistrationResponse {
-  OIDAuthState *authState = [[self class] testInstance];
-  OIDRegistrationResponse *registrationResponse = [OIDRegistrationResponseTests testInstance];
+  SCTKAuthState *authState = [[self class] testInstance];
+  SCTKRegistrationResponse *registrationResponse = [OIDRegistrationResponseTests testInstance];
   [authState updateWithRegistrationResponse:registrationResponse];
   XCTAssertEqualObjects(authState.lastRegistrationResponse, registrationResponse);
   XCTAssertNil(authState.refreshToken);
@@ -278,8 +278,8 @@
 /*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a success response.
  */
 - (void)testUpdateWithTokenResponseSuccess {
-  OIDAuthState *authState = [[self class] testInstance];
-  OIDTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceRefresh];
+  SCTKAuthState *authState = [[self class] testInstance];
+  SCTKTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceRefresh];
   [authState updateWithTokenResponse:tokenResponse error:nil];
   XCTAssertEqual(authState.lastTokenResponse, tokenResponse, @"");
   XCTAssertNotNil(authState.refreshToken, @"");
@@ -290,7 +290,7 @@
 /*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with an authorization error.
  */
 - (void)testUpdateWithTokenResponseOAuthError {
-  OIDAuthState *authState = [[self class] testInstance];
+  SCTKAuthState *authState = [[self class] testInstance];
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authState updateWithTokenResponse:nil error:oauthError];
   XCTAssertFalse(authState.isAuthorized, @"");
@@ -300,7 +300,7 @@
 /*! @brief Tests @c OIDAuthState.updateWithTokenResponse:error: with a transient (non-OAuth) error.
  */
 - (void)testUpdateWithTokenResponseTransientError {
-  OIDAuthState *authState = [[self class] testInstance];
+  SCTKAuthState *authState = [[self class] testInstance];
   NSError *transientError = [[NSError alloc] init];
   [authState updateWithTokenResponse:nil error:transientError];
   XCTAssertNotNil(authState.lastTokenResponse, @"");
@@ -313,8 +313,8 @@
         and an authorization error.
  */
 - (void)testUpdateWithTokenResponseBothSuccessAndError {
-  OIDAuthState *authState = [[self class] testInstance];
-  OIDTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceRefresh];
+  SCTKAuthState *authState = [[self class] testInstance];
+  SCTKTokenResponse *tokenResponse = [OIDTokenResponseTests testInstanceRefresh];
   NSError *oauthError = [[self class] OAuthTokenInvalidGrantErrorWithUnderlyingError:nil];
   [authState updateWithTokenResponse:tokenResponse error:oauthError];
   XCTAssertFalse(authState.isAuthorized, @"");
@@ -324,24 +324,24 @@
 /*! @brief Full lifecycle test of the code flow from code exchange, refresh, error and re-auth.
  */
 - (void)testCodeFlowLifecycle {
-  OIDAuthorizationResponse *authorizationResponse =
+  SCTKAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
 
   // initializes from code flow authorization response
-  OIDAuthState *authState =
-      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
+  SCTKAuthState *authState =
+      [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
   XCTAssertEqual(authState.lastAuthorizationResponse, authorizationResponse, @"");
   XCTAssertFalse(authState.isAuthorized,
                  @"Shouldn't be authorized as the code needs to be exchanged");
 
   // updates with result from token exchange
-  OIDTokenResponse *tokenResponseCodeExchange = [OIDTokenResponseTests testInstanceCodeExchange];
+  SCTKTokenResponse *tokenResponseCodeExchange = [OIDTokenResponseTests testInstanceCodeExchange];
   [authState updateWithTokenResponse:tokenResponseCodeExchange error:nil];
   XCTAssertEqual(authState.lastTokenResponse, tokenResponseCodeExchange, @"");
   XCTAssertTrue(authState.isAuthorized, @"");
 
   // updates with code refresh
-  OIDTokenResponse *tokenResponseRefresh = [OIDTokenResponseTests testInstanceRefresh];
+  SCTKTokenResponse *tokenResponseRefresh = [OIDTokenResponseTests testInstanceRefresh];
   [authState updateWithTokenResponse:tokenResponseRefresh error:nil];
   XCTAssertEqual(authState.lastTokenResponse, tokenResponseRefresh, @"");
   XCTAssertTrue(authState.isAuthorized, @"");
@@ -366,17 +366,17 @@
 }
 
 - (void)testSecureCoding {
-  XCTAssert([OIDAuthState supportsSecureCoding], @"");
+  XCTAssert([SCTKAuthState supportsSecureCoding], @"");
 
-  OIDAuthState *authState = [[self class] testInstance];
-  OIDAuthState *authStateCopy;
+  SCTKAuthState *authState = [[self class] testInstance];
+  SCTKAuthState *authStateCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:authState
                                  requiringSecureCoding:YES
                                                  error:&error];
-    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
+    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKAuthState class]
                                                       fromData:data
                                                          error:&error];
   } else {
@@ -412,7 +412,7 @@
   XCTAssertNotNil(authState.authorizationError, @"");
 
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
-    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthState class]
+    authStateCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKAuthState class]
                                                       fromData:data
                                                          error:&error];
   } else {
@@ -426,73 +426,73 @@
 }
 
 - (void)testIsTokenFreshWithFreshToken {
-  OIDAuthorizationResponse *authorizationResponse =
+  SCTKAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
-  OIDTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
-  OIDTokenResponse *tokenResponse =
-      [[OIDTokenResponse alloc] initWithRequest:tokenRequest
+  SCTKTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
+  SCTKTokenResponse *tokenResponse =
+      [[SCTKTokenResponse alloc] initWithRequest:tokenRequest
                                      parameters:@{@"access_token": @"abc123",
                                                   @"expires_in": @(3600)
                                                  }];
 
-  OIDAuthState *authState =
-      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+  SCTKAuthState *authState =
+      [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                             tokenResponse:tokenResponse];
   XCTAssertEqual([authState isTokenFresh], YES, @"");
 }
 
 - (void)testIsTokenFreshWithExpiredToken {
-  OIDAuthorizationResponse *authorizationResponse =
+  SCTKAuthorizationResponse *authorizationResponse =
           [OIDAuthorizationResponseTests testInstanceCodeFlow];
-  OIDTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
-  OIDTokenResponse *tokenResponse =
-          [[OIDTokenResponse alloc] initWithRequest:tokenRequest
+  SCTKTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
+  SCTKTokenResponse *tokenResponse =
+          [[SCTKTokenResponse alloc] initWithRequest:tokenRequest
                                          parameters:@{@"access_token": @"abc123",
                                                       @"expires_in": @(0)
                                                      }];
 
-  OIDAuthState *authState =
-      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+  SCTKAuthState *authState =
+      [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                             tokenResponse:tokenResponse];
   XCTAssertEqual([authState isTokenFresh], NO, @"");
 }
 
 - (void)testIsTokenFreshRespectsTokenRefreshOverride {
-  OIDAuthState *authState = [[self class] testInstance];
+  SCTKAuthState *authState = [[self class] testInstance];
   [authState setNeedsTokenRefresh];
   XCTAssertEqual([authState isTokenFresh], NO, @"");
 }
 
 - (void)testIsTokenFreshHandlesTokenWithoutExpirationTime {
-  OIDAuthorizationResponse *authorizationResponse =
+  SCTKAuthorizationResponse *authorizationResponse =
       [OIDAuthorizationResponseTests testInstanceCodeFlow];
-  OIDTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
-  OIDTokenResponse *tokenResponse =
-      [[OIDTokenResponse alloc] initWithRequest:tokenRequest
+  SCTKTokenRequest *tokenRequest = [OIDTokenRequestTests testInstance];
+  SCTKTokenResponse *tokenResponse =
+      [[SCTKTokenResponse alloc] initWithRequest:tokenRequest
                                      parameters:@{ @"access_token": @"abc123" }];
 
-  OIDAuthState *authState =
-      [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+  SCTKAuthState *authState =
+      [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                             tokenResponse:tokenResponse];
   XCTAssertEqual([authState isTokenFresh], YES, @"");
 }
 
 - (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalParameters {
-  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  SCTKAuthState *authState = [[SCTKAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
   XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalParameters:nil],
                                NSException,
                                kRefreshTokenRequestException);
 }
 
 - (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalHeaders {
-  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  SCTKAuthState *authState = [[SCTKAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
   XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalHeaders:nil],
                                NSException,
                                kRefreshTokenRequestException);
 }
 
 - (void)testThatRefreshTokenExceptionWillBeRaisedForTokenRequestWithAdditionalParametersAndHeaders {
-  OIDAuthState *authState = [[OIDAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
+  SCTKAuthState *authState = [[SCTKAuthState alloc] initWithAuthorizationResponse:nil tokenResponse:nil registrationResponse:nil];
   XCTAssertThrowsSpecificNamed([authState tokenRefreshRequestWithAdditionalHeaders:nil],
                                NSException,
                                kRefreshTokenRequestException);

@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDRegistrationResponse;
+@class SCTKRegistrationResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Creates a new @c OIDRegistrationResponseTests for testing.
  */
-+ (OIDRegistrationResponse *)testInstance;
++ (SCTKRegistrationResponse *)testInstance;
 
 @end
 

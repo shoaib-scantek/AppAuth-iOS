@@ -21,8 +21,8 @@
 #if SWIFT_PACKAGE
 @import AppAuthTV;
 #else
-#import "Sources/AppAuthCore/OIDScopeUtilities.h"
-#import "Sources/AppAuthCore/OIDURLQueryComponent.h"
+#import "Sources/AppAuthCore/SCTKScopeUtilities.h"
+#import "Sources/AppAuthCore/SCTKURLQueryComponent.h"
 #import "Sources/AppAuthTV/OIDTVAuthorizationRequest.h"
 #import "Sources/AppAuthTV/OIDTVAuthorizationResponse.h"
 #import "Sources/AppAuthTV/OIDTVServiceConfiguration.h"

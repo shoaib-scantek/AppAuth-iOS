@@ -20,7 +20,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class OIDAuthState;
+@class SCTKAuthState;
 @class OIDTVAuthorizationRequest;
 @class OIDTVAuthorizationResponse;
 @class OIDTVServiceConfiguration;
@@ -48,7 +48,7 @@ typedef void (^OIDTVAuthorizationInitialization)(OIDTVAuthorizationResponse *_Nu
     @param error The error if an error occurred.
  */
 typedef void (^OIDTVAuthorizationCompletion)
-    (OIDAuthState *_Nullable authorization,
+    (SCTKAuthState *_Nullable authorization,
      NSError *_Nullable error);
 
 /*! @brief Block returned when authorization is initialized that will cancel the pending

@@ -21,7 +21,7 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDResponseTypes.h"
+#import "Sources/AppAuthCore/SCTKResponseTypes.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -38,15 +38,15 @@
 @implementation OIDResponseTypesTests
 
 - (void)testCode {
-  XCTAssertEqualObjects(OIDResponseTypeCode, @"code", @"");
+  XCTAssertEqualObjects(SCTKResponseTypeCode, @"code", @"");
 }
 
 - (void)testToken {
-  XCTAssertEqualObjects(OIDResponseTypeToken, @"token", @"");
+  XCTAssertEqualObjects(SCTKResponseTypeToken, @"token", @"");
 }
 
 - (void)testIDToken {
-  XCTAssertEqualObjects(OIDResponseTypeIDToken, @"id_token", @"");
+  XCTAssertEqualObjects(SCTKResponseTypeIDToken, @"id_token", @"");
 }
 
 @end

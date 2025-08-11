@@ -1,4 +1,4 @@
-/*! @file OIDAuthorizationRequestTests.m
+/*! @file SCTKAuthorizationRequestTests.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -16,16 +16,16 @@
         limitations under the License.
  */
 
-#import "OIDAuthorizationRequestTests.h"
+#import "SCTKAuthorizationRequestTests.h"
 
 #import "OIDServiceConfigurationTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
-#import "Sources/AppAuthCore/OIDScopeUtilities.h"
-#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
+#import "Sources/AppAuthCore/SCTKAuthorizationRequest.h"
+#import "Sources/AppAuthCore/SCTKScopeUtilities.h"
+#import "Sources/AppAuthCore/SCTKServiceConfiguration.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -135,21 +135,21 @@ static int const kCodeVerifierMaxLength = 128;
  */
 static int const kCodeVerifierRecommendedLength = 43;
 
-@implementation OIDAuthorizationRequestTests
+@implementation SCTKAuthorizationRequestTests
 
 + (NSString *)codeChallenge {
-  return [OIDAuthorizationRequest codeChallengeS256ForVerifier:kTestCodeVerifier];
+  return [SCTKAuthorizationRequest codeChallengeS256ForVerifier:kTestCodeVerifier];
 }
 + (NSString *)codeChallengeMethod {
   return OIDOAuthorizationRequestCodeChallengeMethodS256;
 }
 
-+ (OIDAuthorizationRequest *)testInstance {
++ (SCTKAuthorizationRequest *)testInstance {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKAuthorizationRequest *request =
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                          scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
@@ -164,10 +164,10 @@ static int const kCodeVerifierRecommendedLength = 43;
   return request;
 }
 
-+ (OIDAuthorizationRequest *)testInstanceCodeFlow {
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
++ (SCTKAuthorizationRequest *)testInstanceCodeFlow {
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKAuthorizationRequest *request =
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:nil
                          scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
@@ -182,10 +182,10 @@ static int const kCodeVerifierRecommendedLength = 43;
   return request;
 }
 
-+ (OIDAuthorizationRequest *)testInstanceCodeFlowClientAuth {
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
++ (SCTKAuthorizationRequest *)testInstanceCodeFlowClientAuth {
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKAuthorizationRequest *request =
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                          scope:[OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]]
@@ -205,9 +205,9 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testScopeInitializerWithManyScopesAndNoClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKAuthorizationRequest *request =
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                         scopes:@[ kTestScope, kTestScopeA ]
                    redirectURL:[NSURL URLWithString:kTestRedirectURL]
@@ -227,9 +227,9 @@ static int const kCodeVerifierRecommendedLength = 43;
 /*! @brief Tests the initializer which takes a nonce
  */
 - (void)testNonceInitializer {
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKAuthorizationRequest *request =
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[]
                                                  redirectURL:[NSURL URLWithString:kTestRedirectURL]
@@ -249,9 +249,9 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testScopeInitializerWithManyScopesAndClientSecret {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
-  OIDAuthorizationRequest *request =
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKAuthorizationRequest *request =
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scopes:@[ kTestScope, kTestScopeA ]
@@ -272,7 +272,7 @@ static int const kCodeVerifierRecommendedLength = 43;
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDAuthorizationRequest *request = [[self class] testInstance];
+  SCTKAuthorizationRequest *request = [[self class] testInstance];
 
   XCTAssertEqualObjects(request.responseType, kTestResponseType, @"");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
@@ -287,7 +287,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
 
-  OIDAuthorizationRequest *requestCopy = [request copy];
+  SCTKAuthorizationRequest *requestCopy = [request copy];
 
   XCTAssertNotNil(requestCopy.configuration, @"");
   XCTAssertEqualObjects(requestCopy.configuration, request.configuration, @"");
@@ -308,7 +308,7 @@ static int const kCodeVerifierRecommendedLength = 43;
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDAuthorizationRequest *request = [[self class] testInstance];
+  SCTKAuthorizationRequest *request = [[self class] testInstance];
 
   XCTAssertEqualObjects(request.responseType, kTestResponseType, @"");
   XCTAssertEqualObjects(request.scope, kTestScopesMerged, @"");
@@ -322,14 +322,14 @@ static int const kCodeVerifierRecommendedLength = 43;
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue, @"");
 
-  OIDAuthorizationRequest *requestCopy;
+  SCTKAuthorizationRequest *requestCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:request
                                  requiringSecureCoding:YES
                                                  error:&error];
-    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationRequest class]
+    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKAuthorizationRequest class]
                                                      fromData:data
                                                         error:&error];
   } else {
@@ -364,65 +364,65 @@ static int const kCodeVerifierRecommendedLength = 43;
  */
 - (void)testDisallowedCharactersInScopes {
   NSURL *redirectURL = [NSURL URLWithString:kTestRedirectURL];
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
   XCTAssertThrows(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope1 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertThrows(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope2 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertThrows(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope3 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertThrows(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestInvalidScope4 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope1 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope2 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope3 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope4 ]
                                                  redirectURL:redirectURL
                                                 responseType:OIDResponseTypeCode
                                         additionalParameters:nil], @"");
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                     clientId:kTestClientID
                                                       scopes:@[ kTestValidScope5 ]
                                                  redirectURL:redirectURL
@@ -449,7 +449,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testPKCEVerifierCompliance {
   // as this test involves random numbers, repeats multiple times
   for (int i = 0; i < 1000; i++) {
-    NSString *codeVerifier = [OIDAuthorizationRequest generateCodeVerifier];
+    NSString *codeVerifier = [SCTKAuthorizationRequest generateCodeVerifier];
     XCTAssertNotNil(codeVerifier, @"");
 
     // tests that the code verifier is within the specified size bounds
@@ -468,7 +468,7 @@ static int const kCodeVerifierRecommendedLength = 43;
     @see https://tools.ietf.org/html/rfc7636#section-4.1
  */
 - (void)testPKCEVerifierRecommendations {
-  NSString *codeVerifier = [OIDAuthorizationRequest generateCodeVerifier];
+  NSString *codeVerifier = [SCTKAuthorizationRequest generateCodeVerifier];
   XCTAssertNotNil(codeVerifier, @"");
   XCTAssertEqual(codeVerifier.length,
                  kCodeVerifierRecommendedLength,
@@ -478,12 +478,12 @@ static int const kCodeVerifierRecommendedLength = 43;
 - (void)testSupportedResponseTypes {
   NSDictionary *additionalParameters =
       @{ kTestAdditionalParameterKey : kTestAdditionalParameterValue };
-  OIDServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
+  SCTKServiceConfiguration *configuration = [OIDServiceConfigurationTests testInstance];
 
-  NSString *scope = [OIDScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]];
+  NSString *scope = [SCTKScopeUtilities scopesWithArray:@[ kTestScope, kTestScopeA ]];
 
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scope:scope
@@ -499,7 +499,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 
   // https://tools.ietf.org/html/rfc6749#section-3.1.1 says the order of values does not matter
   XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scope:scope
@@ -514,7 +514,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   );
 
   XCTAssertThrows(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scope:scope
@@ -529,7 +529,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   );
 
   XCTAssertThrows(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scope:scope
@@ -544,7 +544,7 @@ static int const kCodeVerifierRecommendedLength = 43;
   );
 
  XCTAssertNoThrow(
-      [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+      [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                       clientId:kTestClientID
                   clientSecret:kTestClientSecret
                         scope:scope
@@ -561,7 +561,7 @@ static int const kCodeVerifierRecommendedLength = 43;
 }
 
 - (void)testExternalUserAgentMethods {
-  OIDAuthorizationRequest *request = [[self class] testInstance];
+  SCTKAuthorizationRequest *request = [[self class] testInstance];
   XCTAssertEqualObjects([request externalUserAgentRequestURL], [request authorizationRequestURL]);
   XCTAssert([[request redirectScheme] isEqualToString:request.redirectURL.scheme]);
 }

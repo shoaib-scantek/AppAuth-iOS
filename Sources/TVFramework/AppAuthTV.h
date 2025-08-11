@@ -25,22 +25,22 @@ FOUNDATION_EXPORT double AppAuthTVVersionNumber;
 FOUNDATION_EXPORT const unsigned char AppAuthTVVersionString[];
 
 #import <AppAuthTV/OIDAuthState.h>
-#import <AppAuthTV/OIDAuthStateChangeDelegate.h>
-#import <AppAuthTV/OIDAuthStateErrorDelegate.h>
-#import <AppAuthTV/OIDAuthorizationRequest.h>
+#import <AppAuthTV/SCTKAuthStateChangeDelegate.h>
+#import <AppAuthTV/SCTKAuthStateErrorDelegate.h>
+#import <AppAuthTV/SCTKAuthorizationRequest.h>
 #import <AppAuthTV/OIDAuthorizationResponse.h>
-#import <AppAuthTV/OIDAuthorizationService.h>
-#import <AppAuthTV/OIDError.h>
+#import <AppAuthTV/SCTKAuthorizationService.h>
+#import <AppAuthTV/SCTKError.h>
 #import <AppAuthTV/OIDErrorUtilities.h>
-#import <AppAuthTV/OIDExternalUserAgent.h>
-#import <AppAuthTV/OIDExternalUserAgentRequest.h>
-#import <AppAuthTV/OIDExternalUserAgentSession.h>
-#import <AppAuthTV/OIDGrantTypes.h>
+#import <AppAuthTV/SCTKExternalUserAgent.h>
+#import <AppAuthTV/SCTKExternalUserAgentRequest.h>
+#import <AppAuthTV/SCTKExternalUserAgentSession.h>
+#import <AppAuthTV/SCTKGrantTypes.h>
 #import <AppAuthTV/OIDIDToken.h>
 #import <AppAuthTV/OIDRegistrationRequest.h>
 #import <AppAuthTV/OIDRegistrationResponse.h>
-#import <AppAuthTV/OIDResponseTypes.h>
-#import <AppAuthTV/OIDScopes.h>
+#import <AppAuthTV/SCTKResponseTypes.h>
+#import <AppAuthTV/SCTKScopes.h>
 #import <AppAuthTV/OIDScopeUtilities.h>
 #import <AppAuthTV/OIDServiceConfiguration.h>
 #import <AppAuthTV/OIDServiceDiscovery.h>

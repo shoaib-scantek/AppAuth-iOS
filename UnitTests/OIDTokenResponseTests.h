@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-@class OIDTokenResponse;
+@class SCTKTokenResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,17 +28,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Creates a new @c OIDTokenResponse for testing.
  */
-+ (OIDTokenResponse *)testInstance;
++ (SCTKTokenResponse *)testInstance;
 
 /*! @brief Creates a new @c OIDTokenRequest for testing the code exchange.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.4
  */
-+ (OIDTokenResponse *)testInstanceCodeExchange;
++ (SCTKTokenResponse *)testInstanceCodeExchange;
 
 /*! @brief Creates a new @c OIDTokenRequest for testing the token refresh.
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */
-+ (OIDTokenResponse *)testInstanceRefresh;
++ (SCTKTokenResponse *)testInstanceRefresh;
 
 @end
 

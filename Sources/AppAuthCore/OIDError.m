@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "OIDError.h"
+#import "SCTKError.h"
 
 NSString *const OIDGeneralErrorDomain = @"org.openid.appauth.general";
 
@@ -31,9 +31,9 @@ NSString *const OIDResourceServerAuthorizationErrorDomain = @"org.openid.appauth
 NSString *const OIDHTTPErrorDomain = @"org.openid.appauth.remote-http";
 
 NSString *const OIDOAuthExceptionInvalidAuthorizationFlow = @"An OAuth redirect was sent to a "
-    "OIDExternalUserAgentSession after it already completed.";
+    "SCTKExternalUserAgentSession after it already completed.";
 
-NSString *const OIDOAuthExceptionInvalidTokenRequestNullRedirectURL = @"A OIDTokenRequest was "
+NSString *const SCTKOAuthExceptionInvalidTokenRequestNullRedirectURL = @"A OIDTokenRequest was "
     "created with a grant_type that requires a redirectURL, but a null redirectURL was given";
 
 NSString *const OIDOAuthErrorResponseErrorKey = @"OIDOAuthErrorResponseErrorKey";

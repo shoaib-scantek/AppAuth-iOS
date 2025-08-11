@@ -18,14 +18,14 @@
 
 #import "OIDAuthorizationResponseTests.h"
 
-#import "OIDAuthorizationRequestTests.h"
+#import "SCTKAuthorizationRequestTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDAuthorizationRequest.h"
+#import "Sources/AppAuthCore/SCTKAuthorizationRequest.h"
 #import "Sources/AppAuthCore/OIDAuthorizationResponse.h"
-#import "Sources/AppAuthCore/OIDGrantTypes.h"
+#import "Sources/AppAuthCore/SCTKGrantTypes.h"
 #endif
 
 // Ignore warnings about "Use of GNU statement expression extension" which is raised by our use of
@@ -75,10 +75,10 @@ static NSString *const kTestScope = @"Scope";
 
 @implementation OIDAuthorizationResponseTests
 
-+ (OIDAuthorizationResponse *)testInstance {
-  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstance];
-  OIDAuthorizationResponse *response =
-      [[OIDAuthorizationResponse alloc] initWithRequest:request parameters:@{
++ (SCTKAuthorizationResponse *)testInstance {
+  SCTKAuthorizationRequest *request = [SCTKAuthorizationRequestTests testInstance];
+  SCTKAuthorizationResponse *response =
+      [[SCTKAuthorizationResponse alloc] initWithRequest:request parameters:@{
         @"code" : kTestAuthorizationCode,
         @"code_verifier" : kTestAuthorizationCodeVerifier,
         @"state" : kTestState,
@@ -92,10 +92,10 @@ static NSString *const kTestScope = @"Scope";
   return response;
 }
 
-+ (OIDAuthorizationResponse *)testInstanceCodeFlow {
-  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlow];
-  OIDAuthorizationResponse *response =
-      [[OIDAuthorizationResponse alloc] initWithRequest:request parameters:@{
++ (SCTKAuthorizationResponse *)testInstanceCodeFlow {
+  SCTKAuthorizationRequest *request = [SCTKAuthorizationRequestTests testInstanceCodeFlow];
+  SCTKAuthorizationResponse *response =
+      [[SCTKAuthorizationResponse alloc] initWithRequest:request parameters:@{
         @"code" : kTestAuthorizationCode,
         @"code_verifier" : kTestAuthorizationCodeVerifier,
         @"state" : kTestState,
@@ -105,10 +105,10 @@ static NSString *const kTestScope = @"Scope";
   return response;
 }
 
-+ (OIDAuthorizationResponse *)testInstanceCodeFlowClientAuth {
-  OIDAuthorizationRequest *request = [OIDAuthorizationRequestTests testInstanceCodeFlowClientAuth];
-  OIDAuthorizationResponse *response =
-      [[OIDAuthorizationResponse alloc] initWithRequest:request parameters:@{
++ (SCTKAuthorizationResponse *)testInstanceCodeFlowClientAuth {
+  SCTKAuthorizationRequest *request = [SCTKAuthorizationRequestTests testInstanceCodeFlowClientAuth];
+  SCTKAuthorizationResponse *response =
+      [[SCTKAuthorizationResponse alloc] initWithRequest:request parameters:@{
         @"code" : kTestAuthorizationCode,
         @"code_verifier" : kTestAuthorizationCodeVerifier,
         @"state" : kTestState,
@@ -122,7 +122,7 @@ static NSString *const kTestScope = @"Scope";
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDAuthorizationResponse *response = [[self class] testInstance];
+  SCTKAuthorizationResponse *response = [[self class] testInstance];
   XCTAssertEqualObjects(response.authorizationCode, kTestAuthorizationCode, @"");
   XCTAssertEqualObjects(response.state, kTestState, @"");
   XCTAssertEqualObjects(response.accessToken, kTestAccessToken, @"");
@@ -138,7 +138,7 @@ static NSString *const kTestScope = @"Scope";
   NSTimeInterval expiration = [response.accessTokenExpirationDate timeIntervalSinceNow];
   XCTAssert(expiration > kTestExpirationSeconds - 5 && expiration <= kTestExpirationSeconds, @"");
 
-  OIDAuthorizationResponse *responseCopy = [response copy];
+  SCTKAuthorizationResponse *responseCopy = [response copy];
 
   XCTAssertEqualObjects(responseCopy.request, response.request, @"");
   XCTAssertEqualObjects(responseCopy.authorizationCode, response.authorizationCode, @"");
@@ -157,15 +157,15 @@ static NSString *const kTestScope = @"Scope";
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDAuthorizationResponse *response = [[self class] testInstance];
-  OIDAuthorizationResponse *responseCopy;
+  SCTKAuthorizationResponse *response = [[self class] testInstance];
+  SCTKAuthorizationResponse *responseCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:response
                                  requiringSecureCoding:YES
                                                  error:&error];
-    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDAuthorizationResponse class]
+    responseCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKAuthorizationResponse class]
                                                      fromData:data
                                                         error:&error];
   } else {
@@ -177,7 +177,7 @@ static NSString *const kTestScope = @"Scope";
 
   // Not a full test of the request deserialization, but should be sufficient as a smoke test
   // to make sure the request IS actually getting serialized and deserialized in the
-  // NSSecureCoding implementation. We'll leave it up to the OIDAuthorizationRequest tests to make
+  // NSSecureCoding implementation. We'll leave it up to the SCTKAuthorizationRequest tests to make
   // sure the NSSecureCoding implementation of that class is correct.
   XCTAssertNotNil(responseCopy.request, @"");
   XCTAssertEqualObjects(responseCopy.request.clientID, response.request.clientID, @"");

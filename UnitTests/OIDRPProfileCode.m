@@ -18,15 +18,15 @@
 
 #import "OIDRPProfileCode.h"
 
-#import "OIDAuthorizationRequest.h"
+#import "SCTKAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
-#import "OIDAuthorizationService.h"
+#import "SCTKAuthorizationService.h"
 #import "OIDAuthState.h"
-#import "OIDExternalUserAgentSession.h"
+#import "SCTKExternalUserAgentSession.h"
 #import "OIDIDToken.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
-#import "OIDScopes.h"
+#import "SCTKScopes.h"
 #import "OIDServiceConfiguration.h"
 #import "OIDServiceDiscovery.h"
 #import "OIDTokenRequest.h"
@@ -42,16 +42,16 @@ static NSString *const kTestURIBase =
         Simply performs the authorization request as a GET request, and looks for a redirect in
         the response.
  */
-@interface OIDAuthorizationUICoordinatorNonInteractive : NSObject <OIDExternalUserAgent, NSURLSessionTaskDelegate>{
+@interface OIDAuthorizationUICoordinatorNonInteractive : NSObject <SCTKExternalUserAgent, NSURLSessionTaskDelegate>{
   NSURLSession *_urlSession;
-  __weak id<OIDExternalUserAgentSession> _session;
+  __weak id<SCTKExternalUserAgentSession> _session;
 }
 @end
 
 @implementation OIDAuthorizationUICoordinatorNonInteractive
 
-- (BOOL)presentExternalUserAgentRequest:(id<OIDExternalUserAgentRequest> )request
-                                session:(id<OIDExternalUserAgentSession>)session {
+- (BOOL)presentExternalUserAgentRequest:(id<SCTKExternalUserAgentRequest> )request
+                                session:(id<SCTKExternalUserAgentSession>)session {
   _session = session;
   NSURL *requestURL = [request externalUserAgentRequestURL];
   NSMutableURLRequest *URLRequest = [[NSURLRequest requestWithURL:requestURL] mutableCopy];
@@ -84,11 +84,11 @@ static NSString *const kTestURIBase =
 }
 @end
 
-@interface OIDAuthorizationSession : NSObject<OIDExternalUserAgentSession>
+@interface OIDAuthorizationSession : NSObject<SCTKExternalUserAgentSession>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithRequest:(OIDAuthorizationRequest *)request
+- (instancetype)initWithRequest:(SCTKAuthorizationRequest *)request
     NS_DESIGNATED_INITIALIZER;
 
 @end
@@ -98,17 +98,17 @@ static NSString *const kTestURIBase =
   OIDAuthorizationUICoordinatorNonInteractive *_coordinator;
   FILE * _logFile;
 }
-typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
-                                         OIDRegistrationResponse *registrationResponse,
+typedef void (^PostRegistrationCallback)(SCTKServiceConfiguration *configuration,
+                                         SCTKRegistrationResponse *registrationResponse,
                                          NSError *error
                                          );
 
-typedef void (^CodeExchangeCompletion)(OIDAuthorizationResponse *_Nullable authorizationResponse,
-                                       OIDTokenResponse *_Nullable tokenResponse,
+typedef void (^CodeExchangeCompletion)(SCTKAuthorizationResponse *_Nullable authorizationResponse,
+                                       SCTKTokenResponse *_Nullable tokenResponse,
                                        NSError *tokenError
                                        );
 
-typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
+typedef void (^UserInfoCompletion)(SCTKAuthState *_Nullable authState,
                                    NSDictionary *_Nullable userInfoDictionary,
                                    NSError *userInfo
                                    );
@@ -137,7 +137,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
   // discovers endpoints
-  [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
+  [SCTKAuthorizationService discoverServiceConfigurationForIssuer:issuer
       completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
 
     if (!configuration) {
@@ -160,7 +160,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
     [self certificationLog:@"Registration request: %@", request];
 
     // performs registration request
-    [OIDAuthorizationService performRegistrationRequest:request
+    [SCTKAuthorizationService performRegistrationRequest:request
         completion:^(OIDRegistrationResponse *_Nullable regResp, NSError *_Nullable error) {
       if (regResp) {
         callback(configuration, regResp, nil);
@@ -176,7 +176,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
     @param completion Completion block.
  */
 - (void)codeFlowWithExchangeForTest:(NSString *)test completion:(CodeExchangeCompletion)completion {
-  [self codeFlowWithExchangeForTest:test scope:@[ OIDScopeOpenID ] completion:completion];
+  [self codeFlowWithExchangeForTest:test scope:@[ SCTKScopeOpenID ] completion:completion];
 }
 
 /*! @brief Performs the code flow on the test server.
@@ -199,8 +199,8 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
 
   NSURL *issuer = [NSURL URLWithString:issuerString];
   
-  [self doRegistrationWithIssuer:issuer callback:^(OIDServiceConfiguration *configuration,
-                                                   OIDRegistrationResponse *registrationResponse,
+  [self doRegistrationWithIssuer:issuer callback:^(SCTKServiceConfiguration *configuration,
+                                                   SCTKRegistrationResponse *registrationResponse,
                                                    NSError *error) {
     [expectation fulfill];
     XCTAssertNotNil(configuration);
@@ -213,8 +213,8 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
 
     NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
     // builds authentication request
-    OIDAuthorizationRequest *request =
-    [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
+    SCTKAuthorizationRequest *request =
+    [[SCTKAuthorizationRequest alloc] initWithConfiguration:configuration
                                                   clientId:registrationResponse.clientID
                                               clientSecret:registrationResponse.clientSecret
                                                     scopes:scope
@@ -227,16 +227,16 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
     [self certificationLog:@"Initiating authorization request: %@",
      [request authorizationRequestURL]];
 
-    [OIDAuthorizationService presentAuthorizationRequest:request
+    [SCTKAuthorizationService presentAuthorizationRequest:request
                                        externalUserAgent:self->_coordinator
-        callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
+        callback:^(SCTKAuthorizationResponse *_Nullable authorizationResponse,
                    NSError *error) {
       [auth_complete fulfill];
       XCTAssertNotNil(authorizationResponse);
       XCTAssertNil(error);
 
       OIDTokenRequest *tokenExchangeRequest = [authorizationResponse tokenExchangeRequest];
-      [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
+      [SCTKAuthorizationService performTokenRequest:tokenExchangeRequest
                      originalAuthorizationResponse:authorizationResponse
                                           callback:^(OIDTokenResponse *_Nullable tokenResponse,
                                                      NSError *_Nullable tokenError) {
@@ -253,8 +253,8 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
  */
 - (void)codeFlowWithExchangeExpectSuccessForTest:(NSString *)test {
   [self codeFlowWithExchangeForTest:test
-                         completion:^(OIDAuthorizationResponse * _Nullable authorizationResponse,
-                                      OIDTokenResponse * _Nullable tokenResponse,
+                         completion:^(SCTKAuthorizationResponse * _Nullable authorizationResponse,
+                                      SCTKTokenResponse * _Nullable tokenResponse,
                                       NSError *tokenError) {
     XCTAssertNotNil(tokenResponse);
     XCTAssertNil(tokenError);
@@ -290,8 +290,8 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
  */
 - (void)codeFlowWithExchangeExpectFailForTest:(NSString *)test {
   [self codeFlowWithExchangeForTest:test
-                         completion:^(OIDAuthorizationResponse * _Nullable authorizationResponse,
-                                      OIDTokenResponse * _Nullable tokenResponse,
+                         completion:^(SCTKAuthorizationResponse * _Nullable authorizationResponse,
+                                      SCTKTokenResponse * _Nullable tokenResponse,
                                       NSError *tokenError) {
     XCTAssertNil(tokenResponse);
     XCTAssertNotNil(tokenError);
@@ -343,19 +343,19 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
       [self expectationWithDescription:@"Userinfo response."];
 
   NSArray<NSString *> *scope =
-      @[ OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail, OIDScopeAddress, OIDScopePhone ];
+      @[ SCTKScopeOpenID, SCTKScopeProfile, SCTKScopeEmail, SCTKScopeAddress, SCTKScopePhone ];
   [self codeFlowWithExchangeForTest:test
                               scope:scope
-                         completion:^(OIDAuthorizationResponse * _Nullable authorizationResponse,
-                                      OIDTokenResponse * _Nullable tokenResponse,
+                         completion:^(SCTKAuthorizationResponse * _Nullable authorizationResponse,
+                                      SCTKTokenResponse * _Nullable tokenResponse,
                                       NSError *tokenError) {
     XCTAssertNotNil(tokenResponse);
     XCTAssertNil(tokenError);
                
     [self certificationLog:@"Got access token: %@", tokenResponse.accessToken];
                            
-    OIDAuthState *authState =
-        [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse
+    SCTKAuthState *authState =
+        [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse
                                               tokenResponse:tokenResponse];
                            
     NSURL *userinfoEndpoint =
@@ -408,7 +408,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
   NSString *testName = @"rp-userinfo-bearer-header";
   [self startCertificationTest:testName];
   [self codeFlowThenUserInfoForTest:testName
-                         completion:^(OIDAuthState * _Nullable authState,
+                         completion:^(SCTKAuthState * _Nullable authState,
                                       NSDictionary * _Nullable userInfoDictionary,
                                       NSError *userInfoError) {
     XCTAssertNotNil(userInfoDictionary);
@@ -421,7 +421,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
   [self startCertificationTest:testName];
 
   [self codeFlowThenUserInfoForTest:testName
-                         completion:^(OIDAuthState * _Nullable authState,
+                         completion:^(SCTKAuthState * _Nullable authState,
                                       NSDictionary * _Nullable userInfoDictionary,
                                       NSError *userInfo) {
     
@@ -444,7 +444,7 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
   NSString *testName = @"rp-scope-userinfo-claims";
   [self startCertificationTest:testName];
   [self codeFlowThenUserInfoForTest:testName
-                         completion:^(OIDAuthState * _Nullable authState,
+                         completion:^(SCTKAuthState * _Nullable authState,
                                       NSDictionary * _Nullable userInfoDictionary,
                                       NSError *userInfo) {
     
@@ -494,8 +494,8 @@ typedef void (^UserInfoCompletion)(OIDAuthState *_Nullable authState,
 
   NSURL *issuer = [NSURL URLWithString:issuerString];
 
-  [self doRegistrationWithIssuer:issuer callback:^(OIDServiceConfiguration *configuration,
-                                                   OIDRegistrationResponse *registrationResponse,
+  [self doRegistrationWithIssuer:issuer callback:^(SCTKServiceConfiguration *configuration,
+                                                   SCTKRegistrationResponse *registrationResponse,
                                                    NSError *error) {
     [expectation fulfill];
 

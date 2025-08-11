@@ -1,4 +1,4 @@
-/*! @file OIDExternalUserAgentMac.h
+/*! @file SCTKExternalUserAgentMac.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -21,14 +21,14 @@
 #if TARGET_OS_OSX
 
 #import <AppKit/AppKit.h>
-#import "OIDExternalUserAgent.h"
+#import "SCTKExternalUserAgent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief A Mac-specific external user-agent UI Coordinator that uses the default browser to
         present an external user-agent request.
  */
-@interface OIDExternalUserAgentMac : NSObject <OIDExternalUserAgent>
+@interface SCTKExternalUserAgentMac : NSObject <SCTKExternalUserAgent>
 
 /*! @brief The designated initializer.
     @param presentingWindow The window from which to present the @c ASWebAuthenticationSession on

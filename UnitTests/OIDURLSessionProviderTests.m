@@ -29,14 +29,14 @@
 
 - (void)tearDown {
     // Setting the session back to default sharedSession for future test cases
-    [OIDURLSessionProvider setSession:[NSURLSession sharedSession]];
+    [SCTKURLSessionProvider setSession:[NSURLSession sharedSession]];
 }
 
 - (void)testCustomSession {
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     NSURLSession *customSession = [NSURLSession sessionWithConfiguration:config];
-    [OIDURLSessionProvider setSession:customSession];
-    NSURLSession *session = [OIDURLSessionProvider session];
+    [SCTKURLSessionProvider setSession:customSession];
+    NSURLSession *session = [SCTKURLSessionProvider session];
     XCTAssertEqualObjects(session, customSession);
 }
 

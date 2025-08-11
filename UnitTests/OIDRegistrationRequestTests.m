@@ -23,9 +23,9 @@
 #if SWIFT_PACKAGE
 @import AppAuthCore;
 #else
-#import "Sources/AppAuthCore/OIDClientMetadataParameters.h"
-#import "Sources/AppAuthCore/OIDRegistrationRequest.h"
-#import "Sources/AppAuthCore/OIDServiceConfiguration.h"
+#import "Sources/AppAuthCore/SCTKClientMetadataParameters.h"
+#import "Sources/AppAuthCore/SCTKRegistrationRequest.h"
+#import "Sources/AppAuthCore/SCTKServiceConfiguration.h"
 #endif
 
 /*! @brief Test key for the @c additionalParameters property.
@@ -62,14 +62,14 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
 
 @implementation OIDRegistrationRequestTests
 
-+ (OIDRegistrationRequest *)testInstance {
++ (SCTKRegistrationRequest *)testInstance {
   NSDictionary *additionalParameters = @{
                                          kTestAdditionalParameterKey : kTestAdditionalParameterValue
                                          };
 
-  OIDServiceConfiguration *config = [OIDServiceConfigurationTests testInstance];
-  OIDRegistrationRequest *request =
-      [[OIDRegistrationRequest alloc] initWithConfiguration:config
+  SCTKServiceConfiguration *config = [OIDServiceConfigurationTests testInstance];
+  SCTKRegistrationRequest *request =
+      [[SCTKRegistrationRequest alloc] initWithConfiguration:config
                                redirectURIs:@[ [NSURL URLWithString:kRedirectURLTestValue] ]
                               responseTypes:@[ kResponseTypeTestValue ]
                                  grantTypes:@[ kGrantTypeTestValue ]
@@ -82,7 +82,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
 }
 
 - (void)testApplicationIsNativeByDefault {
-  OIDRegistrationRequest *request = [[self class] testInstance];
+  SCTKRegistrationRequest *request = [[self class] testInstance];
   XCTAssertEqualObjects(request.applicationType, OIDApplicationTypeNative);
 }
 
@@ -90,7 +90,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
         process and checking to make sure the source and destination instances are equivalent.
  */
 - (void)testCopying {
-  OIDRegistrationRequest *request = [[self class] testInstance];
+  SCTKRegistrationRequest *request = [[self class] testInstance];
 
   XCTAssertNotNil(request.configuration);
   XCTAssertEqualObjects(request.applicationType, OIDApplicationTypeNative);
@@ -105,7 +105,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
 
-  OIDRegistrationRequest *requestCopy = [request copy];
+  SCTKRegistrationRequest *requestCopy = [request copy];
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting carried along in the copy implementation.
@@ -128,7 +128,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
         checking to make sure the source and destination instances are equivalent.
  */
 - (void)testSecureCoding {
-  OIDRegistrationRequest *request = [[self class] testInstance];
+  SCTKRegistrationRequest *request = [[self class] testInstance];
 
   XCTAssertNotNil(request.configuration);
   XCTAssertEqualObjects(request.applicationType, OIDApplicationTypeNative);
@@ -142,14 +142,14 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
   XCTAssertEqualObjects(request.additionalParameters[kTestAdditionalParameterKey],
                         kTestAdditionalParameterValue);
 
-  OIDRegistrationRequest *requestCopy;
+  SCTKRegistrationRequest *requestCopy;
   NSError *error;
   NSData *data;
   if (@available(iOS 12.0, macOS 10.13, tvOS 11.0, watchOS 4.0, *)) {
     data = [NSKeyedArchiver archivedDataWithRootObject:request
                                  requiringSecureCoding:YES
                                                  error:&error];
-    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[OIDRegistrationRequest class]
+    requestCopy = [NSKeyedUnarchiver unarchivedObjectOfClass:[SCTKRegistrationRequest class]
                                                     fromData:data
                                                        error:&error];
   } else {
@@ -180,7 +180,7 @@ static NSString *kTokenEndpointAuthMethodTestValue = @"client_secret_basic";
 /*! @brief Tests the @c URLRequest method
  */
 - (void)testURLRequest {
-  OIDRegistrationRequest *request = [[self class] testInstance];
+  SCTKRegistrationRequest *request = [[self class] testInstance];
   NSURLRequest *httpRequest = [request URLRequest];
   NSError *error;
   NSDictionary *parsedJSON = [NSJSONSerialization JSONObjectWithData:httpRequest.HTTPBody

@@ -18,7 +18,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "OIDExternalUserAgent.h"
+#import "SCTKExternalUserAgent.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
