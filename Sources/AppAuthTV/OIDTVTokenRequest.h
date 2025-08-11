@@ -16,7 +16,7 @@
        limitations under the License.
 */
 
-#import "OIDTokenRequest.h"
+#import "SCTKTokenRequest.h"
 
 #import <Foundation/Foundation.h>
 

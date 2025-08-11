@@ -19,7 +19,7 @@
 #import "OIDTokenRequestTests.h"
 
 #import "OIDAuthorizationResponseTests.h"
-#import "OIDServiceConfigurationTests.h"
+#import "SCTKServiceConfigurationTests.h"
 
 #if SWIFT_PACKAGE
 @import AppAuthCore;
@@ -297,7 +297,7 @@ static NSString *const kTestAdditionalHeaderValue2 = @"3";
 
   // Not a full test of the configuration deserialization, but should be sufficient as a smoke test
   // to make sure the configuration IS actually getting serialized and deserialized in the
-  // NSSecureCoding implementation. We'll leave it up to the OIDServiceConfiguration tests to make
+  // NSSecureCoding implementation. We'll leave it up to the SCTKServiceConfiguration tests to make
   // sure the NSSecureCoding implementation of that class is correct.
   XCTAssertEqualObjects(requestCopy.configuration.authorizationEndpoint,
                         request.configuration.authorizationEndpoint, @"");

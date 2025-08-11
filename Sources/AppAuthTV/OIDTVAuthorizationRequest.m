@@ -67,7 +67,7 @@
                         clientSecret:clientSecret
                               scopes:scopes
                          redirectURL:[[NSURL alloc] initWithString:@""]
-                        responseType:OIDResponseTypeCode
+                        responseType:SCTKResponseTypeCode
                 additionalParameters:additionalParameters];
 }
 

@@ -1,4 +1,4 @@
-/*! @file OIDAuthState+IOS.m
+/*! @file SCTKAuthState+IOS.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.

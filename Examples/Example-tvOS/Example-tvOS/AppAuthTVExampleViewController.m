@@ -59,7 +59,7 @@ static NSString *const kExampleAuthorizerKey = @"authorization";
  */
 static NSString *const kExampleAuthStateKey = @"authState";
 
-@interface AppAuthTVExampleViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
+@interface AppAuthTVExampleViewController () <SCTKAuthStateChangeDelegate, SCTKAuthStateErrorDelegate>
 @end
 
 @implementation AppAuthTVExampleViewController {
@@ -122,11 +122,11 @@ static NSString *const kExampleAuthStateKey = @"authState";
   [self updateUI];
 }
 
-- (void)didChangeState:(OIDAuthState *)state {
+- (void)didChangeState:(SCTKAuthState *)state {
   [self stateChanged];
 }
 
-- (void)authState:(OIDAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
+- (void)authState:(SCTKAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
   [self logMessage:@"Received authorization error: %@", error];
 }
 /*! @brief Initiates the sign-in.
@@ -192,7 +192,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
       };
 
   OIDTVAuthorizationCompletion completionBlock =
-      ^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+      ^(SCTKAuthState *_Nullable authState, NSError *_Nullable error) {
         weakSelf.signInView.hidden = YES;
         if (authState) {
           [weakSelf setAuthState:authState];
@@ -220,7 +220,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
   _cancelSignInButton.hidden = YES;
 }
 
-- (void)setAuthState:(nullable OIDAuthState *)authState {
+- (void)setAuthState:(nullable SCTKAuthState *)authState {
   if (_authState == authState) {
     return;
   }
@@ -229,7 +229,7 @@ static NSString *const kExampleAuthStateKey = @"authState";
   [self stateChanged];
 }
 
-/*! @brief Saves the @c OIDAuthState to @c NSUSerDefaults.
+/*! @brief Saves the @c SCTKAuthState to @c NSUSerDefaults.
  */
 - (void)saveState {
   // for production usage consider using the OS Keychain instead
@@ -238,13 +238,13 @@ static NSString *const kExampleAuthStateKey = @"authState";
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-/*! @brief Loads the @c OIDAuthState from @c NSUSerDefaults.
+/*! @brief Loads the @c SCTKAuthState from @c NSUSerDefaults.
  */
 - (void)loadState {
-  // loads OIDAuthState from NSUSerDefaults
+  // loads SCTKAuthState from NSUSerDefaults
   NSData *archivedAuthState =
       [[NSUserDefaults standardUserDefaults] objectForKey:kExampleAuthStateKey];
-  OIDAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
+  SCTKAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
   [self setAuthState:authState];
 }
 
@@ -344,8 +344,8 @@ static NSString *const kExampleAuthStateKey = @"authState";
                                                                encoding:NSUTF8StringEncoding];
                 if (httpResponse.statusCode == 401) {
                   // "401 Unauthorized" generally indicates there is an issue with the authorization
-                  // grant. Puts OIDAuthState into an error state.
-                  NSError *oauthError = [OIDErrorUtilities
+                  // grant. Puts SCTKAuthState into an error state.
+                  NSError *oauthError = [SCTKErrorUtilities
                       resourceServerAuthorizationErrorWithCode:0
                                                  errorResponse:jsonDictionaryOrArray
                                                underlyingError:error];

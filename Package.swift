@@ -21,7 +21,7 @@ import PackageDescription
 */
 
 let package = Package(
-    name: "AppAuth",
+    name: "SCTKAppAuth",
     platforms: [
         .macOS(.v10_12),
         .iOS(.v12),

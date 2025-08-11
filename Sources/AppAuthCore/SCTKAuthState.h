@@ -1,4 +1,4 @@
-/*! @file OIDAuthState.h
+/*! @file SCTKAuthState.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -40,7 +40,7 @@ typedef void (^SCTKAuthStateAction)(NSString *_Nullable accessToken,
                                    NSError *_Nullable error);
 
 /*! @brief The method called when the @c
-        OIDAuthState.authStateByPresentingAuthorizationRequest:presentingViewController:callback:
+        SCTKAuthState.authStateByPresentingAuthorizationRequest:presentingViewController:callback:
         method has completed or failed.
     @param authState The auth state, if the authorization request succeeded.
     @param error The error if an error occurred.
@@ -55,13 +55,13 @@ static NSString *const kRefreshTokenRequestException =
     @"Attempted to create a token refresh request from a token response with no refresh token.";
 
 /*! @brief A convenience class that retains the auth state between @c OIDAuthorizationResponse%s
-        and @c OIDTokenResponse%s.
+        and @c SCTKTokenResponse%s.
  */
 @interface SCTKAuthState : NSObject <NSSecureCoding>
 
 /*! @brief The most recent refresh token received from the server.
     @discussion Rather than using this property directly, you should call
-        @c OIDAuthState.performActionWithFreshTokens:.
+        @c SCTKAuthState.performActionWithFreshTokens:.
     @remarks refresh_token
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */
@@ -89,12 +89,12 @@ static NSString *const kRefreshTokenRequestException =
  */
 @property(nonatomic, readonly, nullable) SCTKRegistrationResponse *lastRegistrationResponse;
 
-/*! @brief The authorization error that invalidated this @c OIDAuthState.
-    @discussion The authorization error encountered by @c OIDAuthState or set by the user via
-        @c OIDAuthState.updateWithAuthorizationError: that invalidated this @c OIDAuthState.
-        Authorization errors from @c OIDAuthState will always have a domain of
-        @c ::OIDOAuthAuthorizationErrorDomain or @c ::OIDOAuthTokenErrorDomain. Note: that after
-        unarchiving the @c OIDAuthState object, the \NSError_userInfo property of this error will
+/*! @brief The authorization error that invalidated this @c SCTKAuthState.
+    @discussion The authorization error encountered by @c SCTKAuthState or set by the user via
+        @c SCTKAuthState.updateWithAuthorizationError: that invalidated this @c SCTKAuthState.
+        Authorization errors from @c SCTKAuthState will always have a domain of
+        @c ::OIDOAuthAuthorizationErrorDomain or @c ::SCTKOAuthTokenErrorDomain. Note: that after
+        unarchiving the @c SCTKAuthState object, the \NSError_userInfo property of this error will
         be nil.
  */
 @property(nonatomic, readonly, nullable) NSError *authorizationError;
@@ -104,7 +104,7 @@ static NSString *const kRefreshTokenRequestException =
         successful access token or id token. This does not mean that the access is fresh - just
         that it was valid the last time it was used. Note that network and other transient errors
         do not invalidate the authorized state.  If NO, you should authenticate the user again,
-        using a fresh authorization request. Invalid @c OIDAuthState objects may still be useful in
+        using a fresh authorization request. Invalid @c SCTKAuthState objects may still be useful in
         that case, to hint at the previously authorized user and streamline the re-authentication
         experience.
  */
@@ -122,12 +122,12 @@ static NSString *const kRefreshTokenRequestException =
  */
 @property(nonatomic, weak, nullable) id<SCTKAuthStateErrorDelegate> errorDelegate;
 
-/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+/*! @brief Convenience method to create a @c SCTKAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests. For
         the hybrid flow, the caller should validate the id_token and c_hash, then perform the token
         request (@c SCTKAuthorizationService.performTokenRequest:callback:)
-        and update the OIDAuthState with the results (@c
-        OIDAuthState.updateWithTokenResponse:error:).
+        and update the SCTKAuthState with the results (@c
+        SCTKAuthState.updateWithTokenResponse:error:).
     @param authorizationRequest The authorization request to present.
     @param externalUserAgent A external user agent that can present an external user-agent request.
     @param callback The method called when the request has completed or failed.
@@ -187,7 +187,7 @@ static NSString *const kRefreshTokenRequestException =
 /*! @brief Updates the authorization state based on a new token response.
     @param tokenResponse The new token response to update the state from.
     @param error Any error encountered when performing the authorization request. Errors in the
-        domain @c ::OIDOAuthTokenErrorDomain are reflected in the auth state, other errors
+        domain @c ::SCTKOAuthTokenErrorDomain are reflected in the auth state, other errors
         are assumed to be transient, and ignored.
     @discussion Typically called with the response from an authorization code exchange, or a token
         refresh.
@@ -205,12 +205,12 @@ static NSString *const kRefreshTokenRequestException =
 /*! @brief Updates the authorization state based on an authorization error.
     @param authorizationError The authorization error.
     @discussion Call this method if you receive an authorization error during an API call to
-        invalidate the authentication state of this @c OIDAuthState. Don't call with errors
+        invalidate the authentication state of this @c SCTKAuthState. Don't call with errors
         unrelated to authorization, such as transient network errors.
         The SCTKAuthStateErrorDelegate.authState:didEncounterAuthorizationError: method of
         @c #errorDelegate will be called with the error.
         You may optionally use the convenience method
-        OIDErrorUtilities.resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
+        SCTKErrorUtilities.resourceServerAuthorizationErrorWithCode:errorResponse:underlyingError:
         to create \NSError objects for use here.
         The latest error received is stored in @c #authorizationError. Note: that after unarchiving
         this object, the \NSError_userInfo property of this error will be nil.
@@ -248,16 +248,16 @@ static NSString *const kRefreshTokenRequestException =
     (nullable NSDictionary<NSString *, NSString *> *)additionalParameters
                        dispatchQueue:(dispatch_queue_t)dispatchQueue;
 
-/*! @brief Forces a token refresh the next time @c OIDAuthState.performActionWithFreshTokens: is
+/*! @brief Forces a token refresh the next time @c SCTKAuthState.performActionWithFreshTokens: is
         called, even if the current tokens are considered valid.
  */
 - (void)setNeedsTokenRefresh;
 
 /*! @brief Creates a token request suitable for refreshing an access token.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
-    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+    @discussion After performing the refresh, call @c SCTKAuthState.updateWithTokenResponse:error:
         to update the authorization state based on the response. Rather than doing the token refresh
-        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
+        yourself, you should use @c SCTKAuthState.performActionWithFreshTokens:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable SCTKTokenRequest *)tokenRefreshRequest;
@@ -265,9 +265,9 @@ static NSString *const kRefreshTokenRequestException =
 /*! @brief Creates a token request suitable for refreshing an access token.
     @param additionalParameters Additional parameters for the token request.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
-    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+    @discussion After performing the refresh, call @c SCTKAuthState.updateWithTokenResponse:error:
         to update the authorization state based on the response. Rather than doing the token refresh
-        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
+        yourself, you should use @c SCTKAuthState.performActionWithFreshTokens:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable SCTKTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
@@ -277,9 +277,9 @@ static NSString *const kRefreshTokenRequestException =
     @param additionalParameters Additional parameters for the token request.
     @param additionalHeaders Additional headers for the token request.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
-    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+    @discussion After performing the refresh, call @c SCTKAuthState.updateWithTokenResponse:error:
         to update the authorization state based on the response. Rather than doing the token refresh
-        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
+        yourself, you should use @c SCTKAuthState.performActionWithFreshTokens:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable SCTKTokenRequest *)tokenRefreshRequestWithAdditionalParameters:
@@ -290,9 +290,9 @@ static NSString *const kRefreshTokenRequestException =
 /*! @brief Creates a token request suitable for refreshing an access token.
     @param additionalHeaders Additional parameters for the token request.
     @return A @c OIDTokenRequest suitable for using a refresh token to obtain a new access token.
-    @discussion After performing the refresh, call @c OIDAuthState.updateWithTokenResponse:error:
+    @discussion After performing the refresh, call @c SCTKAuthState.updateWithTokenResponse:error:
         to update the authorization state based on the response. Rather than doing the token refresh
-        yourself, you should use @c OIDAuthState.performActionWithFreshTokens:.
+        yourself, you should use @c SCTKAuthState.performActionWithFreshTokens:.
     @see https://tools.ietf.org/html/rfc6749#section-1.5
  */
 - (nullable SCTKTokenRequest *)tokenRefreshRequestWithAdditionalHeaders:

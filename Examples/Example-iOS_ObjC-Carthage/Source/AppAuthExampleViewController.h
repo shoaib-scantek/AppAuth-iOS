@@ -17,8 +17,8 @@
  */
 #import <UIKit/UIKit.h>
 
-@class OIDAuthState;
-@class OIDServiceConfiguration;
+@class SCTKAuthState;
+@class SCTKServiceConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,9 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief The authorization state. This is the AppAuth object that you should keep around and
         serialize to disk.
  */
-@property(nonatomic, readonly, nullable) OIDAuthState *authState;
+@property(nonatomic, readonly, nullable) SCTKAuthState *authState;
 
-/*! @brief Authorization code flow using @c OIDAuthState automatic code exchanges.
+/*! @brief Authorization code flow using @c SCTKAuthState automatic code exchanges.
     @param sender IBAction sender.
  */
 - (IBAction)authWithAutoCodeExchange:(nullable id)sender;
@@ -54,12 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (IBAction)codeExchange:(nullable id)sender;
 
-/*! @brief Performs a Userinfo API call using @c OIDAuthState.performActionWithFreshTokens.
+/*! @brief Performs a Userinfo API call using @c SCTKAuthState.performActionWithFreshTokens.
     @param sender IBAction sender.
  */
 - (IBAction)userinfo:(nullable id)sender;
 
-/*! @brief Nils the @c OIDAuthState object.
+/*! @brief Nils the @c SCTKAuthState object.
     @param sender IBAction sender.
  */
 - (IBAction)clearAuthState:(nullable id)sender;

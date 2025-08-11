@@ -23,23 +23,23 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @protocol SCTKAuthStateErrorDelegate
-    @brief Delegate of the OIDAuthState used to monitor errors.
+    @brief Delegate of the SCTKAuthState used to monitor errors.
  */
 @protocol SCTKAuthStateErrorDelegate <NSObject>
 
 /*! @brief Called when an authentication occurs, which indicates the auth session is invalid.
-    @param state The @c OIDAuthState on which the error occurred.
+    @param state The @c SCTKAuthState on which the error occurred.
     @param error The authorization error.
     @discussion This is a hard error (not a transient network issue) that indicates a problem with
-        the authorization. You should stop using the @c OIDAuthState when such an error is
+        the authorization. You should stop using the @c SCTKAuthState when such an error is
         encountered. If the \NSError_code is @c ::OIDErrorCodeOAuthInvalidGrant then
         the session may be recoverable with user interaction (i.e. re-authentication). In all cases
         you should consider the user unauthorized, and remove locally cached resources that require
-        that authorization.  @c OIDAuthState will call this method automatically if it encounters
+        that authorization.  @c SCTKAuthState will call this method automatically if it encounters
         an OAuth error (that is, an HTTP 400 response with a valid OAuth error response) during
         authorization or token refresh (such as performed automatically when using
-        @c OIDAuthState.performActionWithFreshTokens:). You can signal authorization errors with
-        @c OIDAuthState.updateWithAuthorizationError:.
+        @c SCTKAuthState.performActionWithFreshTokens:). You can signal authorization errors with
+        @c SCTKAuthState.updateWithAuthorizationError:.
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 - (void)authState:(SCTKAuthState *)state didEncounterAuthorizationError:(NSError *)error;
@@ -47,13 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /*! @brief Called when a network or other transient error occurs.
-    @param state The @c OIDAuthState on which the error occurred.
+    @param state The @c SCTKAuthState on which the error occurred.
     @param error The transient error.
-    @discussion This is a soft error, typically network related. The @c OIDAuthState is likely
+    @discussion This is a soft error, typically network related. The @c SCTKAuthState is likely
         still valid, and should not be discarded. Retry the request using an incremental backoff
-        strategy. This is only called when using the @c OIDAuthState convenience methods such as
-        @c OIDAuthState.performActionWithFreshTokens:. If you are refreshing the tokens yourself
-        outside of @c OIDAuthState class, it will never be called.
+        strategy. This is only called when using the @c SCTKAuthState convenience methods such as
+        @c SCTKAuthState.performActionWithFreshTokens:. If you are refreshing the tokens yourself
+        outside of @c SCTKAuthState class, it will never be called.
  */
 - (void)authState:(SCTKAuthState *)state didEncounterTransientError:(NSError *)error;
 

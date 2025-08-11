@@ -21,16 +21,16 @@
 #import "SCTKAuthorizationRequest.h"
 #import "OIDAuthorizationResponse.h"
 #import "SCTKAuthorizationService.h"
-#import "OIDAuthState.h"
+#import "SCTKAuthState.h"
 #import "SCTKExternalUserAgentSession.h"
 #import "OIDIDToken.h"
 #import "OIDRegistrationRequest.h"
 #import "OIDRegistrationResponse.h"
 #import "SCTKScopes.h"
-#import "OIDServiceConfiguration.h"
+#import "SCTKServiceConfiguration.h"
 #import "OIDServiceDiscovery.h"
 #import "OIDTokenRequest.h"
-#import "OIDTokenResponse.h"
+#import "SCTKTokenResponse.h"
 
 static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-provider";
 
@@ -138,7 +138,7 @@ typedef void (^UserInfoCompletion)(SCTKAuthState *_Nullable authState,
 
   // discovers endpoints
   [SCTKAuthorizationService discoverServiceConfigurationForIssuer:issuer
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+      completion:^(SCTKServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
 
     if (!configuration) {
       callback(nil, nil, error);
@@ -238,7 +238,7 @@ typedef void (^UserInfoCompletion)(SCTKAuthState *_Nullable authState,
       OIDTokenRequest *tokenExchangeRequest = [authorizationResponse tokenExchangeRequest];
       [SCTKAuthorizationService performTokenRequest:tokenExchangeRequest
                      originalAuthorizationResponse:authorizationResponse
-                                          callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                          callback:^(SCTKTokenResponse *_Nullable tokenResponse,
                                                      NSError *_Nullable tokenError) {
         [token_exchange fulfill];
         completion(authorizationResponse, tokenResponse, tokenError);

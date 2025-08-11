@@ -22,9 +22,9 @@
 
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
-@interface TodayViewController () <NCWidgetProviding, OIDAuthStateChangeDelegate>
+@interface TodayViewController () <NCWidgetProviding, SCTKAuthStateChangeDelegate>
 
-@property(nonatomic, readonly, nullable) OIDAuthState *authState;
+@property(nonatomic, readonly, nullable) SCTKAuthState *authState;
 @property (weak, nonatomic) IBOutlet UITextView *logTextView;
 
 @end
@@ -63,17 +63,17 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   completionHandler(NCUpdateResultNewData);
 }
 
-/*! @brief Loads the @c OIDAuthState from @c NSUSerDefaults.
+/*! @brief Loads the @c SCTKAuthState from @c NSUSerDefaults.
  */
 - (void)loadState {
-  // loads OIDAuthState from NSUSerDefaults
+  // loads SCTKAuthState from NSUSerDefaults
   NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.net.openid.appauth.Example"];
   NSData *archivedAuthState = [userDefaults objectForKey:kAppAuthExampleAuthStateKey];
-  OIDAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
+  SCTKAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
   [self setAuthState:authState];
 }
 
-/*! @brief Saves the @c OIDAuthState to @c NSUSerDefaults.
+/*! @brief Saves the @c SCTKAuthState to @c NSUSerDefaults.
  */
 - (void)saveState {
   // for production usage consider using the OS Keychain instead
@@ -84,7 +84,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [userDefaults synchronize];
 }
 
-- (void)setAuthState:(nullable OIDAuthState *)authState {
+- (void)setAuthState:(nullable SCTKAuthState *)authState {
   if (_authState == authState) {
     return;
   }
@@ -97,7 +97,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self saveState];
 }
 
-- (void)didChangeState:(OIDAuthState *)state {
+- (void)didChangeState:(SCTKAuthState *)state {
   [self stateChanged];
 }
 
@@ -166,9 +166,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                                     encoding:NSUTF8StringEncoding];
                      if (httpResponse.statusCode == 401) {
                        // "401 Unauthorized" generally indicates there is an issue with the authorization
-                       // grant. Puts OIDAuthState into an error state.
+                       // grant. Puts SCTKAuthState into an error state.
                        NSError *oauthError =
-                           [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
+                           [SCTKErrorUtilities resourceServerAuthorizationErrorWithCode:0
                                                                          errorResponse:jsonDictionaryOrArray
                                                                        underlyingError:error];
                        [_authState updateWithAuthorizationError:oauthError];

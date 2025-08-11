@@ -1,4 +1,4 @@
-/*! @file OIDTokenResponseTests.m
+/*! @file SCTKTokenResponseTests.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -15,7 +15,7 @@
         See the License for the specific language governing permissions and
         limitations under the License.
  */
-#import "OIDTokenResponseTests.h"
+#import "SCTKTokenResponseTests.h"
 
 #import "OIDAuthorizationResponseTests.h"
 #import "OIDTokenRequestTests.h"
@@ -93,7 +93,7 @@ static NSString *const kTestAdditionalParameterKey = @"example_parameter";
  */
 static NSString *const kTestAdditionalParameterValue = @"example_value";
 
-@implementation OIDTokenResponseTests
+@implementation SCTKTokenResponseTests
 
 + (SCTKTokenResponse *)testInstance {
   SCTKTokenRequest *request = [OIDTokenRequestTests testInstance];

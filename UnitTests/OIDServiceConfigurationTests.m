@@ -1,4 +1,4 @@
-/*! @file OIDServiceConfigurationTests.m
+/*! @file SCTKServiceConfigurationTests.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -16,7 +16,7 @@
         limitations under the License.
  */
 
-#import "OIDServiceConfigurationTests.h"
+#import "SCTKServiceConfigurationTests.h"
 
 #import <objc/runtime.h>
 
@@ -86,7 +86,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
     @"https://accounts.google.com/.well-known/openid-configuration";
 
 
-@implementation OIDServiceConfigurationTests {
+@implementation SCTKServiceConfigurationTests {
   /*! @brief A list of tasks to perform during tearDown.
    */
   NSMutableArray<TeardownTask> *_teardownTasks;
@@ -195,7 +195,7 @@ static NSString *const kIssuerTestExpectedFullDiscoveryURL =
 
   NSURL *issuerURL = [NSURL URLWithString:issuer];
   [SCTKAuthorizationService discoverServiceConfigurationForIssuer:issuerURL
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {}];
+      completion:^(SCTKServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {}];
 
   [self waitForExpectationsWithTimeout:2 handler:nil];
 }

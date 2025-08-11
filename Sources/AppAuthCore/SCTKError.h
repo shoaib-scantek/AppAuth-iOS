@@ -29,7 +29,7 @@ extern NSString *const SCTKGeneralErrorDomain;
         with an explicit OAuth error, as defined by RFC6749 Section 4.1.2.1. If the authorization
         response is invalid and not explicitly an error response, another error domain will be used.
         The error response parameter dictionary is available in the
-        \NSError_userInfo dictionary using the @c ::OIDOAuthErrorResponseErrorKey key.
+        \NSError_userInfo dictionary using the @c ::SCTKOAuthErrorResponseErrorKey key.
         The \NSError_code will be one of the @c ::OIDErrorCodeOAuthAuthorization enum values.
     @see https://tools.ietf.org/html/rfc6749#section-4.1.2.1
  */
@@ -40,7 +40,7 @@ extern NSString *const SCTKOAuthAuthorizationErrorDomain;
         as defined RFC6749 Section 5.2. If an HTTP 400 response does not parse as an OAuth error
         (i.e. no 'error' field is present or the JSON is invalid), another error domain will be
         used. The entire OAuth error response dictionary is available in the \NSError_userInfo
-        dictionary using the @c ::OIDOAuthErrorResponseErrorKey key. Unlike transient network
+        dictionary using the @c ::SCTKOAuthErrorResponseErrorKey key. Unlike transient network
         errors, errors in this domain invalidate the authentication state, and either indicate a
         client error or require user interaction (i.e. reauthentication) to resolve.
         The \NSError_code will be one of the @c ::OIDErrorCodeOAuthToken enum values.
@@ -53,7 +53,7 @@ extern NSString *const SCTKOAuthTokenErrorDomain;
          as defined in OpenID Connect Dynamic Client Registration 1.0 Section 3.3. If an HTTP 400
          response does not parse as an OAuth error (i.e. no 'error' field is present or the JSON is
          invalid), another error domain will be  used. The entire OAuth error response dictionary is
-         available in the \NSError_userInfo dictionary using the @c ::OIDOAuthErrorResponseErrorKey
+         available in the \NSError_userInfo dictionary using the @c ::SCTKOAuthErrorResponseErrorKey
          key. Unlike transient network errors, errors in this domain invalidate the authentication
          state, and indicates a client error.
          The \NSError_code will be one of the @c ::OIDErrorCodeOAuthToken enum values.
@@ -300,7 +300,7 @@ typedef NS_ENUM(NSInteger, SCTKErrorCodeOAuthAuthorization) {
 };
 
 
-/*! @brief The error codes for the @c ::OIDOAuthTokenErrorDomain error domain
+/*! @brief The error codes for the @c ::SCTKOAuthTokenErrorDomain error domain
     @see https://tools.ietf.org/html/rfc6749#section-5.2
  */
 typedef NS_ENUM(NSInteger, SCTKErrorCodeOAuthToken) {

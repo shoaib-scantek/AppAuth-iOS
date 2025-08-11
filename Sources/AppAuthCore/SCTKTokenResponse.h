@@ -1,4 +1,4 @@
-/*! @file OIDTokenResponse.h
+/*! @file SCTKTokenResponse.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief The approximate expiration date & time of the access token.
     @remarks expires_in
-    @seealso OIDTokenResponse.accessToken
+    @seealso SCTKTokenResponse.accessToken
     @see https://tools.ietf.org/html/rfc6749#section-4.1.4
     @see https://tools.ietf.org/html/rfc6749#section-5.1
  */

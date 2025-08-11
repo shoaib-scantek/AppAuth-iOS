@@ -36,7 +36,7 @@ NSString *const SCTKOAuthExceptionInvalidAuthorizationFlow = @"An OAuth redirect
 NSString *const SCTKOAuthExceptionInvalidTokenRequestNullRedirectURL = @"A OIDTokenRequest was "
     "created with a grant_type that requires a redirectURL, but a null redirectURL was given";
 
-NSString *const SCTKOAuthErrorResponseErrorKey = @"OIDOAuthErrorResponseErrorKey";
+NSString *const SCTKOAuthErrorResponseErrorKey = @"SCTKOAuthErrorResponseErrorKey";
 
 NSString *const SCTKOAuthErrorFieldError = @"error";
 

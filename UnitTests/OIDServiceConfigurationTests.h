@@ -1,4 +1,4 @@
-/*! @file OIDServiceConfigurationTests.h
+/*! @file SCTKServiceConfigurationTests.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -22,11 +22,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Unit tests for @c OIDServiceConfiguration.
+/*! @brief Unit tests for @c SCTKServiceConfiguration.
  */
-@interface OIDServiceConfigurationTests : XCTestCase
+@interface SCTKServiceConfigurationTests : XCTestCase
 
-/*! @brief Creates a new @c OIDServiceConfiguration for testing.
+/*! @brief Creates a new @c SCTKServiceConfiguration for testing.
  */
 + (SCTKServiceConfiguration *)testInstance;
 

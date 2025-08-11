@@ -63,15 +63,15 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
                                          completion:(OIDTVDiscoveryCallback)completion {
   // Call the corresponding discovery method in SCTKAuthorizationService
   [SCTKAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryURL
-      completion:^(OIDServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
+      completion:^(SCTKServiceConfiguration * _Nullable configuration, NSError * _Nullable error) {
     if (configuration == nil) {
       completion(nil, error);
       return;
     }
 
     if (configuration.discoveryDocument.deviceAuthorizationEndpoint == nil) {
-      NSError *missingEndpointError = [OIDErrorUtilities
-            errorWithCode:OIDErrorCodeInvalidDiscoveryDocument
+      NSError *missingEndpointError = [SCTKErrorUtilities
+            errorWithCode:SCTKErrorCodeInvalidDiscoveryDocument
           underlyingError:nil
               description:@"Discovery document does not contain device authorization endpoint."];
 
@@ -176,7 +176,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
     if (jsonDeserializationError) {
       // A problem occurred deserializing the response/JSON.
       NSError *returnedError =
-          [SCTKErrorUtilities errorWithCode:OIDErrorCodeJSONDeserializationError
+          [SCTKErrorUtilities errorWithCode:SCTKErrorCodeJSONDeserializationError
                            underlyingError:jsonDeserializationError
                                description:nil];
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -231,7 +231,7 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
 
         // Polls token endpoint.
         [SCTKAuthorizationService performTokenRequest:pollRequest
-                                            callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                            callback:^(SCTKTokenResponse *_Nullable tokenResponse,
                                                        NSError *_Nullable tokenError) {
           if (!pollRunning) {
             return;
@@ -241,16 +241,16 @@ static NSString *const kOpenIDConfigurationWellKnownPath = @".well-known/openid-
               // Success response.
               pollRunning = NO;
               dispatch_async(dispatch_get_main_queue(), ^{
-                OIDAuthState *authState =
-                    [[OIDAuthState alloc] initWithAuthorizationResponse:TVAuthorizationResponse
+                SCTKAuthState *authState =
+                    [[SCTKAuthState alloc] initWithAuthorizationResponse:TVAuthorizationResponse
                                                           tokenResponse:tokenResponse];
                 completion(authState, nil);
               });
             } else {
-              if (tokenError.domain == OIDOAuthTokenErrorDomain) {
+              if (tokenError.domain == SCTKOAuthTokenErrorDomain) {
                 // OAuth token errors inspected for device flow specific errors.
                 NSString *errorCode =
-                    tokenError.userInfo[OIDOAuthErrorResponseErrorKey][OIDOAuthErrorFieldError];
+                    tokenError.userInfo[SCTKOAuthErrorResponseErrorKey][SCTKOAuthErrorFieldError];
                 if ([errorCode isEqual:kErrorCodeAuthorizationPending]) {
                   // authorization_pending is an expected response.
                   return;

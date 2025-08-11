@@ -1,4 +1,4 @@
-/*! @file OIDErrorUtilities.h
+/*! @file SCTKErrorUtilities.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*! @brief Creates a standard \NSError from an @c ::OIDErrorCode and custom user info.
         Automatically populates the localized error description.
     @param OAuthErrorDomain The OAuth error domain. Must be @c ::OIDOAuthAuthorizationErrorDomain or
-        @c ::OIDOAuthTokenErrorDomain.
+        @c ::SCTKOAuthTokenErrorDomain.
     @param errorResponse The dictionary from an OAuth error response (as per RFC6749 Section 5.2).
     @param underlyingError The underlying error which occurred, if applicable.
     @return An \NSError representing the OAuth error.

@@ -19,7 +19,7 @@
 #import "OIDTVServiceConfiguration.h"
 
 #import "SCTKDefines.h"
-#import "OIDServiceDiscovery.h"
+#import "SCTKServiceDiscovery.h"
 
 /*! @brief The key for the @c deviceAuthorizationEndpoint property.
  */

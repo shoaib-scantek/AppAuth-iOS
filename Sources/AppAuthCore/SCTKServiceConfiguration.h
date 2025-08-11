@@ -1,4 +1,4 @@
-/*! @file OIDServiceConfiguration.h
+/*! @file SCTKServiceConfiguration.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -23,7 +23,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief The type of block called when a @c OIDServiceConfiguration has been created
+/*! @brief The type of block called when a @c SCTKServiceConfiguration has been created
         by loading a @c OIDServiceDiscovery from an @c NSURL.
  */
 typedef void (^SCTKServiceConfigurationCreated)

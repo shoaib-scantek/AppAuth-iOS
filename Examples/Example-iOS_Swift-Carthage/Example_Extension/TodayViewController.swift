@@ -29,7 +29,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     @IBOutlet private weak var logTextView: UITextView!
     
-    private var authState: OIDAuthState?
+    private var authState: SCTKAuthState?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,8 +127,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                         
                         if response.statusCode == 401 {
                             // "401 Unauthorized" generally indicates there is an issue with the authorization
-                            // grant. Puts OIDAuthState into an error state.
-                            let oauthError = OIDErrorUtilities.resourceServerAuthorizationError(withCode: 0,
+                            // grant. Puts SCTKAuthState into an error state.
+                            let oauthError = SCTKErrorUtilities.resourceServerAuthorizationError(withCode: 0,
                                                                                                 errorResponse: json,
                                                                                                 underlyingError: error)
                             self.authState?.update(withAuthorizationError: oauthError)
@@ -155,10 +155,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
 }
 
-//MARK: OIDAuthState Delegate
-extension TodayViewController: OIDAuthStateChangeDelegate {
+//MARK: SCTKAuthState Delegate
+extension TodayViewController: SCTKAuthStateChangeDelegate {
     
-    func didChange(_ state: OIDAuthState) {
+    func didChange(_ state: SCTKAuthState) {
         self.stateChanged()
     }
 }
@@ -185,12 +185,12 @@ extension TodayViewController {
             return
         }
         
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? SCTKAuthState {
             self.setAuthState(authState)
         }
     }
     
-    func setAuthState(_ authState: OIDAuthState?) {
+    func setAuthState(_ authState: SCTKAuthState?) {
         if (self.authState == authState) {
             return;
         }

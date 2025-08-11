@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OIDAuthorizationResponse.h"
+#import "SCTKAuthorizationResponse.h"
 
 @class OIDTVAuthorizationRequest;
 @class OIDTVTokenRequest;

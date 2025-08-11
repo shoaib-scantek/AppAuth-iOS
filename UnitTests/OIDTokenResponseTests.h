@@ -1,4 +1,4 @@
-/*! @file OIDTokenResponseTests.h
+/*! @file SCTKTokenResponseTests.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -24,9 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief Unit tests for @c OIDAuthorizationResponse.
  */
-@interface OIDTokenResponseTests : XCTestCase
+@interface SCTKTokenResponseTests : XCTestCase
 
-/*! @brief Creates a new @c OIDTokenResponse for testing.
+/*! @brief Creates a new @c SCTKTokenResponse for testing.
  */
 + (SCTKTokenResponse *)testInstance;
 

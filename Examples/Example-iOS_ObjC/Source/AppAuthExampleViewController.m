@@ -23,7 +23,7 @@
 #import "AppAuth.h"
 #import "AppDelegate.h"
 
-typedef void (^PostRegistrationCallback)(OIDServiceConfiguration *configuration,
+typedef void (^PostRegistrationCallback)(SCTKServiceConfiguration *configuration,
                                          OIDRegistrationResponse *registrationResponse);
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
@@ -47,7 +47,7 @@ static NSString *const kRedirectURI = @"com.example.app:/oauth2redirect/example-
  */
 static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
-@interface AppAuthExampleViewController () <OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate>
+@interface AppAuthExampleViewController () <SCTKAuthStateChangeDelegate, SCTKAuthStateErrorDelegate>
 @end
 
 @implementation AppAuthExampleViewController
@@ -100,7 +100,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 #endif // !defined(NS_BLOCK_ASSERTIONS)
 }
 
-/*! @brief Saves the @c OIDAuthState to @c NSUSerDefaults.
+/*! @brief Saves the @c SCTKAuthState to @c NSUSerDefaults.
  */
 - (void)saveState {
   // for production usage consider using the OS Keychain instead
@@ -111,17 +111,17 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [userDefaults synchronize];
 }
 
-/*! @brief Loads the @c OIDAuthState from @c NSUSerDefaults.
+/*! @brief Loads the @c SCTKAuthState from @c NSUSerDefaults.
  */
 - (void)loadState {
-  // loads OIDAuthState from NSUSerDefaults
+  // loads SCTKAuthState from NSUSerDefaults
   NSUserDefaults* userDefaults = [[NSUserDefaults alloc] initWithSuiteName:@"group.net.openid.appauth.Example"];
   NSData *archivedAuthState = [userDefaults objectForKey:kAppAuthExampleAuthStateKey];
-  OIDAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
+  SCTKAuthState *authState = [NSKeyedUnarchiver unarchiveObjectWithData:archivedAuthState];
   [self setAuthState:authState];
 }
 
-- (void)setAuthState:(nullable OIDAuthState *)authState {
+- (void)setAuthState:(nullable SCTKAuthState *)authState {
   if (_authState == authState) {
     return;
   }
@@ -156,11 +156,11 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self updateUI];
 }
 
-- (void)didChangeState:(OIDAuthState *)state {
+- (void)didChangeState:(SCTKAuthState *)state {
   [self stateChanged];
 }
 
-- (void)authState:(OIDAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
+- (void)authState:(SCTKAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
   [self logMessage:@"Received authorization error: %@", error];
 }
 
@@ -168,7 +168,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [super viewDidAppear:animated];
 }
 
-- (void)doClientRegistration:(OIDServiceConfiguration *)configuration
+- (void)doClientRegistration:(SCTKServiceConfiguration *)configuration
                     callback:(PostRegistrationCallback)callback {
     NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
 
@@ -188,7 +188,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     [OIDAuthorizationService performRegistrationRequest:request
         completion:^(OIDRegistrationResponse *_Nullable regResp, NSError *_Nullable error) {
       if (regResp) {
-        [self setAuthState:[[OIDAuthState alloc] initWithRegistrationResponse:regResp]];
+        [self setAuthState:[[SCTKAuthState alloc] initWithRegistrationResponse:regResp]];
         [self logMessage:@"Got registration response: [%@]", regResp];
         callback(configuration, regResp);
       } else {
@@ -198,7 +198,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
     }];
 }
 
-- (void)doAuthWithAutoCodeExchange:(OIDServiceConfiguration *)configuration
+- (void)doAuthWithAutoCodeExchange:(SCTKServiceConfiguration *)configuration
                           clientID:(NSString *)clientID
                       clientSecret:(NSString *)clientSecret {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
@@ -216,9 +216,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
   [self logMessage:@"Initiating authorization request with scope: %@", request.scope];
 
   appDelegate.currentAuthorizationFlow =
-      [OIDAuthState authStateByPresentingAuthorizationRequest:request
+      [SCTKAuthState authStateByPresentingAuthorizationRequest:request
           presentingViewController:self
-                          callback:^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+                          callback:^(SCTKAuthState *_Nullable authState, NSError *_Nullable error) {
             if (authState) {
               [self setAuthState:authState];
               [self logMessage:@"Got authorization tokens. Access token: %@",
@@ -230,7 +230,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
           }];
 }
 
-- (void)doAuthWithoutCodeExchange:(OIDServiceConfiguration *)configuration
+- (void)doAuthWithoutCodeExchange:(SCTKServiceConfiguration *)configuration
                          clientID:(NSString *)clientID
                      clientSecret:(NSString *)clientSecret {
   NSURL *redirectURI = [NSURL URLWithString:kRedirectURI];
@@ -253,8 +253,8 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                           callback:^(OIDAuthorizationResponse *_Nullable authorizationResponse,
                                      NSError *_Nullable error) {
         if (authorizationResponse) {
-          OIDAuthState *authState =
-              [[OIDAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
+          SCTKAuthState *authState =
+              [[SCTKAuthState alloc] initWithAuthorizationResponse:authorizationResponse];
           [self setAuthState:authState];
 
           [self logMessage:@"Authorization response with code: %@",
@@ -275,7 +275,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   // discovers endpoints
   [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+      completion:^(SCTKServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
     if (!configuration) {
       [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
       [self setAuthState:nil];
@@ -286,7 +286,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
     if (!kClientID) {
       [self doClientRegistration:configuration
-                        callback:^(OIDServiceConfiguration *configuration,
+                        callback:^(SCTKServiceConfiguration *configuration,
                                    OIDRegistrationResponse *registrationResponse) {
         [self doAuthWithAutoCodeExchange:configuration
                                 clientID:registrationResponse.clientID
@@ -307,7 +307,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
   // discovers endpoints
   [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-      completion:^(OIDServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
+      completion:^(SCTKServiceConfiguration *_Nullable configuration, NSError *_Nullable error) {
 
     if (!configuration) {
       [self logMessage:@"Error retrieving discovery document: %@", [error localizedDescription]];
@@ -318,7 +318,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
 
     if (!kClientID) {
       [self doClientRegistration:configuration
-                        callback:^(OIDServiceConfiguration *configuration,
+                        callback:^(SCTKServiceConfiguration *configuration,
                                    OIDRegistrationResponse *registrationResponse) {
         [self doAuthWithoutCodeExchange:configuration
                                clientID:registrationResponse.clientID
@@ -339,7 +339,7 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                    tokenExchangeRequest];
 
   [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
-                                      callback:^(OIDTokenResponse *_Nullable tokenResponse,
+                                      callback:^(SCTKTokenResponse *_Nullable tokenResponse,
                                                  NSError *_Nullable error) {
 
     if (!tokenResponse) {
@@ -425,9 +425,9 @@ static NSString *const kAppAuthExampleAuthStateKey = @"authState";
                                                          encoding:NSUTF8StringEncoding];
           if (httpResponse.statusCode == 401) {
             // "401 Unauthorized" generally indicates there is an issue with the authorization
-            // grant. Puts OIDAuthState into an error state.
+            // grant. Puts SCTKAuthState into an error state.
             NSError *oauthError =
-                [OIDErrorUtilities resourceServerAuthorizationErrorWithCode:0
+                [SCTKErrorUtilities resourceServerAuthorizationErrorWithCode:0
                                                               errorResponse:jsonDictionaryOrArray
                                                             underlyingError:error];
             [_authState updateWithAuthorizationError:oauthError];

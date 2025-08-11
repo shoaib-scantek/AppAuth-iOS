@@ -1,4 +1,4 @@
-/*! @file OIDAuthState+Mac.m
+/*! @file SCTKAuthState+Mac.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -20,7 +20,7 @@
 
 #if TARGET_OS_OSX
 
-#import "OIDAuthState+Mac.h"
+#import "SCTKAuthState+Mac.h"
 
 #import "SCTKExternalUserAgentMac.h"
 
@@ -29,7 +29,7 @@
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback {
   SCTKExternalUserAgentMac *externalUserAgent = [[SCTKExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent
@@ -39,7 +39,7 @@
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback {
   SCTKExternalUserAgentMac *externalUserAgent =
       [[SCTKExternalUserAgentMac alloc] initWithPresentingWindow:presentingWindow
                                         prefersEphemeralSession:prefersEphemeralSession];
@@ -50,7 +50,7 @@
 
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback {
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback {
   SCTKExternalUserAgentMac *externalUserAgent = [[SCTKExternalUserAgentMac alloc] init];
   return [self authStateByPresentingAuthorizationRequest:authorizationRequest
                                        externalUserAgent:externalUserAgent

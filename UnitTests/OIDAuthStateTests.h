@@ -1,4 +1,4 @@
-/*! @file OIDAuthStateTests.h
+/*! @file SCTKAuthStateTests.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -29,11 +29,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief Unit tests for @c OIDAuthState.
+/*! @brief Unit tests for @c SCTKAuthState.
  */
-@interface OIDAuthStateTests : XCTestCase
+@interface SCTKAuthStateTests : XCTestCase
 
-/*! @brief Creates a new @c OIDAuthState for testing.
+/*! @brief Creates a new @c SCTKAuthState for testing.
  */
 + (SCTKAuthState *)testInstance;
 

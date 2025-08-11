@@ -1,4 +1,4 @@
-/*! @file OIDAuthState+Mac.h
+/*! @file SCTKAuthState+Mac.h
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2016 Google Inc. All Rights Reserved.
@@ -25,16 +25,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*! @brief macOS specific convenience methods for @c OIDAuthState.
+/*! @brief macOS specific convenience methods for @c SCTKAuthState.
  */
 @interface SCTKAuthState (Mac)
 
-/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+/*! @brief Convenience method to create a @c SCTKAuthState by presenting an authorization request
         and performing the authorization code exchange in the case of code flow requests. For
         the hybrid flow, the caller should validate the id_token and c_hash, then perform the token
         request (@c SCTKAuthorizationService.performTokenRequest:callback:)
-        and update the OIDAuthState with the results (@c
-        OIDAuthState.updateWithTokenResponse:error:).
+        and update the SCTKAuthState with the results (@c
+        SCTKAuthState.updateWithTokenResponse:error:).
     @param authorizationRequest The authorization request to present.
     @param presentingWindow The window to present the authentication flow.
     @param callback The method called when the request has completed or failed.
@@ -47,15 +47,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
-                                     callback:(OIDAuthStateAuthorizationCallback)callback;
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback;
 
-/*! @brief Convenience method to create a @c OIDAuthState by presenting an authorization request
+/*! @brief Convenience method to create a @c SCTKAuthState by presenting an authorization request
         (optionally using an emphemeral browser session that shares no cookies or data with the
         normal browser session) and performing the authorization code exchange in the case of code
         flow requests. For the hybrid flow, the caller should validate the id_token and c_hash, then
         perform the token request (@c SCTKAuthorizationService.performTokenRequest:callback:)
-        and update the OIDAuthState with the results using
-        @c OIDAuthState.updateWithTokenResponse:error:.
+        and update the SCTKAuthState with the results using
+        @c SCTKAuthState.updateWithTokenResponse:error:.
     @param authorizationRequest The authorization request to present.
     @param presentingWindow The window to present the @c ASWebAuthenticationSession UI.
     @param prefersEphemeralSession Whether the caller prefers to use a private authentication
@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
                              presentingWindow:(NSWindow *)presentingWindow
                       prefersEphemeralSession:(BOOL)prefersEphemeralSession
-                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback
     API_AVAILABLE(macos(10.15));
 
 /*! @param authorizationRequest The authorization request to present.
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (id<SCTKExternalUserAgentSession>)
     authStateByPresentingAuthorizationRequest:(SCTKAuthorizationRequest *)authorizationRequest
-                                     callback:(OIDAuthStateAuthorizationCallback)callback
+                                     callback:(SCTKAuthStateAuthorizationCallback)callback
     __deprecated_msg("For macOS 10.15 and above please use "
         "authStateByPresentingAuthorizationRequest:presentingWindow:callback:");
 

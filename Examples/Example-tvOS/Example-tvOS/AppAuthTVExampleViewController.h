@@ -18,7 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class OIDAuthState;
+@class SCTKAuthState;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*! @brief The authorization state.
  */
-@property(nonatomic, nullable) OIDAuthState *authState;
+@property(nonatomic, nullable) SCTKAuthState *authState;
 
 /*! @brief Initiates the sign-in.
     @param sender IBAction sender.

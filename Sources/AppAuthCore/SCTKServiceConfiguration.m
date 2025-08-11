@@ -1,4 +1,4 @@
-/*! @file OIDServiceConfiguration.m
+/*! @file SCTKServiceConfiguration.m
     @brief AppAuth iOS SDK
     @copyright
         Copyright 2015 Google Inc. All Rights Reserved.
@@ -218,7 +218,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)description {
   return [NSString stringWithFormat:
-      @"OIDServiceConfiguration authorizationEndpoint: %@, tokenEndpoint: %@, "
+      @"SCTKServiceConfiguration authorizationEndpoint: %@, tokenEndpoint: %@, "
           "registrationEndpoint: %@, endSessionEndpoint: %@, discoveryDocument: [%@]",
       _authorizationEndpoint,
       _tokenEndpoint,

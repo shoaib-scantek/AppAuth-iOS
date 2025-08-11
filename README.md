@@ -154,9 +154,9 @@ Linked Framework and Libraries" section of your target).
 AppAuth supports both manual interaction with the authorization server
 where you need to perform your own token exchanges, as well as convenience
 methods that perform some of this logic for you. This example uses the
-convenience method, which returns either an `OIDAuthState` object, or an error.
+convenience method, which returns either an `SCTKAuthState` object, or an error.
 
-`OIDAuthState` is a class that keeps track of the authorization and token
+`SCTKAuthState` is a class that keeps track of the authorization and token
 requests and responses, and provides a convenience method to call an API with
 fresh tokens. This is the only object that you need to serialize to retain the
 authorization state of the session.
@@ -172,8 +172,8 @@ NSURL *authorizationEndpoint =
 NSURL *tokenEndpoint =
     [NSURL URLWithString:@"https://www.googleapis.com/oauth2/v4/token"];
 
-OIDServiceConfiguration *configuration =
-    [[OIDServiceConfiguration alloc]
+SCTKServiceConfiguration *configuration =
+    [[SCTKServiceConfiguration alloc]
         initWithAuthorizationEndpoint:authorizationEndpoint
                         tokenEndpoint:tokenEndpoint];
 
@@ -184,7 +184,7 @@ OIDServiceConfiguration *configuration =
 ```swift
 let authorizationEndpoint = URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!
 let tokenEndpoint = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
-let configuration = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
+let configuration = SCTKServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
                                             tokenEndpoint: tokenEndpoint)
 
 // perform the auth request...
@@ -215,7 +215,7 @@ Or through discovery:
 NSURL *issuer = [NSURL URLWithString:@"https://accounts.google.com"];
 
 [OIDAuthorizationService discoverServiceConfigurationForIssuer:issuer
-    completion:^(OIDServiceConfiguration *_Nullable configuration,
+    completion:^(SCTKServiceConfiguration *_Nullable configuration,
                  NSError *_Nullable error) {
 
   if (!configuration) {
@@ -293,12 +293,12 @@ And your main class, a property to store the auth state:
 <sub>Objective-C</sub>
 ```objc
 // property of the containing class
-@property(nonatomic, strong, nullable) OIDAuthState *authState;
+@property(nonatomic, strong, nullable) SCTKAuthState *authState;
 ```
 <sub>Swift</sub>
 ```swift
 // property of the containing class
-private var authState: OIDAuthState?
+private var authState: SCTKAuthState?
 ```
 
 
@@ -325,9 +325,9 @@ OIDAuthorizationRequest *request =
 AppDelegate *appDelegate =
     (AppDelegate *)[UIApplication sharedApplication].delegate;
 appDelegate.currentAuthorizationFlow =
-    [OIDAuthState authStateByPresentingAuthorizationRequest:request
+    [SCTKAuthState authStateByPresentingAuthorizationRequest:request
         presentingViewController:self
-                        callback:^(OIDAuthState *_Nullable authState,
+                        callback:^(SCTKAuthState *_Nullable authState,
                                    NSError *_Nullable error) {
   if (authState) {
     NSLog(@"Got authorization tokens. Access token: %@",
@@ -357,7 +357,7 @@ print("Initiating authorization request with scope: \(request.scope ?? "nil")")
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 appDelegate.currentAuthorizationFlow =
-    OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
+    SCTKAuthState.authState(byPresenting: request, presenting: self) { authState, error in
   if let authState = authState {
     self.setAuthState(authState)
     print("Got authorization tokens. Access token: " +
@@ -471,8 +471,8 @@ OIDAuthorizationRequest *request =
 // performs authentication request
 __weak __typeof(self) weakSelf = self;
 _redirectHTTPHandler.currentAuthorizationFlow =
-    [OIDAuthState authStateByPresentingAuthorizationRequest:request
-                        callback:^(OIDAuthState *_Nullable authState,
+    [SCTKAuthState authStateByPresentingAuthorizationRequest:request
+                        callback:^(SCTKAuthState *_Nullable authState,
                                    NSError *_Nullable error) {
   // Brings this app to the foreground.
   [[NSRunningApplication currentApplication]
@@ -493,12 +493,12 @@ _redirectHTTPHandler.currentAuthorizationFlow =
 
 ### Authorizing – tvOS
 
-Ensure that your main class is a delegate of `OIDAuthStateChangeDelegate`, `OIDAuthStateErrorDelegate`, implement the corresponding methods, and include the following property and instance variable:
+Ensure that your main class is a delegate of `SCTKAuthStateChangeDelegate`, `SCTKAuthStateErrorDelegate`, implement the corresponding methods, and include the following property and instance variable:
 
 <sub>Objective-C</sub>
 ```objc
 // property of the containing class
-@property(nonatomic, strong, nullable) OIDAuthState *authState;
+@property(nonatomic, strong, nullable) SCTKAuthState *authState;
 
 // instance variable of the containing class
 OIDTVAuthorizationCancelBlock _cancelBlock;
@@ -532,7 +532,7 @@ OIDTVAuthorizationInitialization initBlock =
     };
 
 OIDTVAuthorizationCompletion completionBlock =
-    ^(OIDAuthState *_Nullable authState, NSError *_Nullable error) {
+    ^(SCTKAuthState *_Nullable authState, NSError *_Nullable error) {
       weakSelf.signInView.hidden = YES;
       if (authState) {
         NSLog(@"Token response: %@", authState.lastTokenResponse);
@@ -551,7 +551,7 @@ _cancelBlock = [OIDTVAuthorizationService authorizeTVRequest:request
 ### Making API Calls
 
 AppAuth gives you the raw token information, if you need it. However, we
-recommend that users of the `OIDAuthState` convenience wrapper use the provided
+recommend that users of the `SCTKAuthState` convenience wrapper use the provided
 `performActionWithFreshTokens:` method to perform their API calls to avoid
 needing to worry about token freshness:
 
@@ -611,12 +611,12 @@ you need to conform to the
 protocol.
 
 Instances of the `OIDExternalUserAgent`are passed into
-[`OIDAuthState.authStateByPresentingAuthorizationRequest:externalUserAgent:callback`](http://openid.github.io/AppAuth-iOS/docs/latest/interface_o_i_d_auth_state.html#ac762fe2bf95c116f0b437419be211fa1)
+[`SCTKAuthState.authStateByPresentingAuthorizationRequest:externalUserAgent:callback`](http://openid.github.io/AppAuth-iOS/docs/latest/interface_o_i_d_auth_state.html#ac762fe2bf95c116f0b437419be211fa1)
 and/or 
 [`OIDAuthorizationService.presentAuthorizationRequest:externalUserAgent:callback:`](http://openid.github.io/AppAuth-iOS/docs/latest/interface_o_i_d_authorization_service.html#ae551f8e6887366a46e49b09b37389b8f)
 rather than using the platform-specific convenience methods (which use the 
 default user-agents for their respective platforms), like 
-[`OIDAuthState.authStateByPresentingAuthorizationRequest:presentingViewController:callback:`](http://openid.github.io/AppAuth-iOS/docs/latest/category_o_i_d_auth_state_07_i_o_s_08.html#ae32fd0732cd3192cd5219f2655a4c85c).
+[`SCTKAuthState.authStateByPresentingAuthorizationRequest:presentingViewController:callback:`](http://openid.github.io/AppAuth-iOS/docs/latest/category_o_i_d_auth_state_07_i_o_s_08.html#ae32fd0732cd3192cd5219f2655a4c85c).
 
 Popular use-cases for writing your own user-agent implementation include needing
 to style the user-agent in ways not supported by AppAuth, and implementing a
@@ -660,9 +660,9 @@ AppDelegate *appDelegate =
 id<OIDExternalUserAgent> userAgent =
     [OIDExternalUserAgentIOSCustomBrowser CustomBrowserChrome];
 appDelegate.currentAuthorizationFlow =
-    [OIDAuthState authStateByPresentingAuthorizationRequest:request
+    [SCTKAuthState authStateByPresentingAuthorizationRequest:request
         externalUserAgent:userAgent
-                 callback:^(OIDAuthState *_Nullable authState,
+                 callback:^(SCTKAuthState *_Nullable authState,
                                    NSError *_Nullable error) {
   if (authState) {
     NSLog(@"Got authorization tokens. Access token: %@",
@@ -682,7 +682,7 @@ guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
 let userAgent = OIDExternalUserAgentIOSCustomBrowser.customBrowserChrome()		
-appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, externalUserAgent: userAgent) { authState, error in
+appDelegate.currentAuthorizationFlow = SCTKAuthState.authState(byPresenting: request, externalUserAgent: userAgent) { authState, error in
     if let authState = authState {
         self.setAuthState(authState)
         self.logMessage("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")

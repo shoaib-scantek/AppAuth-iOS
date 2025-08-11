@@ -19,7 +19,7 @@
 import AppAuth
 import UIKit
 
-typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
+typealias PostRegistrationCallback = (_ configuration: SCTKServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
 /**
  The OIDC issuer from which the configuration will be discovered.
@@ -56,7 +56,7 @@ class AppAuthExampleViewController: UIViewController {
     @IBOutlet private weak var logTextView: UITextView!
     @IBOutlet private weak var trashButton: UIBarButtonItem!
 
-    private var authState: OIDAuthState?
+    private var authState: SCTKAuthState?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -282,8 +282,8 @@ extension AppAuthExampleViewController {
 
                         if response.statusCode == 401 {
                             // "401 Unauthorized" generally indicates there is an issue with the authorization
-                            // grant. Puts OIDAuthState into an error state.
-                            let oauthError = OIDErrorUtilities.resourceServerAuthorizationError(withCode: 0,
+                            // grant. Puts SCTKAuthState into an error state.
+                            let oauthError = SCTKErrorUtilities.resourceServerAuthorizationError(withCode: 0,
                                                                                                 errorResponse: json,
                                                                                                 underlyingError: error)
                             self.authState?.update(withAuthorizationError: oauthError)
@@ -336,7 +336,7 @@ extension AppAuthExampleViewController {
 //MARK: AppAuth Methods
 extension AppAuthExampleViewController {
 
-    func doClientRegistration(configuration: OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) {
+    func doClientRegistration(configuration: SCTKServiceConfiguration, callback: @escaping PostRegistrationCallback) {
 
         guard let redirectURI = URL(string: kRedirectURI) else {
             self.logMessage("Error creating URL for : \(kRedirectURI)")
@@ -358,7 +358,7 @@ extension AppAuthExampleViewController {
         OIDAuthorizationService.perform(request) { response, error in
 
             if let regResponse = response {
-                self.setAuthState(OIDAuthState(registrationResponse: regResponse))
+                self.setAuthState(SCTKAuthState(registrationResponse: regResponse))
                 self.logMessage("Got registration response: \(regResponse)")
                 callback(configuration, regResponse)
             } else {
@@ -368,7 +368,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+    func doAuthWithAutoCodeExchange(configuration: SCTKServiceConfiguration, clientID: String, clientSecret: String?) {
 
         guard let redirectURI = URL(string: kRedirectURI) else {
             self.logMessage("Error creating URL for : \(kRedirectURI)")
@@ -392,7 +392,7 @@ extension AppAuthExampleViewController {
         // performs authentication request
         logMessage("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
 
-        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self) { authState, error in
+        appDelegate.currentAuthorizationFlow = SCTKAuthState.authState(byPresenting: request, presenting: self) { authState, error in
 
             if let authState = authState {
                 self.setAuthState(authState)
@@ -404,7 +404,7 @@ extension AppAuthExampleViewController {
         }
     }
 
-    func doAuthWithoutCodeExchange(configuration: OIDServiceConfiguration, clientID: String, clientSecret: String?) {
+    func doAuthWithoutCodeExchange(configuration: SCTKServiceConfiguration, clientID: String, clientSecret: String?) {
 
         guard let redirectURI = URL(string: kRedirectURI) else {
             self.logMessage("Error creating URL for : \(kRedirectURI)")
@@ -431,7 +431,7 @@ extension AppAuthExampleViewController {
         appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, presenting: self) { (response, error) in
 
             if let response = response {
-                let authState = OIDAuthState(authorizationResponse: response)
+                let authState = SCTKAuthState(authorizationResponse: response)
                 self.setAuthState(authState)
                 self.logMessage("Authorization response with code: \(response.authorizationCode ?? "DEFAULT_CODE")")
                 // could just call [self tokenExchange:nil] directly, but will let the user initiate it.
@@ -442,14 +442,14 @@ extension AppAuthExampleViewController {
     }
 }
 
-//MARK: OIDAuthState Delegate
-extension AppAuthExampleViewController: OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
+//MARK: SCTKAuthState Delegate
+extension AppAuthExampleViewController: SCTKAuthStateChangeDelegate, SCTKAuthStateErrorDelegate {
 
-    func didChange(_ state: OIDAuthState) {
+    func didChange(_ state: SCTKAuthState) {
         self.stateChanged()
     }
 
-    func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
+    func authState(_ state: SCTKAuthState, didEncounterAuthorizationError error: Error) {
         self.logMessage("Received authorization error: \(error)")
     }
 }
@@ -476,12 +476,12 @@ extension AppAuthExampleViewController {
             return
         }
 
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? SCTKAuthState {
             self.setAuthState(authState)
         }
     }
 
-    func setAuthState(_ authState: OIDAuthState?) {
+    func setAuthState(_ authState: SCTKAuthState?) {
         if (self.authState == authState) {
             return;
         }

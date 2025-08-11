@@ -23,12 +23,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /*! @protocol SCTKAuthStateChangeDelegate
-    @brief Delegate of the OIDAuthState used to monitor various changes in state.
+    @brief Delegate of the SCTKAuthState used to monitor various changes in state.
  */
 @protocol SCTKAuthStateChangeDelegate <NSObject>
 
 /*! @brief Called when the authorization state changes and any backing storage needs to be updated.
-    @param state The @c OIDAuthState that changed.
+    @param state The @c SCTKAuthState that changed.
     @discussion If you are storing the authorization state, you should update the storage when the
         state changes.
  */
