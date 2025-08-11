@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 
-  s.name         = "STCKAppAuth"
+  s.name         = "SCTKAppAuth"
   s.version      = "2.0.0"
   s.summary      = "AppAuth for iOS and macOS is a client SDK for communicating with OAuth 2.0 and OpenID Connect providers."
 
