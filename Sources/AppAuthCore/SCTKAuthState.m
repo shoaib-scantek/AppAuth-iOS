@@ -61,11 +61,11 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
 /*! @brief Object to hold OIDAuthState pending actions.
  */
-@interface OIDAuthStatePendingAction : NSObject
+@interface SCTKAuthStatePendingAction : NSObject
 @property(nonatomic, readonly, nullable) SCTKAuthStateAction action;
 @property(nonatomic, readonly, nullable) dispatch_queue_t dispatchQueue;
 @end
-@implementation OIDAuthStatePendingAction
+@implementation SCTKAuthStatePendingAction
 - (id)initWithAction:(SCTKAuthStateAction)action andDispatchQueue:(dispatch_queue_t)dispatchQueue {
   self = [super init];
   if (self) {
@@ -529,8 +529,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
 
   // access token is expired, first refresh the token, then perform action
   NSAssert(_pendingActionsSyncObject, @"_pendingActionsSyncObject cannot be nil", @"");
-  OIDAuthStatePendingAction* pendingAction =
-      [[OIDAuthStatePendingAction alloc] initWithAction:action andDispatchQueue:dispatchQueue];
+  SCTKAuthStatePendingAction* pendingAction =
+      [[SCTKAuthStatePendingAction alloc] initWithAction:action andDispatchQueue:dispatchQueue];
   @synchronized(_pendingActionsSyncObject) {
     // if a token is already in the process of being refreshed, adds to pending actions
     if (_pendingActions) {
@@ -571,7 +571,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
       actionsToProcess = self->_pendingActions;
       self->_pendingActions = nil;
     }
-    for (OIDAuthStatePendingAction* actionToProcess in actionsToProcess) {
+    for (SCTKAuthStatePendingAction* actionToProcess in actionsToProcess) {
       dispatch_async(actionToProcess.dispatchQueue, ^{
         actionToProcess.action(self.accessToken, self.idToken, error);
       });
