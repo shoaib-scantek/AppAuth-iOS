@@ -55,7 +55,7 @@ It follows the OAuth 2.0 for Native Apps best current practice
 
   # Subspec for the full AppAuth library, including platform-dependent external user agents.
   s.subspec 'ExternalUserAgent' do |externalUserAgent|
-    externalUserAgent.dependency 'AppAuth/Core'
+    externalUserAgent.dependency 'SCTKAppAuth/Core'
     
     externalUserAgent.source_files = "Sources/AppAuth.h", "Sources/AppAuth/*.{h,m}"
     
